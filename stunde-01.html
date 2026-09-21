@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stunde 1 · Wie treffe ich Entscheidungen in einer Welt der Knappheit?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --font:'Nunito',system-ui,sans-serif;
+  --blue-900:#0D47A1;--blue-800:#1565C0;--blue-700:#1976D2;--blue-400:#29B6F6;--blue-50:#E3F2FD;
+  --green:#43A047;--green-light:#E8F5E9;--orange:#FF9800;--orange-light:#FFF3E0;
+  --purple:#AB47BC;--purple-light:#F3E5F5;--red:#E53935;--red-light:#FFEBEE;
+  --teal:#0d9488;--teal-light:#ccfbf1;
+  --text:#1A1A1A;--text-secondary:#555;--text-muted:#AAA;--border:#E0E0E0;--bg-page:#F0F4F8;--bg-card:#fff;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;
+  --shadow:0 2px 8px rgba(0,0,0,.08);--shadow-lg:0 4px 20px rgba(0,0,0,.12);
+  /* Block A – Konsum & Werbung */
+  --accent:#FB8C00;--grad:linear-gradient(135deg,#F57C00,#FFB300);
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:var(--font);background:var(--bg-page);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.55;}
+p{margin:.5rem 0;}
+
+/* Topbar (blau = Anker) */
+.topbar{background:var(--blue-700);height:52px;position:sticky;top:env(safe-area-inset-top,0px);
+  padding:0 1.25rem;display:flex;align-items:center;gap:1rem;box-shadow:0 2px 12px rgba(25,118,210,.25);z-index:40;}
+.topbar-logo{font-weight:900;font-size:15px;color:#fff;text-decoration:none;}
+.topbar-logo span{color:var(--blue-400);}
+.topbar-back{color:rgba(255,255,255,.85);font-size:12.5px;font-weight:700;text-decoration:none;}
+.topbar-actions{margin-left:auto;display:flex;gap:8px;}
+.tbtn{background:rgba(255,255,255,.15);border:none;color:#fff;font-family:var(--font);font-weight:800;
+  font-size:12.5px;padding:7px 13px;border-radius:20px;cursor:pointer;}
+.tbtn:hover{background:rgba(255,255,255,.28);}
+.tbtn.on{background:#fff;color:var(--blue-800);}
+
+/* Fortschrittsleiste */
+.progress{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:calc(52px + env(safe-area-inset-top,0px));
+  z-index:30;overflow-x:auto;}
+.progress-inner{display:flex;gap:4px;max-width:1080px;margin:0 auto;padding:.6rem 1rem;min-width:max-content;}
+.pstep{display:flex;align-items:center;gap:7px;border:none;background:transparent;font-family:var(--font);
+  cursor:pointer;padding:5px 10px;border-radius:20px;color:var(--text-secondary);font-weight:700;font-size:12.5px;white-space:nowrap;}
+.pstep .pnum{width:22px;height:22px;border-radius:50%;background:var(--bg-page);color:var(--text-secondary);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;}
+.pstep:hover{background:var(--bg-page);}
+.pstep.active{color:var(--accent);}
+.pstep.active .pnum{background:var(--accent);color:#fff;}
+.teacher-only{display:none;}
+body.version-b .teacher-only{display:flex;}
+body.version-b .section.teacher-only{display:block;}
+
+.wrap{max-width:1080px;margin:0 auto;padding:1.25rem 1rem 3rem;}
+
+/* Hero */
+.hero{background:var(--grad);border-radius:var(--radius-lg);padding:2.2rem 2rem;color:#fff;
+  position:relative;overflow:hidden;box-shadow:var(--shadow-lg);margin-bottom:1.4rem;}
+.hero::before{content:'€';position:absolute;right:1.2rem;top:-26px;font-size:150px;font-weight:900;
+  color:rgba(255,255,255,.10);line-height:1;pointer-events:none;}
+.hero-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.9);position:relative;}
+.hero h1{font-size:27px;font-weight:900;margin:.4rem 0 .5rem;line-height:1.15;position:relative;max-width:85%;}
+.hero .lead{font-size:15px;font-weight:700;color:rgba(255,255,255,.96);position:relative;margin:0;}
+.hero-chips{display:flex;gap:6px;margin-top:.9rem;flex-wrap:wrap;position:relative;}
+.hero-chips span{background:rgba(255,255,255,.22);color:#fff;font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:20px;}
+
+/* Section */
+.section{background:#fff;border-radius:var(--radius-lg);border:1px solid var(--border);box-shadow:var(--shadow);
+  padding:1.4rem 1.5rem;margin-bottom:1.2rem;animation:fadeUp .3s ease both;scroll-margin-top:120px;}
+.step-label{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.4px;color:var(--accent);margin-bottom:.5rem;}
+.step-label .sn{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.section h2{font-size:20px;font-weight:900;margin:.1rem 0 .7rem;}
+.section h3{font-size:15px;font-weight:800;margin:1.1rem 0 .4rem;}
+
+/* Info-Boxen */
+.info-box{border-radius:var(--radius-sm);padding:.8rem 1rem;margin:.8rem 0;font-size:14px;}
+.info-box.blue{background:var(--blue-50);border-left:3px solid var(--blue-700);color:var(--blue-800);}
+.info-box.green{background:var(--green-light);border-left:3px solid var(--green);color:#1b5e20;}
+.info-box.orange{background:var(--orange-light);border-left:3px solid var(--orange);color:#78350f;}
+.info-box.teal{background:var(--teal-light);border-left:3px solid var(--teal);color:#134e4a;}
+.info-box b{font-weight:800;}
+
+/* Karten-Reihe */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.7rem;margin:.8rem 0;}
+.mini{background:var(--bg-page);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.8rem .9rem;}
+.mini b{display:block;font-size:14px;color:var(--text);margin-bottom:2px;}
+.mini span{font-size:12.5px;color:var(--text-secondary);}
+
+/* Buchverweis */
+.book-ref{background:#faf5ff;border:1.5px solid #d8b4fe;border-radius:var(--radius-md);padding:.9rem 1.1rem;margin:.9rem 0;display:flex;gap:.7rem;align-items:flex-start;}
+.book-ref svg{flex-shrink:0;margin-top:2px;}
+.book-ref-title{color:#6b21a8;font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.3px;}
+.book-ref-text{color:#581c87;font-size:14px;}
+
+/* Aufgaben-Box */
+.task{border:1.5px solid var(--accent);border-radius:var(--radius-md);overflow:hidden;margin:1rem 0;}
+.task-header{background:var(--accent);padding:.7rem 1.1rem;display:flex;align-items:center;gap:11px;}
+.task-num{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.25);color:#fff;font-weight:800;
+  font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.task-title{color:#fff;font-weight:800;font-size:14.5px;line-height:1.2;}
+.task-sub{color:rgba(255,255,255,.8);font-size:11px;font-weight:600;}
+.task-body{background:#F0F4F8;padding:1rem 1.1rem;display:flex;gap:1rem;}
+.icons{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
+.itile{background:#fff;border-radius:8px;padding:8px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;}
+.task-content{flex:1;font-size:14px;}
+.task-content ol{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+.task-content li{margin:.25rem 0;}
+
+/* Antwortfeld */
+.answer-area{width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;
+  font-family:var(--font);font-size:14px;resize:vertical;min-height:78px;background:#fff;margin-top:.6rem;}
+.answer-area:focus{outline:none;border-color:var(--accent);}
+
+/* Musterlösung */
+.solution-btn{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:8px 15px;
+  font-family:var(--font);font-weight:700;font-size:13px;color:var(--text-secondary);cursor:pointer;margin-top:.6rem;}
+.solution-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--orange-light);}
+.solution-reveal{background:var(--green-light);border-left:3px solid var(--green);border-radius:0 8px 8px 0;
+  padding:.7rem 1rem;color:#1b5e20;font-size:13.5px;margin-top:.6rem;display:none;}
+.solution-reveal.visible{display:block;}
+.solution-reveal ul{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+
+/* Lehrkraft-Hinweis */
+.teacher-note{background:#fffbeb;border:1.5px solid #fbbf24;border-radius:var(--radius-md);padding:1rem 1.1rem;margin:1rem 0;display:none;}
+body.version-b .teacher-note{display:block;}
+.teacher-note-header{font-weight:800;font-size:12px;color:#92400e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem;display:flex;align-items:center;gap:7px;}
+.teacher-note{font-size:13.5px;color:#78350f;}
+.teacher-note ul{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+
+/* Quiz */
+.quiz{margin:.9rem 0;}
+.quiz-q{font-weight:800;font-size:14.5px;margin:.4rem 0 .6rem;}
+.quiz-opt{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:11px 14px;background:#fff;
+  font-size:14px;font-weight:600;margin-bottom:8px;cursor:pointer;transition:.12s;}
+.quiz-opt:hover{border-color:var(--accent);background:var(--orange-light);}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-light);color:#1b5e20;cursor:default;}
+.quiz-opt.wrong{border-color:var(--red);background:var(--red-light);color:#7f1d1d;animation:shake .4s;}
+.quiz-fb{display:none;font-size:13.5px;color:#1b5e20;background:var(--green-light);border-left:3px solid var(--green);
+  border-radius:0 8px 8px 0;padding:.6rem .9rem;margin-top:.3rem;}
+.quiz-fb.show{display:block;}
+
+/* PIN-Modal */
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;z-index:100;padding:1rem;}
+.overlay.open{display:flex;}
+.modal{background:#fff;border-radius:var(--radius-lg);padding:1.6rem;width:100%;max-width:320px;box-shadow:var(--shadow-lg);text-align:center;}
+.modal h3{margin:.2rem 0 .3rem;font-size:18px;font-weight:900;}
+.modal p{font-size:13px;color:var(--text-secondary);margin:0 0 1rem;}
+.dots{display:flex;justify-content:center;gap:10px;margin-bottom:1.1rem;}
+.dots span{width:13px;height:13px;border-radius:50%;background:var(--border);transition:.15s;}
+.dots span.filled{background:var(--blue-700);}
+.dots.err span{background:var(--red);animation:shake .4s;}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.pad button{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:14px 0;
+  font-family:var(--font);font-size:18px;font-weight:800;cursor:pointer;color:var(--text);}
+.pad button:hover{border-color:var(--blue-700);background:var(--blue-50);}
+.modal-close{margin-top:1rem;background:none;border:none;color:var(--text-muted);font-family:var(--font);font-weight:700;font-size:13px;cursor:pointer;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-7px);}40%,80%{transform:translateX(7px);}}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="topbar-logo" href="index.html">WR<span>&amp;</span>10</a>
+    <a class="topbar-back" href="index.html">← Übersicht</a>
+    <div class="topbar-actions">
+      <button class="tbtn" id="teacherToggle" onclick="toggleTeacher()">🔓 Lehrkraft</button>
+    </div>
+  </div>
+
+  <nav class="progress"><div class="progress-inner" id="prog"></div></nav>
+
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-eyebrow">Ökonomisches Handeln auf dem Markt · Stunde 1</div>
+      <h1>Jeder Kauf ist eine Entscheidung</h1>
+      <p class="lead">Wie treffe ich Entscheidungen in einer Welt der Knappheit?</p>
+      <div class="hero-chips"><span>Kapitel 1.1</span><span>Buch S. 8–11</span><span>Teil 1: Bedürfnisse · Güter · Knappheit</span></div>
+    </div>
+
+    <!-- STEP 1 -->
+    <section class="section" id="step1">
+      <span class="step-label"><span class="sn">1</span> Einstieg</span>
+      <h2>Jeder Kauf ist eine Entscheidung</h2>
+      <p>Vor der Schule eine Breze, in der Pause zum Döner, nachmittags shoppen – fast täglich kaufen wir etwas und treffen dabei Entscheidungen. Oft „aus dem Bauch heraus". In diesem Lernbereich schauen wir genauer hin: Warum kaufen wir was – und wie entscheidet man klug?</p>
+
+      <div class="book-ref">
+        <svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg>
+        <div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 8–9 „Jeder Kauf ist eine Entscheidung" · Aufgaben 1 &amp; 2 („Ihre Meinung ist gefragt!")</div></div>
+      </div>
+
+      <div class="task">
+        <div class="task-header">
+          <div class="task-num">A</div>
+          <div><div class="task-title">Einstiegsdiskussion</div><div class="task-sub">Diskussion · Plenum</div></div>
+        </div>
+        <div class="task-body">
+          <div class="icons">
+            <div class="itile" style="border:1.5px solid #E65100;">
+              <svg width="22" height="22" viewBox="0 0 44 38" fill="none"><circle cx="22" cy="30" r="5" fill="#E65100"/><path d="M13 38c0-4.418 4.03-8 9-8s9 3.582 9 8" stroke="#E65100" stroke-width="2.2" stroke-linecap="round" fill="none"/><circle cx="7" cy="14" r="3.5" fill="#E65100" opacity=".7"/><path d="M2 22c0-3.314 2.239-6 5-6s5 2.686 5 6" stroke="#E65100" stroke-width="1.8" stroke-linecap="round" fill="none" opacity=".7"/><circle cx="16" cy="10" r="3.5" fill="#E65100" opacity=".75"/><path d="M11 18c0-3.314 2.239-6 5-6s5 2.686 5 6" stroke="#E65100" stroke-width="1.8" stroke-linecap="round" fill="none" opacity=".75"/><circle cx="28" cy="10" r="3.5" fill="#E65100" opacity=".75"/><path d="M23 18c0-3.314 2.239-6 5-6s5 2.686 5 6" stroke="#E65100" stroke-width="1.8" stroke-linecap="round" fill="none" opacity=".75"/><circle cx="37" cy="14" r="3.5" fill="#E65100" opacity=".7"/><path d="M32 22c0-3.314 2.239-6 5-6s5 2.686 5 6" stroke="#E65100" stroke-width="1.8" stroke-linecap="round" fill="none" opacity=".7"/></svg>
+            </div>
+            <div class="itile" style="border:1.5px solid #0d9488;">
+              <svg width="22" height="22" viewBox="0 0 44 38" fill="none"><rect x="2" y="3" width="22" height="16" rx="4" fill="#0d9488"/><path d="M6 19l-4 6 8-4" fill="#0d9488"/><rect x="20" y="18" width="22" height="16" rx="4" fill="#0d9488" opacity=".7"/><path d="M38 34l4 4-8-2" fill="#0d9488" opacity=".7"/><path d="M7 9h12M7 13h8" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M25 24h12M25 28h8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+          <div class="task-content">
+            <p>Schaut euch die vier Kaufsituationen im Buch (S. 8) an – Urlaubsmarkt, Onlinekauf, erste Wohnung, Autokauf. Klärt gemeinsam:</p>
+            <ol>
+              <li>Wer ist an dem jeweiligen Kauf beteiligt?</li>
+              <li>Was wäre <b>dir</b> in dieser Situation besonders wichtig?</li>
+              <li>Erste eigene Wohnung, erstes eigenes Auto: eher <b>kaufen</b> oder <b>mieten/leasen</b>? Nennt je ein Argument.</li>
+            </ol>
+            <textarea class="answer-area" id="s1a1" placeholder="Notiere hier eure wichtigsten Punkte …"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        Erwartungshorizont (frei, individuell). Zu den Bildern: <b>Urlaubsmarkt</b> – Kunde/Verkäufer; wichtig: Wechselkurs, Touristenpreise, Fälschungen/Qualität. <b>Onlinekauf</b> – Kunde, Plattform, ggf. Kreditkartenanbieter; wichtig: Datensicherheit, seriöse Plattform. <b>Wohnungskauf</b> – Käufer/Verkäufer, dahinter Bank, Notar, Finanzamt; wichtig: Finanzierung, Wertermittlung. <b>Autokauf</b> – Käufer/Händler, ggf. Kreditgeber; wichtig: Design, Ausstattung, Nachhaltigkeit, Folgekosten.<br>
+        <b>Kaufen vs. mieten/leasen:</b> Miete/Leasing = wenig Startkapital, flexibel, kein Kredit; Kauf = Eigentum, mögliche Wertanlage, keine Abhängigkeit vom Vermieter. Tipp: als Positionslinie/Abstimmung einsteigen.
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="section" id="step2">
+      <span class="step-label"><span class="sn">2</span> Erarbeitung</span>
+      <h2>Bedürfnisse und Güter</h2>
+      <p>Hinter jedem Kauf steckt ein <b>Bedürfnis</b> – und um es zu befriedigen, brauchen wir <b>Güter</b>.</p>
+
+      <div class="info-box blue">
+        <b>Bedürfnis:</b> Gefühl eines Mangels, verbunden mit dem Wunsch, diesen Mangel zu beseitigen.<br>
+        <b>Gut:</b> Mittel, um ein Bedürfnis zu befriedigen.
+      </div>
+
+      <h3>Welche Arten von Gütern gibt es?</h3>
+      <div class="cards">
+        <div class="mini"><b>Verbrauchsgüter</b><span>werden beim Gebrauch verbraucht – z. B. Lebensmittel, Benzin.</span></div>
+        <div class="mini"><b>Gebrauchsgüter</b><span>werden mehrfach genutzt – z. B. Smartphone, Fahrrad.</span></div>
+        <div class="mini"><b>Dienstleistungen</b><span>sind Leistungen statt Waren – z. B. Beratung, Haareschneiden.</span></div>
+      </div>
+
+      <div class="book-ref">
+        <svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg>
+        <div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 10 · M1 „Wunschkonzert – Was ich mir wünsche …" · Aufgaben 1 &amp; 2</div></div>
+      </div>
+
+      <div class="task">
+        <div class="task-header">
+          <div class="task-num">B</div>
+          <div><div class="task-title">Meine Wünsche</div><div class="task-sub">Buchaufgabe · Einzelarbeit</div></div>
+        </div>
+        <div class="task-body">
+          <div class="icons">
+            <div class="itile" style="border:1.5px solid #1976D2;">
+              <svg width="22" height="22" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="12" r="7" fill="#1976D2"/><path d="M4 34c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="#1976D2" stroke-width="3" stroke-linecap="round" fill="none"/></svg>
+            </div>
+            <div class="itile" style="border:1.5px solid #1976D2;">
+              <svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#1976D2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#1976D2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#1976D2" stroke-width="2"/></svg>
+            </div>
+          </div>
+          <div class="task-content">
+            <p>Sammle <b>drei Dinge, die du dir gerade wünschst</b> – und schreibe kurz dazu, <i>warum</i>. Ordne dann jeder Zeile zu: Geht es um ein <b>Bedürfnis</b> oder um ein <b>Gut</b>?</p>
+            <textarea class="answer-area" id="s1b1" placeholder="1) Ich wünsche mir … , weil …&#10;2) …&#10;3) …"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="quiz" id="quizGueter">
+        <p class="quiz-q">Kurzcheck: Welche Güterart? „Ein Schnitzel in der Mensa"</p>
+        <div class="quiz-opt" data-correct="true">Verbrauchsgut</div>
+        <div class="quiz-opt" data-correct="false">Gebrauchsgut</div>
+        <div class="quiz-opt" data-correct="false">Dienstleistung</div>
+        <div class="quiz-fb">Richtig – das Schnitzel wird beim Essen verbraucht, es ist also ein Verbrauchsgut.</div>
+      </div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Tafelbild (nach TB 1.1a)</div>
+        <b>Bedürfnis</b> = Gefühl eines Mangels + Wunsch, ihn zu beseitigen (unbegrenzt). <b>Güter</b> = Mittel zur Bedürfnisbefriedigung (begrenzt). Gegenüberstellung unbegrenzt ↔ begrenzt führt direkt zur <b>Knappheit</b> (Überleitung zu Step 3).
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="section" id="step3">
+      <span class="step-label"><span class="sn">3</span> Kernidee</span>
+      <h2>Knappheit – das Grundproblem des Wirtschaftens</h2>
+      <p>Unsere Bedürfnisse sind praktisch <b>unbegrenzt</b>. Die Güter, mit denen wir sie befriedigen, sind aber <b>knapp</b> – nicht alles ist im Überfluss vorhanden. Deshalb müssen wir uns ständig <b>entscheiden</b>, welche Wünsche wir uns erfüllen.</p>
+
+      <div class="info-box orange">
+        <b>Knappheit:</b> Weil unbegrenzten Bedürfnissen nur begrenzte Güter gegenüberstehen, ist der Mensch gezwungen zu wählen. Diese Knappheit ist das grundlegende Problem allen Wirtschaftens.
+      </div>
+
+      <div class="quiz" id="quizKnapp">
+        <p class="quiz-q">Warum müssen Menschen überhaupt „wirtschaften"?</p>
+        <div class="quiz-opt" data-correct="false">Weil Geld immer knapp ist und Preise steigen.</div>
+        <div class="quiz-opt" data-correct="true">Weil unbegrenzten Bedürfnissen nur begrenzte (knappe) Güter gegenüberstehen.</div>
+        <div class="quiz-opt" data-correct="false">Weil der Staat vorschreibt, sparsam zu sein.</div>
+        <div class="quiz-fb">Genau. Knappheit zwingt uns zur Auswahl – das ist der Kern des Wirtschaftens.</div>
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="section" id="step4">
+      <span class="step-label"><span class="sn">4</span> Anwendung</span>
+      <h2>Entscheiden unter Knappheit</h2>
+      <p>Wenn die Mittel begrenzt sind, muss man Prioritäten setzen. Genau das übt die nächste Aufgabe.</p>
+
+      <div class="book-ref">
+        <svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg>
+        <div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 11 · Aufgabe 3 (250 € zur Verfügung)</div></div>
+      </div>
+
+      <div class="task">
+        <div class="task-header">
+          <div class="task-num">C</div>
+          <div><div class="task-title">Deine 250 €</div><div class="task-sub">Anwendungsaufgabe · Partnerarbeit</div></div>
+        </div>
+        <div class="task-body">
+          <div class="icons">
+            <div class="itile" style="border:1.5px solid #0d9488;">
+              <svg width="22" height="22" viewBox="0 0 44 36" fill="none"><circle cx="12" cy="10" r="6.5" fill="#0d9488"/><circle cx="32" cy="10" r="6.5" fill="#0d9488"/><path d="M1 34c0-6.075 4.925-11 11-11s11 4.925 11 11" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round" fill="none"/><path d="M21 34c0-6.075 4.925-11 11-11s11 4.925 11 11" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg>
+            </div>
+          </div>
+          <div class="task-content">
+            <p>Angenommen, du hast <b>250 €</b> zur freien Verfügung. Welche deiner Wünsche aus Step 2 würdest du dir erfüllen – und welche <b>nicht</b>?</p>
+            <ol>
+              <li>Triff deine Auswahl und begründe sie kurz.</li>
+              <li>Erkläre deiner Partnerin/deinem Partner, <b>worauf du verzichtest</b> – und warum die Entscheidung nicht leichtfällt.</li>
+            </ol>
+            <textarea class="answer-area" id="s1c1" placeholder="Ich gebe die 250 € aus für … , weil …&#10;Verzichten muss ich auf … , weil …"></textarea>
+            <button class="solution-btn" data-target="solC">Denkanstoß anzeigen</button>
+            <div class="solution-reveal" id="solC">
+              Es gibt keine „richtige" Auswahl – aber jede Entscheidung bedeutet <b>Verzicht</b> auf etwas anderes. Genau dieser entgangene Nutzen wird uns in Stunde 2 als <b>Opportunitätskosten</b> wieder begegnen.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        Die Aufgabe bereitet den Verzichtsgedanken vor (Brücke zu Opportunitätskosten, Stunde 2). Bewusst offen halten; im Plenum kurz sammeln, worauf verzichtet wurde – das macht Knappheit erfahrbar.
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="section" id="step5">
+      <span class="step-label"><span class="sn">5</span> Sicherung</span>
+      <h2>Das nehme ich mit</h2>
+      <div class="info-box green">
+        <b>Bedürfnis</b> → Gefühl eines Mangels &nbsp;•&nbsp; <b>Gut</b> → Mittel zur Bedürfnisbefriedigung &nbsp;•&nbsp; <b>Knappheit</b> → unbegrenzte Bedürfnisse, begrenzte Güter → Entscheidungszwang.
+      </div>
+
+      <div class="quiz" id="quizSich1">
+        <p class="quiz-q">1) Welche Aussage ist richtig?</p>
+        <div class="quiz-opt" data-correct="false">Bedürfnisse sind begrenzt, Güter sind unbegrenzt.</div>
+        <div class="quiz-opt" data-correct="true">Bedürfnisse sind (nahezu) unbegrenzt, Güter sind knapp.</div>
+        <div class="quiz-opt" data-correct="false">Bedürfnisse und Güter sind beide unbegrenzt.</div>
+        <div class="quiz-fb">Richtig – aus diesem Missverhältnis entsteht die Knappheit.</div>
+      </div>
+
+      <div class="quiz" id="quizSich2">
+        <p class="quiz-q">2) „Ein Haarschnitt beim Friseur" ist …</p>
+        <div class="quiz-opt" data-correct="false">ein Gebrauchsgut.</div>
+        <div class="quiz-opt" data-correct="false">ein Verbrauchsgut.</div>
+        <div class="quiz-opt" data-correct="true">eine Dienstleistung.</div>
+        <div class="quiz-fb">Richtig – es wird eine Leistung erbracht, keine Ware übergeben.</div>
+      </div>
+
+      <p style="margin-top:1rem;font-size:13.5px;color:var(--text-secondary);">In der nächsten Stunde: Wie entscheidet man <b>wirtschaftlich</b>? → Minimal- und Maximalprinzip, Kosten-Nutzen-Analyse, Opportunitätskosten.</p>
+    </section>
+
+    <!-- STEP 6 – Lehrkraft -->
+    <section class="section teacher-only" id="step6">
+      <span class="step-label"><span class="sn">6</span> Mündliche Abfrage</span>
+      <h2>Mündlicher Unterrichtsbeitrag (ca. 10 Min., 1 Schüler:in)</h2>
+      <div class="teacher-note" style="display:block;">
+        <div class="teacher-note-header">👩‍🏫 Fragenvorschläge &amp; Erwartung</div>
+        <ul>
+          <li><b>Erkläre den Zusammenhang von Bedürfnissen und Knappheit.</b> → Unbegrenzte Bedürfnisse, begrenzte Güter ⇒ Entscheidungszwang; Knappheit ist das Grundproblem des Wirtschaftens.</li>
+          <li><b>Unterscheide Verbrauchs- und Gebrauchsgut mit je einem Beispiel.</b> → Verbrauchsgut wird beim Gebrauch verbraucht (Brezel), Gebrauchsgut mehrfach nutzbar (Fahrrad).</li>
+          <li><b>Was ist ein Bedürfnis? Grenze es von einem Gut ab.</b> → Bedürfnis = Gefühl eines Mangels + Wunsch; Gut = Mittel zur Befriedigung.</li>
+          <li><b>Transfer:</b> Warum bedeutet jede Kaufentscheidung auch einen Verzicht? → Überleitung zu Opportunitätskosten (Stunde 2).</li>
+        </ul>
+        <b>4K-Bezug:</b> Wissen (Fachbegriffe), Kritisches Denken (Verzicht/Prioritäten), Kommunikation (Begründen).
+      </div>
+    </section>
+  </div>
+
+  <!-- PIN-Modal -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <h3>Lehrkraft-Bereich</h3>
+      <p>6-stellige PIN eingeben</p>
+      <div class="dots" id="dots"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="pad" id="pad"></div>
+      <button class="modal-close" onclick="closeModal()">Abbrechen</button>
+    </div>
+  </div>
+
+<script>
+const TEACHER_PIN="135791";
+
+/* ---- Fortschrittsleiste ---- */
+const STEPS=[
+  {id:"step1",label:"Einstieg"},{id:"step2",label:"Bedürfnisse & Güter"},
+  {id:"step3",label:"Knappheit"},{id:"step4",label:"Anwendung"},
+  {id:"step5",label:"Sicherung"},{id:"step6",label:"Abfrage",teacher:true},
+];
+const prog=document.getElementById("prog");
+STEPS.forEach((s,i)=>{
+  const b=document.createElement("button");
+  b.className="pstep"+(s.teacher?" teacher-only":"");
+  b.dataset.target=s.id;
+  b.innerHTML=`<span class="pnum">${i+1}</span>${s.label}`;
+  b.onclick=()=>document.getElementById(s.id).scrollIntoView({behavior:"smooth",block:"start"});
+  prog.appendChild(b);
+});
+/* Scroll-Spy */
+const spy=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll(".pstep").forEach(p=>p.classList.toggle("active",p.dataset.target===e.target.id));
+    }
+  });
+},{rootMargin:"-40% 0px -55% 0px"});
+document.querySelectorAll(".section").forEach(s=>spy.observe(s));
+
+/* ---- Zwei-Modi / PIN ---- */
+let entered="";
+const overlay=document.getElementById("overlay"), dots=document.getElementById("dots");
+const pad=document.getElementById("pad");
+["1","2","3","4","5","6","7","8","9","C","0","⌫"].forEach(k=>{
+  const b=document.createElement("button");b.textContent=k;
+  b.onclick=()=>press(k);pad.appendChild(b);
+});
+function toggleTeacher(){
+  const btn=document.getElementById("teacherToggle");
+  if(document.body.classList.contains("version-b")){
+    document.body.classList.remove("version-b");
+    btn.classList.remove("on");btn.textContent="🔓 Lehrkraft";
+  }else{openModal();}
+}
+function openModal(){entered="";renderDots();overlay.classList.add("open");}
+function closeModal(){overlay.classList.remove("open");}
+function press(k){
+  if(k==="C"){entered="";}
+  else if(k==="⌫"){entered=entered.slice(0,-1);}
+  else if(entered.length<6){entered+=k;}
+  renderDots();
+  if(entered.length===6)setTimeout(check,120);
+}
+function renderDots(){
+  dots.classList.remove("err");
+  [...dots.children].forEach((d,i)=>d.classList.toggle("filled",i<entered.length));
+}
+function check(){
+  if(entered===TEACHER_PIN){
+    document.body.classList.add("version-b");
+    const btn=document.getElementById("teacherToggle");btn.classList.add("on");btn.textContent="🔒 Schüler-Ansicht";
+    closeModal();
+  }else{
+    dots.classList.add("err");entered="";
+    setTimeout(()=>renderDots(),450);
+  }
+}
+document.addEventListener("keydown",e=>{
+  if(!overlay.classList.contains("open"))return;
+  if(/^[0-9]$/.test(e.key))press(e.key);
+  else if(e.key==="Backspace")press("⌫");
+  else if(e.key==="Enter"&&entered.length===6)check();
+  else if(e.key==="Escape")closeModal();
+});
+
+/* ---- Quiz ---- */
+document.querySelectorAll(".quiz").forEach(q=>{
+  const fb=q.querySelector(".quiz-fb");
+  q.querySelectorAll(".quiz-opt").forEach(opt=>{
+    opt.addEventListener("click",()=>{
+      if(q.dataset.done)return;
+      if(opt.dataset.correct==="true"){
+        opt.classList.add("correct");q.dataset.done="1";
+        if(fb)fb.classList.add("show");
+        q.querySelectorAll(".quiz-opt").forEach(o=>o.style.cursor="default");
+      }else{
+        opt.classList.add("wrong");
+        setTimeout(()=>opt.classList.remove("wrong"),450);
+      }
+    });
+  });
+});
+
+/* ---- Musterlösung / Denkanstoß ---- */
+document.querySelectorAll(".solution-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const t=document.getElementById(btn.dataset.target);
+    const vis=t.classList.toggle("visible");
+    btn.textContent=vis?"ausblenden":btn.textContent.replace("ausblenden","anzeigen");
+  });
+});
+
+/* ---- Antwortfelder: Autospeichern (lokal, pro Gerät) ---- */
+document.querySelectorAll(".answer-area").forEach(t=>{
+  const key="wr10_s1_"+t.id;
+  try{const v=localStorage.getItem(key);if(v)t.value=v;}catch(e){}
+  t.addEventListener("input",()=>{try{localStorage.setItem(key,t.value);}catch(e){}});
+});
+</script>
+</body>
+</html>
