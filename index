@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WR 10 · Ökonomisches Handeln auf dem Markt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --font:'Nunito',system-ui,sans-serif;
+  --blue-900:#0D47A1;--blue-800:#1565C0;--blue-700:#1976D2;--blue-400:#29B6F6;--blue-50:#E3F2FD;
+  --text:#1A1A1A;--text-secondary:#555;--text-muted:#AAA;--border:#E0E0E0;--bg-page:#F0F4F8;--bg-card:#fff;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;
+  --shadow:0 2px 8px rgba(0,0,0,.08);--shadow-lg:0 4px 20px rgba(0,0,0,.12);
+  --grad-blue:linear-gradient(135deg,#1976D2,#29B6F6);
+  --green:#43A047;--red:#E53935;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:var(--font);background:var(--bg-page);color:var(--text);-webkit-font-smoothing:antialiased;}
+
+.topbar{background:var(--blue-700);height:52px;position:sticky;top:env(safe-area-inset-top,0px);
+  padding:0 1.5rem;display:flex;align-items:center;gap:1rem;box-shadow:0 2px 12px rgba(25,118,210,.25);z-index:20;}
+.topbar-logo{font-weight:900;font-size:15px;color:#fff;text-decoration:none;}
+.topbar-logo span{color:var(--blue-400);}
+.topbar-tag{margin-left:auto;font-size:12px;font-weight:700;color:rgba(255,255,255,.75);}
+
+.wrap{max-width:1080px;margin:0 auto;padding:1.5rem 1.25rem 3rem;}
+
+.hero{background:var(--grad-blue);border-radius:var(--radius-lg);padding:2.4rem 2.2rem;color:#fff;
+  position:relative;overflow:hidden;box-shadow:var(--shadow-lg);margin-bottom:1.5rem;}
+.hero::before{content:'€';position:absolute;right:1.5rem;top:-24px;font-size:150px;font-weight:900;
+  color:rgba(255,255,255,.08);line-height:1;pointer-events:none;}
+.hero-eyebrow{font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.85);position:relative;}
+.hero h1{font-size:30px;font-weight:900;margin:.4rem 0 .6rem;line-height:1.12;position:relative;max-width:80%;}
+.hero p{font-size:14.5px;color:rgba(255,255,255,.92);max-width:70%;position:relative;line-height:1.5;margin:0;}
+
+.legend{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1.75rem;}
+.legend span{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--text-secondary);
+  background:#fff;border:1px solid var(--border);border-radius:20px;padding:6px 12px;}
+.dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+
+.block-head{display:flex;align-items:baseline;gap:10px;margin:1.6rem 0 .9rem;}
+.block-head h2{font-size:18px;font-weight:900;margin:0;}
+.block-head .rng{font-size:12px;font-weight:700;color:var(--text-muted);}
+.block-bar{height:4px;border-radius:4px;flex:1;opacity:.35;}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;}
+
+.tile{background:#fff;border:1px solid var(--border);border-top:4px solid var(--accent);
+  border-radius:var(--radius-md);box-shadow:var(--shadow);padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.7rem;}
+.tile-top{display:flex;gap:.85rem;align-items:flex-start;}
+.tile-num{flex-shrink:0;width:42px;height:42px;border-radius:11px;background:var(--accent);color:#fff;
+  font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center;}
+.tile-block{font-size:10.5px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.3px;}
+.tile-q{font-size:15px;font-weight:800;line-height:1.25;margin-top:1px;}
+.tile-t{font-size:12.5px;color:var(--text-secondary);margin-top:3px;line-height:1.4;}
+
+.unlock{display:flex;gap:6px;}
+.unlock input{flex:1;min-width:0;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:9px 12px;
+  font-family:var(--font);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:#fff;}
+.unlock input:focus{outline:none;border-color:var(--accent);}
+.unlock input.shake{animation:shake .4s;border-color:var(--red);}
+.unlock button{flex-shrink:0;border:none;border-radius:var(--radius-sm);padding:9px 14px;font-family:var(--font);
+  font-size:13px;font-weight:800;color:#fff;background:var(--accent);cursor:pointer;white-space:nowrap;}
+.unlock button:hover{filter:brightness(.94);}
+
+.open-link{display:flex;align-items:center;justify-content:space-between;gap:8px;text-decoration:none;
+  background:var(--accent);color:#fff;border-radius:var(--radius-sm);padding:10px 14px;font-size:14px;font-weight:800;}
+.open-link:hover{filter:brightness(.94);}
+.locked-hint{font-size:11.5px;color:var(--text-muted);}
+.badge-open{font-size:10px;font-weight:800;color:var(--green);background:#E8F5E9;padding:2px 8px;border-radius:20px;}
+
+.footer{margin-top:2.5rem;font-size:12px;color:var(--text-muted);text-align:center;line-height:1.6;}
+
+@keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-7px);}40%,80%{transform:translateX(7px);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.tile{animation:fadeUp .3s ease both;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="topbar-logo" href="#">WR<span>&amp;</span>10</a>
+    <span class="topbar-tag">Ökonomisches Handeln auf dem Markt</span>
+  </div>
+
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-eyebrow">Wirtschaft und Recht · 10. Jahrgangsstufe · Lernbereich 1</div>
+      <h1>Ökonomisches Handeln auf dem Markt</h1>
+      <p>18 Stunden vom klugen Konsumieren über Geld und Geldanlage bis zum Marktmodell. Gib den Code der jeweiligen Stunde ein, um sie freizuschalten.</p>
+    </div>
+
+    <div class="legend" id="legend"></div>
+    <div id="blocks"></div>
+
+    <div class="footer">
+      Gymnasium · Wirtschaft und Recht 10 · Lernbereich 1<br>
+      Freischalt-Codes erhältst du zu Beginn jeder Stunde von deiner Lehrkraft.
+    </div>
+  </div>
+
+<script>
+const BLOCKS = [
+  {id:"A", name:"Konsum & Werbung",  accent:"#FB8C00", range:"Std 1–10"},
+  {id:"B", name:"Zahlungsarten",     accent:"#0d9488", range:"Std 11"},
+  {id:"C", name:"Geld & Geldanlage", accent:"#059669", range:"Std 12–14"},
+  {id:"D", name:"Marktmodell",       accent:"#7C3AED", range:"Std 15–18"},
+];
+const STUNDEN = [
+  {n:1,  block:"A", code:"FALE42", q:"Wie treffe ich Entscheidungen in einer Welt der Knappheit?", t:"Bedürfnisse, Güter, Knappheit"},
+  {n:2,  block:"A", code:"FUDU70", q:"Wie handle ich wirtschaftlich?", t:"Wirtschaftlichkeitsprinzip, Kosten-Nutzen-Analyse, Opportunitätskosten"},
+  {n:3,  block:"A", code:"BAJE99", q:"Wie entscheide ich im Unternehmen?", t:"Vertiefung CoolCup – Kosten-Nutzen in der Gruppe"},
+  {n:4,  block:"A", code:"BUJU73", q:"Wie konsumiere ich verantwortungsbewusst?", t:"Nachhaltigkeit, SDGs"},
+  {n:5,  block:"A", code:"TULA36", q:"Wie funktioniert Werbung?", t:"Marketing-Ziele, AISAS-Modell"},
+  {n:6,  block:"A", code:"NIGE61", q:"Womit beeinflusst Werbung uns?", t:"Verkaufspsychologie, verhaltensökonomische Effekte"},
+  {n:7,  block:"A", code:"DOFI69", q:"Warum handeln wir nicht immer rational?", t:"Konsumverhalten"},
+  {n:8,  block:"A", code:"LATU26", q:"Projekt: Werbeanzeige gestalten (I)", t:"Zielgruppe, Konzeption"},
+  {n:9,  block:"A", code:"DUMU69", q:"Projekt: Werbeanzeige (II)", t:"Präsentation & Peer-Feedback"},
+  {n:10, block:"A", code:"JACE51", q:"Wie konsumiere ich, ohne mich zu überschulden?", t:"Überschuldung, Schuldenfalle"},
+  {n:11, block:"B", code:"KARI85", q:"Welche Zahlungsart passt zur Situation?", t:"Zahlungsarten, Auswahlkriterien, digitale Verfahren"},
+  {n:12, block:"C", code:"HIPE51", q:"Kann Geld bei Inflation seine Funktionen erfüllen?", t:"Geldfunktionen, Inflation, EZB"},
+  {n:13, block:"C", code:"HUKE86", q:"Wie lege ich Geld sinnvoll an? (I)", t:"Kriterien: Sicherheit, Rentabilität, Liquidität, Ethik"},
+  {n:14, block:"C", code:"LUKI13", q:"Wie lege ich Geld an? (II)", t:"Anlagearten, Diversifikation"},
+  {n:15, block:"D", code:"CIRI23", q:"Welcher Preis bildet sich auf dem freien Markt?", t:"Angebot, Nachfrage, Gleichgewichtspreis"},
+  {n:16, block:"D", code:"ZIJO77", q:"Wie koordiniert der Markt Angebot und Nachfrage?", t:"Ungleichgewichte, Kurvenverschiebungen"},
+  {n:17, block:"D", code:"GIGE98", q:"Warum bildet das Modell die Realität nur bedingt ab?", t:"Vollkommener Markt, Homo Oeconomicus"},
+  {n:18, block:"D", code:"LUSU75", q:"Sicherung & Vorbereitung Leistungsnachweis", t:"Wiederholung, Puffer"},
+];
+const STORE="wr10_unlocked";
+function loadUnlocked(){try{return JSON.parse(localStorage.getItem(STORE))||[];}catch(e){return [];}}
+function saveUnlocked(a){try{localStorage.setItem(STORE,JSON.stringify(a));}catch(e){}}
+let unlocked = loadUnlocked();
+
+const legend = document.getElementById("legend");
+BLOCKS.forEach(b=>{
+  const s=document.createElement("span");
+  s.innerHTML=`<span class="dot" style="background:${b.accent}"></span>${b.name}`;
+  legend.appendChild(s);
+});
+
+const blocksEl = document.getElementById("blocks");
+BLOCKS.forEach(b=>{
+  const head=document.createElement("div");
+  head.className="block-head";
+  head.innerHTML=`<h2 style="color:${b.accent}">Block ${b.id} · ${b.name}</h2><span class="rng">${b.range}</span><span class="block-bar" style="background:${b.accent}"></span>`;
+  blocksEl.appendChild(head);
+  const grid=document.createElement("div");
+  grid.className="grid";
+  STUNDEN.filter(s=>s.block===b.id).forEach(s=>grid.appendChild(makeTile(s,b)));
+  blocksEl.appendChild(grid);
+});
+
+function fileName(n){return "stunde-"+String(n).padStart(2,"0")+".html";}
+
+function makeTile(s,b){
+  const tile=document.createElement("div");
+  tile.className="tile";
+  tile.style.setProperty("--accent",b.accent);
+  const isOpen=unlocked.includes(s.n);
+  tile.innerHTML=`
+    <div class="tile-top">
+      <div class="tile-num">${s.n}</div>
+      <div>
+        <div class="tile-block">${b.name} ${isOpen?'<span class="badge-open">freigeschaltet</span>':''}</div>
+        <div class="tile-q">${s.q}</div>
+        <div class="tile-t">${s.t}</div>
+      </div>
+    </div>
+    <div class="action"></div>`;
+  renderAction(tile,s,b);
+  return tile;
+}
+
+function renderAction(tile,s,b){
+  const a=tile.querySelector(".action");
+  if(unlocked.includes(s.n)){
+    a.innerHTML=`<a class="open-link" href="${fileName(s.n)}">Stunde ${s.n} öffnen <span>→</span></a>`;
+  }else{
+    a.innerHTML=`
+      <div class="unlock">
+        <input type="text" maxlength="6" placeholder="Code" aria-label="Freischalt-Code Stunde ${s.n}">
+        <button type="button">freischalten</button>
+      </div>
+      <div class="locked-hint">Code von der Lehrkraft eingeben</div>`;
+    const inp=a.querySelector("input"), btn=a.querySelector("button");
+    const tryCode=()=>{
+      if(inp.value.trim().toUpperCase()===s.code){
+        unlocked.push(s.n);saveUnlocked(unlocked);
+        renderAction(tile,s,b);
+        tile.querySelector(".tile-block").innerHTML=`${b.name} <span class="badge-open">freigeschaltet</span>`;
+      }else{
+        inp.classList.add("shake");inp.select();
+        setTimeout(()=>inp.classList.remove("shake"),450);
+      }
+    };
+    btn.addEventListener("click",tryCode);
+    inp.addEventListener("keydown",e=>{if(e.key==="Enter")tryCode();});
+  }
+}
+</script>
+</body>
+</html>
