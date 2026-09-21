@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stunde 2 · Wie handle ich wirtschaftlich?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --font:'Nunito',system-ui,sans-serif;
+  --blue-900:#0D47A1;--blue-800:#1565C0;--blue-700:#1976D2;--blue-400:#29B6F6;--blue-50:#E3F2FD;
+  --green:#43A047;--green-light:#E8F5E9;--orange:#FF9800;--orange-light:#FFF3E0;
+  --purple:#AB47BC;--purple-light:#F3E5F5;--red:#E53935;--red-light:#FFEBEE;
+  --teal:#0d9488;--teal-light:#ccfbf1;
+  --text:#1A1A1A;--text-secondary:#555;--text-muted:#AAA;--border:#E0E0E0;--bg-page:#F0F4F8;--bg-card:#fff;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;
+  --shadow:0 2px 8px rgba(0,0,0,.08);--shadow-lg:0 4px 20px rgba(0,0,0,.12);
+  /* Block A – Konsum & Werbung */
+  --accent:#FB8C00;--grad:linear-gradient(135deg,#F57C00,#FFB300);
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:var(--font);background:var(--bg-page);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.55;}
+p{margin:.5rem 0;}
+
+.topbar{background:var(--blue-700);height:52px;position:sticky;top:env(safe-area-inset-top,0px);
+  padding:0 1.25rem;display:flex;align-items:center;gap:1rem;box-shadow:0 2px 12px rgba(25,118,210,.25);z-index:40;}
+.topbar-logo{font-weight:900;font-size:15px;color:#fff;text-decoration:none;}
+.topbar-logo span{color:var(--blue-400);}
+.topbar-back{color:rgba(255,255,255,.85);font-size:12.5px;font-weight:700;text-decoration:none;}
+.topbar-actions{margin-left:auto;display:flex;gap:8px;}
+.tbtn{background:rgba(255,255,255,.15);border:none;color:#fff;font-family:var(--font);font-weight:800;
+  font-size:12.5px;padding:7px 13px;border-radius:20px;cursor:pointer;}
+.tbtn:hover{background:rgba(255,255,255,.28);}
+.tbtn.on{background:#fff;color:var(--blue-800);}
+
+.progress{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:calc(52px + env(safe-area-inset-top,0px));
+  z-index:30;overflow-x:auto;}
+.progress-inner{display:flex;gap:4px;max-width:1080px;margin:0 auto;padding:.6rem 1rem;min-width:max-content;}
+.pstep{display:flex;align-items:center;gap:7px;border:none;background:transparent;font-family:var(--font);
+  cursor:pointer;padding:5px 10px;border-radius:20px;color:var(--text-secondary);font-weight:700;font-size:12.5px;white-space:nowrap;}
+.pstep .pnum{width:22px;height:22px;border-radius:50%;background:var(--bg-page);color:var(--text-secondary);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;}
+.pstep:hover{background:var(--bg-page);}
+.pstep.active{color:var(--accent);}
+.pstep.active .pnum{background:var(--accent);color:#fff;}
+.teacher-only{display:none;}
+body.version-b .teacher-only{display:flex;}
+body.version-b .section.teacher-only{display:block;}
+
+.wrap{max-width:1080px;margin:0 auto;padding:1.25rem 1rem 3rem;}
+
+.hero{background:var(--grad);border-radius:var(--radius-lg);padding:2.2rem 2rem;color:#fff;
+  position:relative;overflow:hidden;box-shadow:var(--shadow-lg);margin-bottom:1.4rem;}
+.hero::before{content:'€';position:absolute;right:1.2rem;top:-26px;font-size:150px;font-weight:900;
+  color:rgba(255,255,255,.10);line-height:1;pointer-events:none;}
+.hero-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.9);position:relative;}
+.hero h1{font-size:27px;font-weight:900;margin:.4rem 0 .5rem;line-height:1.15;position:relative;max-width:85%;}
+.hero .lead{font-size:15px;font-weight:700;color:rgba(255,255,255,.96);position:relative;margin:0;}
+.hero-chips{display:flex;gap:6px;margin-top:.9rem;flex-wrap:wrap;position:relative;}
+.hero-chips span{background:rgba(255,255,255,.22);color:#fff;font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:20px;}
+
+.section{background:#fff;border-radius:var(--radius-lg);border:1px solid var(--border);box-shadow:var(--shadow);
+  padding:1.4rem 1.5rem;margin-bottom:1.2rem;animation:fadeUp .3s ease both;scroll-margin-top:120px;}
+.step-label{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.4px;color:var(--accent);margin-bottom:.5rem;}
+.step-label .sn{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.section h2{font-size:20px;font-weight:900;margin:.1rem 0 .7rem;}
+.section h3{font-size:15px;font-weight:800;margin:1.1rem 0 .4rem;}
+
+.info-box{border-radius:var(--radius-sm);padding:.8rem 1rem;margin:.8rem 0;font-size:14px;}
+.info-box.blue{background:var(--blue-50);border-left:3px solid var(--blue-700);color:var(--blue-800);}
+.info-box.green{background:var(--green-light);border-left:3px solid var(--green);color:#1b5e20;}
+.info-box.orange{background:var(--orange-light);border-left:3px solid var(--orange);color:#78350f;}
+.info-box.teal{background:var(--teal-light);border-left:3px solid var(--teal);color:#134e4a;}
+.info-box b{font-weight:800;}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.7rem;margin:.8rem 0;}
+.mini{background:var(--bg-page);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.8rem .9rem;}
+.mini b{display:block;font-size:14px;color:var(--text);margin-bottom:2px;}
+.mini span{font-size:12.5px;color:var(--text-secondary);}
+
+.dtable{width:100%;border-collapse:collapse;margin:.7rem 0;font-size:13.5px;}
+.dtable th,.dtable td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top;}
+.dtable th{background:var(--bg-page);font-weight:800;}
+.dtable td.rowh{background:var(--bg-page);font-weight:700;width:30%;}
+
+.book-ref{background:#faf5ff;border:1.5px solid #d8b4fe;border-radius:var(--radius-md);padding:.9rem 1.1rem;margin:.9rem 0;display:flex;gap:.7rem;align-items:flex-start;}
+.book-ref svg{flex-shrink:0;margin-top:2px;}
+.book-ref-title{color:#6b21a8;font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.3px;}
+.book-ref-text{color:#581c87;font-size:14px;}
+
+.task{border:1.5px solid var(--accent);border-radius:var(--radius-md);overflow:hidden;margin:1rem 0;}
+.task-header{background:var(--accent);padding:.7rem 1.1rem;display:flex;align-items:center;gap:11px;}
+.task-num{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.25);color:#fff;font-weight:800;
+  font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.task-title{color:#fff;font-weight:800;font-size:14.5px;line-height:1.2;}
+.task-sub{color:rgba(255,255,255,.8);font-size:11px;font-weight:600;}
+.task-body{background:#F0F4F8;padding:1rem 1.1rem;display:flex;gap:1rem;}
+.icons{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
+.itile{background:#fff;border-radius:8px;padding:8px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;}
+.task-content{flex:1;font-size:14px;}
+.task-content ol,.task-content ul{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+.task-content li{margin:.25rem 0;}
+
+.answer-area{width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;
+  font-family:var(--font);font-size:14px;resize:vertical;min-height:78px;background:#fff;margin-top:.6rem;}
+.answer-area:focus{outline:none;border-color:var(--accent);}
+
+.solution-btn{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:8px 15px;
+  font-family:var(--font);font-weight:700;font-size:13px;color:var(--text-secondary);cursor:pointer;margin-top:.6rem;}
+.solution-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--orange-light);}
+.solution-reveal{background:var(--green-light);border-left:3px solid var(--green);border-radius:0 8px 8px 0;
+  padding:.7rem 1rem;color:#1b5e20;font-size:13.5px;margin-top:.6rem;display:none;}
+.solution-reveal.visible{display:block;}
+.solution-reveal ul{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+
+.teacher-note{background:#fffbeb;border:1.5px solid #fbbf24;border-radius:var(--radius-md);padding:1rem 1.1rem;margin:1rem 0;display:none;font-size:13.5px;color:#78350f;}
+body.version-b .teacher-note{display:block;}
+.teacher-note-header{font-weight:800;font-size:12px;color:#92400e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem;display:flex;align-items:center;gap:7px;}
+.teacher-note ul{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+
+.quiz{margin:.9rem 0;}
+.quiz-q{font-weight:800;font-size:14.5px;margin:.4rem 0 .6rem;}
+.quiz-opt{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:11px 14px;background:#fff;
+  font-size:14px;font-weight:600;margin-bottom:8px;cursor:pointer;transition:.12s;}
+.quiz-opt:hover{border-color:var(--accent);background:var(--orange-light);}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-light);color:#1b5e20;cursor:default;}
+.quiz-opt.wrong{border-color:var(--red);background:var(--red-light);color:#7f1d1d;animation:shake .4s;}
+.quiz-fb{display:none;font-size:13.5px;color:#1b5e20;background:var(--green-light);border-left:3px solid var(--green);
+  border-radius:0 8px 8px 0;padding:.6rem .9rem;margin-top:.3rem;}
+.quiz-fb.show{display:block;}
+
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;z-index:100;padding:1rem;}
+.overlay.open{display:flex;}
+.modal{background:#fff;border-radius:var(--radius-lg);padding:1.6rem;width:100%;max-width:320px;box-shadow:var(--shadow-lg);text-align:center;}
+.modal h3{margin:.2rem 0 .3rem;font-size:18px;font-weight:900;}
+.modal p{font-size:13px;color:var(--text-secondary);margin:0 0 1rem;}
+.dots{display:flex;justify-content:center;gap:10px;margin-bottom:1.1rem;}
+.dots span{width:13px;height:13px;border-radius:50%;background:var(--border);transition:.15s;}
+.dots span.filled{background:var(--blue-700);}
+.dots.err span{background:var(--red);animation:shake .4s;}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.pad button{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:14px 0;
+  font-family:var(--font);font-size:18px;font-weight:800;cursor:pointer;color:var(--text);}
+.pad button:hover{border-color:var(--blue-700);background:var(--blue-50);}
+.modal-close{margin-top:1rem;background:none;border:none;color:var(--text-muted);font-family:var(--font);font-weight:700;font-size:13px;cursor:pointer;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-7px);}40%,80%{transform:translateX(7px);}}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="topbar-logo" href="index.html">WR<span>&amp;</span>10</a>
+    <a class="topbar-back" href="index.html">← Übersicht</a>
+    <div class="topbar-actions">
+      <button class="tbtn" id="teacherToggle" onclick="toggleTeacher()">🔓 Lehrkraft</button>
+    </div>
+  </div>
+
+  <nav class="progress"><div class="progress-inner" id="prog"></div></nav>
+
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-eyebrow">Ökonomisches Handeln auf dem Markt · Stunde 2</div>
+      <h1>Wie handle ich wirtschaftlich?</h1>
+      <p class="lead">Mit begrenzten Mitteln das Beste herausholen – nach Plan statt aus dem Bauch.</p>
+      <div class="hero-chips"><span>Kapitel 1.1</span><span>Buch S. 10–11</span><span>Teil 2: Prinzipien · Kosten-Nutzen · Opportunitätskosten</span></div>
+    </div>
+
+    <!-- STEP 1 -->
+    <section class="section" id="step1">
+      <span class="step-label"><span class="sn">1</span> Einstieg · Planspiel</span>
+      <h2>Planspiel „Obstsalat"</h2>
+      <p>Letzte Stunde haben wir gesehen: Jede Entscheidung bedeutet Verzicht. Heute geht es darum, <b>klug</b> zu entscheiden. Wir steigen mit einem Spiel ein – und leiten daraus die Grundregeln wirtschaftlichen Handelns ab.</p>
+
+      <div class="book-ref">
+        <svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg>
+        <div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 10 · M2 „Planspiel – Obstsalat" · Aufgabe 4 · Schnittmaterial (Obst &amp; Geld) über QR 82021-02</div></div>
+      </div>
+
+      <div class="task">
+        <div class="task-header">
+          <div class="task-num">A</div>
+          <div><div class="task-title">Handelt euch zum Obstsalat</div><div class="task-sub">Planspiel · Gruppenarbeit</div></div>
+        </div>
+        <div class="task-body">
+          <div class="icons">
+            <div class="itile" style="border:1.5px solid #7B1FA2;">
+              <svg width="22" height="22" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="8" stroke="#7B1FA2" stroke-width="2" fill="none"/><circle cx="20" cy="5" r="4" fill="#7B1FA2"/><path d="M14 13c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#7B1FA2" stroke-width="1.8" stroke-linecap="round" fill="none"/><circle cx="20" cy="35" r="4" fill="#7B1FA2"/><path d="M14 27c0 3.314 2.686 6 6 6s6-2.686 6-6" stroke="#7B1FA2" stroke-width="1.8" stroke-linecap="round" fill="none"/><circle cx="5" cy="20" r="4" fill="#7B1FA2"/><path d="M13 14c-3.314 0-6 2.686-6 6s2.686 6 6 6" stroke="#7B1FA2" stroke-width="1.8" stroke-linecap="round" fill="none"/><circle cx="35" cy="20" r="4" fill="#7B1FA2"/><path d="M27 14c3.314 0 6 2.686 6 6s-2.686 6-6 6" stroke="#7B1FA2" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>
+            </div>
+          </div>
+          <div class="task-content">
+            <p>Eure Klasse spielt in sechs Gruppen. Jede Gruppe startet mit <b>einer Obstsorte</b> und etwas <b>Startgeld</b>. Früchte dürfen nicht getauscht, nur <b>mit Geld gekauft</b> werden.</p>
+            <ul>
+              <li><b>Ziel 1:</b> als erste Gruppe <b>jede der sechs Früchte mindestens einmal</b> besitzen (dann ist der Obstsalat möglich).</li>
+              <li><b>Ziel 2:</b> am Ende <b>möglichst viele Früchte und möglichst viel Geld</b> haben.</li>
+            </ul>
+            <p>Danach (Aufgabe 4): Formuliert aus euren Beobachtungen <b>Grundsätze wirtschaftlichen Handelns</b> – benutzt dabei die Begriffe <b>Mitteleinsatz (Aufwand)</b> und <b>Nutzen (Ertrag)</b>.</p>
+            <textarea class="answer-area" id="s2a1" placeholder="Unsere Grundsätze: …"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        Zeitrahmen ca. 12–15 Min. Material: Buchner-Schnittbögen (Obst + Geld, 82021-02). <b>Erwartung:</b> Gruppen erkennen, dass sie mit <b>möglichst wenig Geldeinsatz möglichst viel erreichen</b> wollen. Ziel 1 = festes Ergebnis (alle 6 Früchte) mit minimalem Einsatz → <b>Minimalprinzip</b>; Ziel 2 = feste Startmittel, maximales Ergebnis → <b>Maximalprinzip</b>. Genau diese Beobachtung ist die Brücke zu Step 2.
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="section" id="step2">
+      <span class="step-label"><span class="sn">2</span> Erarbeitung</span>
+      <h2>Das Wirtschaftlichkeitsprinzip</h2>
+      <p>Weil Mittel knapp sind, versucht man, sie klug einzusetzen. Dafür gibt es zwei Grundregeln – ihr habt sie im Planspiel schon angewendet.</p>
+
+      <div class="cards">
+        <div class="mini"><b>Minimalprinzip</b><span>Ein <b>festgelegtes Ergebnis</b> mit <b>möglichst geringem</b> Mitteleinsatz erreichen. (Planspiel: Ziel 1)</span></div>
+        <div class="mini"><b>Maximalprinzip</b><span>Mit <b>festgelegtem</b> Mitteleinsatz ein <b>möglichst großes</b> Ergebnis erzielen. (Planspiel: Ziel 2)</span></div>
+      </div>
+      <div class="info-box orange">Merke: Nie beides gleichzeitig! Entweder das Ergebnis <b>oder</b> der Mitteleinsatz ist festgelegt – nach dem anderen wird optimiert.</div>
+
+      <div class="book-ref">
+        <svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg>
+        <div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 11 · M3 „Die ökonomischen Prinzipien im Alltag" · Aufgabe 5</div></div>
+      </div>
+
+      <div class="quiz" id="q2min">
+        <p class="quiz-q">„Ich habe genau 20 € und will damit möglichst viele Snacks für die Party kaufen." Welches Prinzip?</p>
+        <div class="quiz-opt" data-correct="false">Minimalprinzip</div>
+        <div class="quiz-opt" data-correct="true">Maximalprinzip</div>
+        <div class="quiz-fb">Richtig – die Mittel (20 €) sind festgelegt, das Ergebnis (Snacks) soll maximal werden.</div>
+      </div>
+      <div class="quiz" id="q2max">
+        <p class="quiz-q">„Ich habe eine feste Einkaufsliste und suche den günstigsten Weg, sie zu besorgen." Welches Prinzip?</p>
+        <div class="quiz-opt" data-correct="true">Minimalprinzip</div>
+        <div class="quiz-opt" data-correct="false">Maximalprinzip</div>
+        <div class="quiz-fb">Richtig – das Ergebnis (die Liste) steht fest, der Einsatz (Geld) soll minimal sein.</div>
+      </div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Tafelbild (nach TB 1.1b)</div>
+        Planspiel-Ziele den Prinzipien zuordnen lassen. Häufiger Fehler: Schüler wollen „beides maximieren/minimieren". Klarstellen: Immer ist <b>eine</b> Größe fix. Zu M3 (Aufgabe 5): Supermarkt-Einkauf/Geschenk/Rasenmähen als Alltagsbeispiele durchspielen.
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="section" id="step3">
+      <span class="step-label"><span class="sn">3</span> Kernidee</span>
+      <h2>Kosten, Nutzen – und was man dafür aufgibt</h2>
+      <p>Wenn man zwischen mehreren Möglichkeiten wählt, hilft die <b>Kosten-Nutzen-Analyse</b>: Man stellt jeder Alternative ihren erwarteten Nutzen und ihre erwarteten Kosten gegenüber und wählt die mit dem besten Verhältnis.</p>
+
+      <div class="info-box blue"><b>Kosten-Nutzen-Analyse:</b> Bewertungsmethode für mehrere Alternativen. Für jede Option wird erwarteter Nutzen gegen erwartete Kosten abgewogen; gewählt wird die günstigste Relation.</div>
+
+      <div class="info-box teal"><b>Opportunitätskosten</b> (= Verzichtskosten): der entgangene Nutzen der <b>nächstbesten</b>, nicht gewählten Alternative. Sie zählen zu den Kosten der gewählten Option. → Das ist genau der „Verzicht" aus Stunde 1, jetzt mit Namen.</div>
+
+      <div class="quiz" id="q3opp">
+        <p class="quiz-q">Du gehst samstags jobben statt ins Freibad. Was sind deine Opportunitätskosten?</p>
+        <div class="quiz-opt" data-correct="false">Der Lohn, den du beim Jobben verdienst.</div>
+        <div class="quiz-opt" data-correct="true">Der entgangene Spaß im Freibad, auf den du verzichtest.</div>
+        <div class="quiz-opt" data-correct="false">Die Fahrtkosten zum Job.</div>
+        <div class="quiz-fb">Genau – Opportunitätskosten sind der entgangene Nutzen der nächstbesten Alternative (hier: Freibad).</div>
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="section" id="step4">
+      <span class="step-label"><span class="sn">4</span> Anwendung</span>
+      <h2>Aylas Entscheidung</h2>
+      <p>Ayla (17) muss sich für die Ferien entscheiden: ein <b>Ferienjob im Café</b> (Geld für den Führerschein) oder eine <b>Urlaubswoche am Meer mit Freunden</b>. Die genauen Angaben stehen im Buch.</p>
+
+      <div class="book-ref">
+        <svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg>
+        <div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 11 · M4 „Wie das Kosten-Nutzen-Prinzip Entscheidungen beeinflussen kann" · Aufgabe 6</div></div>
+      </div>
+
+      <div class="task">
+        <div class="task-header">
+          <div class="task-num">B</div>
+          <div><div class="task-title">Kosten-Nutzen-Analyse für Ayla</div><div class="task-sub">Anwendungsaufgabe · Partnerarbeit</div></div>
+        </div>
+        <div class="task-body">
+          <div class="icons">
+            <div class="itile" style="border:1.5px solid #0d9488;">
+              <svg width="22" height="22" viewBox="0 0 44 36" fill="none"><circle cx="12" cy="10" r="6.5" fill="#0d9488"/><circle cx="32" cy="10" r="6.5" fill="#0d9488"/><path d="M1 34c0-6.075 4.925-11 11-11s11 4.925 11 11" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round" fill="none"/><path d="M21 34c0-6.075 4.925-11 11-11s11 4.925 11 11" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg>
+            </div>
+          </div>
+          <div class="task-content">
+            <p>Füllt die Kosten-Nutzen-Tabelle aus – und vergesst die <b>Opportunitätskosten</b> nicht. Begründet danach, wofür Ayla sich entscheiden sollte.</p>
+            <table class="dtable">
+              <tr><th></th><th>Ferienjob im Café</th><th>Urlaub mit Freunden</th></tr>
+              <tr><td class="rowh">Nutzen</td><td></td><td></td></tr>
+              <tr><td class="rowh">Kosten</td><td></td><td></td></tr>
+              <tr><td class="rowh">Opportunitätskosten</td><td></td><td></td></tr>
+            </table>
+            <textarea class="answer-area" id="s2b1" placeholder="Ayla sollte sich für … entscheiden, weil …"></textarea>
+            <button class="solution-btn" data-target="solAyla">Musterlösung anzeigen</button>
+            <div class="solution-reveal" id="solAyla">
+              <ul>
+                <li><b>Ferienjob –</b> Nutzen: Verdienst für den Führerschein, mehr Unabhängigkeit. Kosten: Arbeitszeit, Fahrtkosten in die Stadt. Opportunitätskosten: entgangene Urlaubswoche mit Freunden.</li>
+                <li><b>Urlaub –</b> Nutzen: Erholung, Zeit mit Freunden, Meer. Kosten: Beitrag fürs Ferienhaus + Anreise. Opportunitätskosten: entgangener Verdienst – der Führerschein rückt in die Ferne.</li>
+              </ul>
+              <b>Entscheidung:</b> individuell begründbar – je nachdem, ob der materielle Nutzen (Geld/Führerschein) oder der immaterielle Nutzen (Erlebnis, Freunde) überwiegt. Wichtig ist die saubere Abwägung inkl. Opportunitätskosten.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Tafelbild (nach TB 1.1c)</div>
+        Tabelle gemeinsam füllen; darauf achten, dass Opportunitätskosten korrekt als <b>entgangener Nutzen der nicht gewählten Alternative</b> eingetragen werden (nicht als reale Geldausgabe). Es gibt keine „richtige" Entscheidung – bewertet wird die Qualität der Abwägung.
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="section" id="step5">
+      <span class="step-label"><span class="sn">5</span> Sicherung</span>
+      <h2>Das nehme ich mit</h2>
+      <div class="info-box green">
+        <b>Minimalprinzip</b> → festes Ergebnis, minimaler Einsatz &nbsp;•&nbsp; <b>Maximalprinzip</b> → feste Mittel, maximales Ergebnis &nbsp;•&nbsp; <b>Kosten-Nutzen-Analyse</b> → Nutzen vs. Kosten je Alternative &nbsp;•&nbsp; <b>Opportunitätskosten</b> → entgangener Nutzen der nächstbesten Alternative.
+      </div>
+
+      <div class="quiz" id="q5a">
+        <p class="quiz-q">1) „Für 50 € Taschengeld das schönste Outfit zusammenstellen." Welches Prinzip?</p>
+        <div class="quiz-opt" data-correct="true">Maximalprinzip</div>
+        <div class="quiz-opt" data-correct="false">Minimalprinzip</div>
+        <div class="quiz-fb">Richtig – festes Budget (50 €), maximales Ergebnis (Outfit).</div>
+      </div>
+      <div class="quiz" id="q5b">
+        <p class="quiz-q">2) Was gehört in eine Kosten-Nutzen-Analyse mit hinein?</p>
+        <div class="quiz-opt" data-correct="false">Nur die tatsächlich gezahlten Geldbeträge.</div>
+        <div class="quiz-opt" data-correct="true">Nutzen, Kosten und auch die Opportunitätskosten.</div>
+        <div class="quiz-opt" data-correct="false">Nur der Nutzen der gewählten Alternative.</div>
+        <div class="quiz-fb">Richtig – ohne Opportunitätskosten ist die Abwägung unvollständig.</div>
+      </div>
+
+      <p style="margin-top:1rem;font-size:13.5px;color:var(--text-secondary);">Nächste Stunde: Wir wenden das auf ein Unternehmen an – <b>Vertiefung CoolCup</b>: eine Kosten-Nutzen-Entscheidung mit begrenztem Budget.</p>
+    </section>
+
+    <!-- STEP 6 – Lehrkraft -->
+    <section class="section teacher-only" id="step6">
+      <span class="step-label"><span class="sn">6</span> Mündliche Abfrage</span>
+      <h2>Mündlicher Unterrichtsbeitrag (ca. 10 Min., 1 Schüler:in)</h2>
+      <div class="teacher-note" style="display:block;">
+        <div class="teacher-note-header">👩‍🏫 Fragenvorschläge &amp; Erwartung</div>
+        <ul>
+          <li><b>Erkläre Minimal- und Maximalprinzip mit je einem Beispiel.</b> → Min: festes Ergebnis/min. Einsatz; Max: feste Mittel/max. Ergebnis.</li>
+          <li><b>Was sind Opportunitätskosten? Nenne ein Beispiel.</b> → Entgangener Nutzen der nächstbesten Alternative; z. B. Freibad statt Job.</li>
+          <li><b>Wie geht man bei einer Kosten-Nutzen-Analyse vor?</b> → Nutzen und Kosten (inkl. Opportunitätskosten) je Alternative gegenüberstellen, beste Relation wählen.</li>
+          <li><b>Transfer (Ayla):</b> Wende die KNA auf Aylas Entscheidung an und begründe. → Saubere Abwägung, Opportunitätskosten benannt.</li>
+        </ul>
+        <b>4K-Bezug:</b> Wissen (Prinzipien/Begriffe), Kritisches Denken (Abwägen), Kommunikation (begründen).
+      </div>
+    </section>
+  </div>
+
+  <!-- PIN-Modal -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <h3>Lehrkraft-Bereich</h3>
+      <p>6-stellige PIN eingeben</p>
+      <div class="dots" id="dots"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="pad" id="pad"></div>
+      <button class="modal-close" onclick="closeModal()">Abbrechen</button>
+    </div>
+  </div>
+
+<script>
+const TEACHER_PIN="135791";
+
+const STEPS=[
+  {id:"step1",label:"Einstieg · Planspiel"},{id:"step2",label:"Wirtschaftlichkeitsprinzip"},
+  {id:"step3",label:"Kosten & Nutzen"},{id:"step4",label:"Anwendung"},
+  {id:"step5",label:"Sicherung"},{id:"step6",label:"Abfrage",teacher:true},
+];
+const prog=document.getElementById("prog");
+STEPS.forEach((s,i)=>{
+  const b=document.createElement("button");
+  b.className="pstep"+(s.teacher?" teacher-only":"");
+  b.dataset.target=s.id;
+  b.innerHTML=`<span class="pnum">${i+1}</span>${s.label}`;
+  b.onclick=()=>document.getElementById(s.id).scrollIntoView({behavior:"smooth",block:"start"});
+  prog.appendChild(b);
+});
+const spy=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){
+    document.querySelectorAll(".pstep").forEach(p=>p.classList.toggle("active",p.dataset.target===e.target.id));
+  }});
+},{rootMargin:"-40% 0px -55% 0px"});
+document.querySelectorAll(".section").forEach(s=>spy.observe(s));
+
+let entered="";
+const overlay=document.getElementById("overlay"), dots=document.getElementById("dots"), pad=document.getElementById("pad");
+["1","2","3","4","5","6","7","8","9","C","0","⌫"].forEach(k=>{
+  const b=document.createElement("button");b.textContent=k;b.onclick=()=>press(k);pad.appendChild(b);
+});
+function toggleTeacher(){
+  const btn=document.getElementById("teacherToggle");
+  if(document.body.classList.contains("version-b")){
+    document.body.classList.remove("version-b");btn.classList.remove("on");btn.textContent="🔓 Lehrkraft";
+  }else{openModal();}
+}
+function openModal(){entered="";renderDots();overlay.classList.add("open");}
+function closeModal(){overlay.classList.remove("open");}
+function press(k){
+  if(k==="C"){entered="";}else if(k==="⌫"){entered=entered.slice(0,-1);}else if(entered.length<6){entered+=k;}
+  renderDots();if(entered.length===6)setTimeout(check,120);
+}
+function renderDots(){dots.classList.remove("err");[...dots.children].forEach((d,i)=>d.classList.toggle("filled",i<entered.length));}
+function check(){
+  if(entered===TEACHER_PIN){
+    document.body.classList.add("version-b");
+    const btn=document.getElementById("teacherToggle");btn.classList.add("on");btn.textContent="🔒 Schüler-Ansicht";closeModal();
+  }else{dots.classList.add("err");entered="";setTimeout(()=>renderDots(),450);}
+}
+document.addEventListener("keydown",e=>{
+  if(!overlay.classList.contains("open"))return;
+  if(/^[0-9]$/.test(e.key))press(e.key);
+  else if(e.key==="Backspace")press("⌫");
+  else if(e.key==="Enter"&&entered.length===6)check();
+  else if(e.key==="Escape")closeModal();
+});
+
+document.querySelectorAll(".quiz").forEach(q=>{
+  const fb=q.querySelector(".quiz-fb");
+  q.querySelectorAll(".quiz-opt").forEach(opt=>{
+    opt.addEventListener("click",()=>{
+      if(q.dataset.done)return;
+      if(opt.dataset.correct==="true"){
+        opt.classList.add("correct");q.dataset.done="1";if(fb)fb.classList.add("show");
+        q.querySelectorAll(".quiz-opt").forEach(o=>o.style.cursor="default");
+      }else{opt.classList.add("wrong");setTimeout(()=>opt.classList.remove("wrong"),450);}
+    });
+  });
+});
+
+document.querySelectorAll(".solution-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const t=document.getElementById(btn.dataset.target);
+    const vis=t.classList.toggle("visible");
+    btn.textContent=vis?"ausblenden":"Musterlösung anzeigen";
+  });
+});
+
+document.querySelectorAll(".answer-area").forEach(t=>{
+  const key="wr10_s2_"+t.id;
+  try{const v=localStorage.getItem(key);if(v)t.value=v;}catch(e){}
+  t.addEventListener("input",()=>{try{localStorage.setItem(key,t.value);}catch(e){}});
+});
+</script>
+</body>
+</html>
