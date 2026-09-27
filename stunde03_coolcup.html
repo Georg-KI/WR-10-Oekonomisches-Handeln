@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stunde 3 · Wie entscheide ich im Unternehmen?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --font:'Nunito',system-ui,sans-serif;
+  --blue-900:#0D47A1;--blue-800:#1565C0;--blue-700:#1976D2;--blue-400:#29B6F6;--blue-50:#E3F2FD;
+  --green:#43A047;--green-light:#E8F5E9;--orange:#FF9800;--orange-light:#FFF3E0;
+  --purple:#AB47BC;--purple-light:#F3E5F5;--red:#E53935;--red-light:#FFEBEE;
+  --teal:#0d9488;--teal-light:#ccfbf1;
+  --text:#1A1A1A;--text-secondary:#555;--text-muted:#AAA;--border:#E0E0E0;--bg-page:#F0F4F8;--bg-card:#fff;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;
+  --shadow:0 2px 8px rgba(0,0,0,.08);--shadow-lg:0 4px 20px rgba(0,0,0,.12);
+  --accent:#FB8C00;--grad:linear-gradient(135deg,#F57C00,#FFB300);
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:var(--font);background:var(--bg-page);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.55;}
+p{margin:.5rem 0;}
+
+.topbar{background:var(--blue-700);height:52px;position:sticky;top:env(safe-area-inset-top,0px);
+  padding:0 1.25rem;display:flex;align-items:center;gap:1rem;box-shadow:0 2px 12px rgba(25,118,210,.25);z-index:40;}
+.topbar-logo{font-weight:900;font-size:15px;color:#fff;text-decoration:none;}
+.topbar-logo span{color:var(--blue-400);}
+.topbar-back{color:rgba(255,255,255,.85);font-size:12.5px;font-weight:700;text-decoration:none;}
+.topbar-actions{margin-left:auto;display:flex;gap:8px;}
+.tbtn{background:rgba(255,255,255,.15);border:none;color:#fff;font-family:var(--font);font-weight:800;
+  font-size:12.5px;padding:7px 13px;border-radius:20px;cursor:pointer;}
+.tbtn:hover{background:rgba(255,255,255,.28);}
+.tbtn.on{background:#fff;color:var(--blue-800);}
+
+.progress{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:calc(52px + env(safe-area-inset-top,0px));
+  z-index:30;overflow-x:auto;}
+.progress-inner{display:flex;gap:4px;max-width:1080px;margin:0 auto;padding:.6rem 1rem;min-width:max-content;}
+.pstep{display:flex;align-items:center;gap:7px;border:none;background:transparent;font-family:var(--font);
+  cursor:pointer;padding:5px 10px;border-radius:20px;color:var(--text-secondary);font-weight:700;font-size:12.5px;white-space:nowrap;}
+.pstep .pnum{width:22px;height:22px;border-radius:50%;background:var(--bg-page);color:var(--text-secondary);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;}
+.pstep:hover{background:var(--bg-page);}
+.pstep.active{color:var(--accent);}
+.pstep.active .pnum{background:var(--accent);color:#fff;}
+.pstep.locked{opacity:.4;cursor:default;pointer-events:none;}
+.teacher-only{display:none;}
+body.version-b .teacher-only{display:flex;}
+body.version-b .section.teacher-only{display:block;}
+
+.wrap{max-width:1080px;margin:0 auto;padding:1.25rem 1rem 3rem;}
+
+.hero{background:var(--grad);border-radius:var(--radius-lg);padding:2.2rem 2rem;color:#fff;
+  position:relative;overflow:hidden;box-shadow:var(--shadow-lg);margin-bottom:1.4rem;}
+.hero::before{content:'€';position:absolute;right:1.2rem;top:-26px;font-size:150px;font-weight:900;color:rgba(255,255,255,.10);line-height:1;pointer-events:none;}
+.hero-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.9);position:relative;}
+.hero h1{font-size:27px;font-weight:900;margin:.4rem 0 .5rem;line-height:1.15;position:relative;max-width:85%;}
+.hero .lead{font-size:15px;font-weight:700;color:rgba(255,255,255,.96);position:relative;margin:0;}
+.hero-chips{display:flex;gap:6px;margin-top:.9rem;flex-wrap:wrap;position:relative;}
+.hero-chips span{background:rgba(255,255,255,.22);color:#fff;font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:20px;}
+
+.section{background:#fff;border-radius:var(--radius-lg);border:1px solid var(--border);box-shadow:var(--shadow);
+  padding:1.4rem 1.5rem;margin-bottom:1.2rem;animation:fadeUp .3s ease both;scroll-margin-top:120px;display:none;}
+.section.step-visible{display:block;}
+.step-label{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--accent);margin-bottom:.5rem;}
+.step-label .sn{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.section h2{font-size:20px;font-weight:900;margin:.1rem 0 .3rem;}
+.section h3{font-size:15px;font-weight:800;margin:1.1rem 0 .4rem;}
+.section-time{font-size:12.5px;color:var(--text-muted);font-weight:700;margin:0 0 .9rem;}
+
+.info-box{border-radius:var(--radius-sm);padding:.8rem 1rem;margin:.8rem 0;font-size:14px;}
+.info-box.blue{background:var(--blue-50);border-left:3px solid var(--blue-700);color:var(--blue-800);}
+.info-box.green{background:var(--green-light);border-left:3px solid var(--green);color:#1b5e20;}
+.info-box.orange{background:var(--orange-light);border-left:3px solid var(--orange);color:#78350f;}
+.info-box.teal{background:var(--teal-light);border-left:3px solid var(--teal);color:#134e4a;}
+.info-box b{font-weight:800;}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.7rem;margin:.8rem 0;}
+.mini{background:var(--bg-page);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.8rem .9rem;}
+.mini b{display:block;font-size:14px;color:var(--text);margin-bottom:2px;}
+.mini span{font-size:12.5px;color:var(--text-secondary);}
+
+.dtable{width:100%;border-collapse:collapse;margin:.7rem 0;font-size:13.5px;}
+.dtable th,.dtable td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top;}
+.dtable th{background:var(--bg-page);font-weight:800;}
+.dtable td.rowh{background:var(--bg-page);font-weight:700;width:30%;}
+
+.book-ref{background:#faf5ff;border:1.5px solid #d8b4fe;border-radius:var(--radius-md);padding:.9rem 1.1rem;margin:.9rem 0;display:flex;gap:.7rem;align-items:flex-start;}
+.book-ref svg{flex-shrink:0;margin-top:2px;}
+.book-ref-title{color:#6b21a8;font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.3px;}
+.book-ref-text{color:#581c87;font-size:14px;}
+
+.task{border:1.5px solid var(--accent);border-radius:var(--radius-md);overflow:hidden;margin:1rem 0;}
+.task-header{background:var(--accent);padding:.7rem 1.1rem;display:flex;align-items:center;gap:11px;}
+.task-num{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.25);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.task-title{color:#fff;font-weight:800;font-size:14.5px;line-height:1.2;}
+.task-sub{color:rgba(255,255,255,.8);font-size:11px;font-weight:600;}
+.task-body{background:#F0F4F8;padding:1rem 1.1rem;display:flex;gap:1rem;}
+.icons{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
+.itile{background:#fff;border-radius:8px;padding:8px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;}
+.task-content{flex:1;font-size:14px;}
+.task-content ol,.task-content ul{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+.task-content li{margin:.25rem 0;}
+
+.answer-area{width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-family:var(--font);font-size:14px;resize:vertical;min-height:78px;background:#fff;margin-top:.6rem;}
+.answer-area:focus{outline:none;border-color:var(--accent);}
+
+/* Musterlösung + Lösungscode-Sperre */
+.solution-btn{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:8px 15px;font-family:var(--font);font-weight:700;font-size:13px;color:var(--text-secondary);cursor:pointer;margin-top:.6rem;}
+.solution-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--orange-light);}
+.sol-code{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:.5rem;}
+.sol-code input{width:130px;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;font-family:var(--font);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.sol-code input:focus{outline:none;border-color:var(--accent);}
+.sol-code input.shake{animation:shake .4s;border-color:var(--red);}
+.sol-code button{border:none;background:var(--accent);color:#fff;border-radius:var(--radius-sm);padding:8px 14px;font-family:var(--font);font-weight:800;font-size:13px;cursor:pointer;}
+.sol-hint{font-size:11.5px;color:var(--text-muted);}
+.solution-reveal{background:var(--green-light);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:.7rem 1rem;color:#1b5e20;font-size:13.5px;margin-top:.6rem;display:none;}
+.solution-reveal.visible{display:block;}
+.solution-reveal ul{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+
+.teacher-note{background:#fffbeb;border:1.5px solid #fbbf24;border-radius:var(--radius-md);padding:1rem 1.1rem;margin:1rem 0;display:none;font-size:13.5px;color:#78350f;}
+body.version-b .teacher-note{display:block;}
+.teacher-note-header{font-weight:800;font-size:12px;color:#92400e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem;display:flex;align-items:center;gap:7px;}
+.teacher-note ul{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+
+/* Quiz-System */
+.quiz-block{margin:.4rem 0 1rem;}
+.quiz-q{font-weight:800;font-size:14.5px;margin:.6rem 0 .6rem;}
+.quiz-opt{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:11px 13px;background:#fff;font-family:var(--font);font-size:14px;font-weight:600;margin-bottom:8px;cursor:pointer;transition:.12s;color:var(--text);}
+.quiz-opt:hover{border-color:var(--accent);background:var(--orange-light);}
+.quiz-opt .ql{width:24px;height:24px;flex-shrink:0;border-radius:6px;background:var(--bg-page);color:var(--text-secondary);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.quiz-opt.locked{pointer-events:none;}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-light);color:#1b5e20;}
+.quiz-opt.correct .ql{background:var(--green);color:#fff;}
+.quiz-opt.wrong{border-color:var(--red);background:var(--red-light);color:#7f1d1d;}
+.quiz-opt.wrong .ql{background:var(--red);color:#fff;}
+.quiz-fb{display:none;font-size:13px;color:var(--text-secondary);background:var(--bg-page);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:.55rem .9rem;margin:.1rem 0 .3rem;}
+.quiz-fb.show{display:block;}
+.divider{border:none;border-top:1px solid var(--border);margin:1rem 0;}
+.quiz-score{display:none;align-items:center;gap:12px;background:var(--blue-50);border-radius:var(--radius-md);padding:.9rem 1.1rem;margin-top:.6rem;}
+.quiz-score .score-num{font-size:22px;font-weight:900;color:var(--blue-800);}
+.quiz-score .score-msg{font-size:13.5px;font-weight:700;color:var(--blue-700);}
+.quiz-retry{display:none;align-items:center;gap:6px;margin-top:.7rem;border:1.5px solid var(--red);background:#fff;color:var(--red);border-radius:var(--radius-sm);padding:8px 15px;font-family:var(--font);font-weight:800;font-size:13px;cursor:pointer;}
+
+/* 4K-Abfrage */
+.k-legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;}
+.k-legend span{font-size:11px;font-weight:800;padding:3px 10px;border-radius:100px;}
+.k-wissen{background:var(--blue-50);border:1px solid var(--blue-400);color:var(--blue-700);}
+.k-denken{background:#ccfbf1;border:1px solid #99f6e4;color:#0f766e;}
+.k-komm{background:var(--orange-light);border:1px solid #fde68a;color:#92400e;}
+.k-kreativ{background:var(--red-light);border:1px solid #fecdd3;color:#9f1239;}
+.abfrage-wrap{display:flex;flex-direction:column;gap:1rem;}
+.abfrage-q{border:1.5px solid var(--border);border-radius:var(--radius-md);overflow:hidden;}
+.abfrage-q-header{padding:.9rem 1.1rem;display:flex;align-items:flex-start;gap:11px;background:#f8fafc;}
+.abfrage-q-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
+.abfrage-q-num.wissen{background:var(--blue-700);}
+.abfrage-q-num.denken{background:var(--teal);}
+.abfrage-q-num.komm{background:var(--orange);}
+.abfrage-q-num.kreativ{background:var(--red);}
+.abfrage-q-label{font-size:11px;font-weight:800;margin-bottom:2px;}
+.abfrage-q-label.wissen{color:var(--blue-700);}
+.abfrage-q-label.denken{color:#0f766e;}
+.abfrage-q-label.komm{color:#92400e;}
+.abfrage-q-label.kreativ{color:#9f1239;}
+.abfrage-q-text{font-size:14px;font-weight:700;color:var(--text);line-height:1.5;}
+.abfrage-q-body{padding:.9rem 1.1rem;}
+.abfrage-q-body p{font-size:12.5px;color:var(--text-secondary);line-height:1.6;margin:0 0 .5rem;}
+.erwartung-btn{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:7px 13px;font-family:var(--font);font-weight:700;font-size:12.5px;color:var(--text-secondary);cursor:pointer;}
+.erwartung-btn:hover{border-color:var(--green);color:#1b5e20;}
+.erwartung-box{display:none;margin-top:.6rem;background:var(--green-light);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:.7rem 1rem;font-size:13px;color:#1b5e20;line-height:1.6;}
+.erwartung-box.show{display:block;}
+.print-btn{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:7px 13px;font-family:var(--font);font-weight:700;font-size:12.5px;color:var(--text-secondary);cursor:pointer;}
+.print-btn:hover{border-color:var(--blue-700);color:var(--blue-700);}
+
+/* Schritt-Navigation */
+.stepnav{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin:.2rem 0 .5rem;flex-wrap:wrap;}
+.nav-home{text-decoration:none;font-family:var(--font);font-weight:800;font-size:13.5px;color:var(--text-secondary);background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-md);padding:11px 18px;}
+.nav-home:hover{border-color:var(--blue-700);color:var(--blue-700);}
+.nav-right{display:flex;gap:10px;}
+.nav-btn{border:none;border-radius:var(--radius-md);padding:12px 24px;font-family:var(--font);font-weight:800;font-size:14.5px;cursor:pointer;}
+.nav-next{background:var(--accent);color:#fff;}
+.nav-next:hover{filter:brightness(.95);}
+.nav-next.done{background:var(--green);}
+.nav-next[disabled]{cursor:default;}
+.nav-prev{background:#fff;color:var(--text-secondary);border:1.5px solid var(--border);}
+.nav-prev:hover{border-color:var(--accent);color:var(--accent);}
+.nav-prev[disabled]{opacity:.4;cursor:default;pointer-events:none;}
+
+/* PIN-Modal (8-stellig) */
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:100;padding:1rem;}
+.overlay.open{display:flex;}
+.modal{background:#fff;border-radius:var(--radius-lg);padding:1.6rem;width:100%;max-width:330px;box-shadow:var(--shadow-lg);text-align:center;}
+.modal h3{margin:.2rem 0 .3rem;font-size:18px;font-weight:900;}
+.modal p{font-size:13px;color:var(--text-secondary);margin:0 0 1rem;}
+.dots{display:flex;justify-content:center;gap:9px;margin-bottom:.5rem;}
+.dots span{width:12px;height:12px;border-radius:50%;background:var(--border);transition:.15s;}
+.dots span.filled{background:var(--blue-700);}
+.dots.err span{background:var(--red);animation:shake .4s;}
+.pin-err{height:18px;font-size:12.5px;color:var(--red);font-weight:700;margin-bottom:.5rem;}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.pad button{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:14px 0;font-family:var(--font);font-size:18px;font-weight:800;cursor:pointer;color:var(--text);}
+.pad button:hover{border-color:var(--blue-700);background:var(--blue-50);}
+.modal-close{margin-top:1rem;background:none;border:none;color:var(--text-muted);font-family:var(--font);font-weight:700;font-size:13px;cursor:pointer;}
+
+.gut-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.7rem;margin:.9rem 0;}
+.gut-opt{border:1.5px solid var(--border);border-radius:var(--radius-md);background:#fff;padding:1rem;font-family:var(--font);font-size:14px;font-weight:800;cursor:pointer;text-align:left;color:var(--text);transition:.12s;}
+.gut-opt:hover{border-color:var(--accent);background:var(--orange-light);}
+.gut-opt.sel{border-color:var(--accent);background:var(--orange-light);box-shadow:inset 0 0 0 2px var(--accent);}
+.gut-note{font-size:13px;font-weight:800;color:var(--accent);margin-top:.5rem;display:none;}
+.gut-note.show{display:block;}
+.gut-recall{background:var(--orange-light);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:.6rem .9rem;font-size:13.5px;font-weight:700;color:#78350f;margin:.6rem 0;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-7px);}40%,80%{transform:translateX(7px);}}
+
+@media print{
+  .topbar,.progress,.stepnav,.overlay,.tbtn,.topbar-actions{display:none!important;}
+  .section{display:block!important;box-shadow:none;border:1px solid #ccc;margin-bottom:1rem;break-inside:avoid;}
+  .teacher-note,.erwartung-box,.solution-reveal{display:block!important;}
+  .hero{color:#000;background:none;border:1px solid #ccc;}
+  .hero::before{display:none;}
+}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="topbar-logo" href="index.html">WR<span>&amp;</span>10</a>
+    <a class="topbar-back" href="index.html">← Übersicht</a>
+    <div class="topbar-actions">
+      <button class="tbtn" id="teacherToggle" onclick="toggleTeacher()">🔓 Lehrkraft</button>
+    </div>
+  </div>
+
+  <nav class="progress"><div class="progress-inner" id="prog"></div></nav>
+
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-eyebrow">Ökonomisches Handeln auf dem Markt · Stunde 3</div>
+      <h1>Wie entscheide ich im Unternehmen?</h1>
+      <p class="lead">Kosten und Nutzen abwägen – jetzt am echten Fall eines Start-ups.</p>
+      <div class="hero-chips"><span>Kapitel 1.1 · Vertiefung</span><span>Fallstudie CoolCup</span><span>Gruppenarbeit</span></div>
+    </div>
+
+    <!-- STEP 1 -->
+    <section class="section" id="step1">
+      <span class="step-label"><span class="sn">1</span> Einstieg · Blitzabstimmung</span>
+      <h2>10.000 € – wohin damit?</h2>
+      <div class="section-time">⏱ ca. 5 Min · Abstimmung</div>
+      <p>Ein junges Unternehmen hat <b>10.000 €</b> zur Verfügung und muss sie klug einsetzen. Entscheide zuerst <b>aus dem Bauch</b>: Wo würdest du das Geld investieren?</p>
+      <div class="gut-grid">
+        <button class="gut-opt" data-opt="Werbung" onclick="pickGut(this)">📣 Werbung<br><span style="font-weight:600;font-size:12.5px;color:var(--text-secondary);">Social-Media-Kampagne</span></button>
+        <button class="gut-opt" data-opt="Maschine" onclick="pickGut(this)">⚙️ Neue Maschine<br><span style="font-weight:600;font-size:12.5px;color:var(--text-secondary);">mehr Produktion</span></button>
+        <button class="gut-opt" data-opt="Messe" onclick="pickGut(this)">🤝 Messestand<br><span style="font-weight:600;font-size:12.5px;color:var(--text-secondary);">Kontakte &amp; Aufträge</span></button>
+      </div>
+      <div class="gut-note" id="gutNote"></div>
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        Blitzabstimmung zusätzlich per Handzeichen im Plenum, Ergebnis kurz an die Tafel. Bewusst ohne Begründung – am Stundenende wird das Bauchgefühl mit der systematisch begründeten Entscheidung kontrastiert. Kernbotschaft des Lernbereichs: reflektiert statt „aus dem Bauch heraus".
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="section" id="step2">
+      <span class="step-label"><span class="sn">2</span> Der Fall</span>
+      <h2>Das Start-up CoolCup</h2>
+      <div class="section-time">⏱ ca. 7 Min · Einzelarbeit</div>
+      <div class="info-box teal"><b>CoolCup</b> ist ein junges Start-up, das nachhaltige Trinkbecher aus recyceltem Material herstellt. Ziel: Plastikmüll reduzieren und stylische, wiederverwendbare Becher anbieten. Aktuelles Budget: <b>10.000 €</b>. Die Frage: Wie einsetzen, um den größten Nutzen zu erzielen?</p></div>
+
+      <h3>Drei Investitionsmöglichkeiten</h3>
+      <div class="cards">
+        <div class="mini"><b>📣 Social-Media-Kampagne · ca. 5.000 €</b><span>Bekanntheit steigt, evtl. neue Kunden. Risiko: unklar, wie viele Käufe wirklich entstehen.</span></div>
+        <div class="mini"><b>⚙️ Neue Maschine · ca. 10.000 €</b><span>Produktion steigt, Stückkosten sinken. Risiko: Reicht die Nachfrage, um die Maschine auszulasten?</span></div>
+        <div class="mini"><b>🤝 Messestand · ca. 8.000 €</b><span>Kontakte zu Händlern, evtl. Großaufträge. Risiko: Erfolg hängt stark von Gesprächen und Glück ab.</span></div>
+      </div>
+      <div class="info-box orange">Auch <b>Kombinationen</b> sind erlaubt – solange das Budget von <b>10.000 €</b> nicht überschritten wird. Denkt sowohl <b>kurzfristig</b> (Erfolg im nächsten Jahr) als auch <b>langfristig</b> (in 3–5 Jahren).</div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="section" id="step3">
+      <span class="step-label"><span class="sn">3</span> Analyse</span>
+      <h2>Kosten-Nutzen-Analyse in der Gruppe</h2>
+      <div class="section-time">⏱ ca. 15 Min · Gruppenarbeit</div>
+      <p>Nehmt die drei Optionen systematisch auseinander. Unterscheidet dabei <b>unausweichliche</b> Kosten (fix, sicher) von <b>möglichen/optionalen</b> Kosten (unsicher) – und vergesst die <b>Opportunitätskosten</b> nicht.</p>
+
+      <div style="overflow-x:auto;">
+      <table class="dtable">
+        <tr><th>Option</th><th>Unausweichliche Kosten</th><th>Mögliche Kosten</th><th>Nutzen kurzfristig</th><th>Nutzen langfristig</th><th>Opportunitätskosten</th></tr>
+        <tr><td class="rowh">Social-Media</td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td class="rowh">Neue Maschine</td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td class="rowh">Messestand</td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td class="rowh">Eigene Kombination</td><td></td><td></td><td></td><td></td><td></td></tr>
+      </table>
+      </div>
+
+      <div class="task">
+        <div class="task-header">
+          <div class="task-num">A</div>
+          <div><div class="task-title">Optionen analysieren</div><div class="task-sub">Fallanalyse · Gruppenarbeit</div></div>
+        </div>
+        <div class="task-body">
+          <div class="icons"><div class="itile" style="border:1.5px solid #7B1FA2;"><svg width="22" height="22" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="8" stroke="#7B1FA2" stroke-width="2" fill="none"/><circle cx="20" cy="5" r="4" fill="#7B1FA2"/><path d="M14 13c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#7B1FA2" stroke-width="1.8" stroke-linecap="round" fill="none"/><circle cx="20" cy="35" r="4" fill="#7B1FA2"/><path d="M14 27c0 3.314 2.686 6 6 6s6-2.686 6-6" stroke="#7B1FA2" stroke-width="1.8" stroke-linecap="round" fill="none"/><circle cx="5" cy="20" r="4" fill="#7B1FA2"/><path d="M13 14c-3.314 0-6 2.686-6 6s2.686 6 6 6" stroke="#7B1FA2" stroke-width="1.8" stroke-linecap="round" fill="none"/><circle cx="35" cy="20" r="4" fill="#7B1FA2"/><path d="M27 14c3.314 0 6 2.686 6 6s-2.686 6-6 6" stroke="#7B1FA2" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg></div></div>
+          <div class="task-content">
+            <p>Leitfragen für die Analyse:</p>
+            <ol>
+              <li>Welche <b>unausweichlichen</b> Kosten entstehen sicher?</li>
+              <li>Welche <b>möglichen/optionalen</b> Kosten könnten zusätzlich auftreten?</li>
+              <li>Welchen Nutzen bringt die Option <b>kurzfristig</b>?</li>
+              <li>Welchen Nutzen bringt sie <b>langfristig</b>?</li>
+              <li>Welche <b>Opportunitätskosten</b> entstehen jeweils?</li>
+            </ol>
+            <textarea class="answer-area" id="s3a1" placeholder="Kernergebnisse eurer Analyse …"></textarea>
+            <button class="solution-btn" data-target="solA" onclick="solClick(this)">🔒 Musterlösung</button>
+            <div class="solution-reveal" id="solA">
+              <b>Mögliche Analyse (kein „richtig/falsch" – die Abwägung zählt):</b>
+              <ul>
+                <li><b>Social-Media (5.000 €):</b> unausweichlich = Kampagnenkosten; möglich = Nachbesserung/laufende Ausgaben. Kurzfristig: mehr Reichweite, evtl. schnelle Käufe. Langfristig: Markenaufbau, Stammkunden. Opportunitätskosten: Maschine/Messe nur eingeschränkt finanzierbar.</li>
+                <li><b>Neue Maschine (10.000 €):</b> unausweichlich = ganzer Kaufpreis; möglich = Wartung, Schulung. Kurzfristig: höhere Kapazität, sinkende Stückkosten. Langfristig: Skalierung, Wettbewerbsfähigkeit. Opportunitätskosten: kein Budget mehr für Werbung/Messe; Risiko der Nicht-Auslastung.</li>
+                <li><b>Messestand (8.000 €):</b> unausweichlich = Standmiete/Aufbau; möglich = Reise, Muster. Kurzfristig: Kontakte, evtl. Aufträge. Langfristig: Vertriebspartner, B2B-Wachstum. Opportunitätskosten: weniger Budget für Werbung/Maschine; Erfolg unsicher.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        Gruppenphase ca. 15 Min. Achten auf saubere Trennung von <b>fixen</b> und <b>optionalen</b> Kosten und auf realistische Opportunitätskosten (entgangener Nutzen der nicht gewählten Option, nicht die reine Geldsumme). Die Tabelle wird auf dem Arbeitsblatt / Papier gefüllt.
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="section" id="step4">
+      <span class="step-label"><span class="sn">4</span> Entscheidung</span>
+      <h2>Entscheiden &amp; begründen</h2>
+      <div class="section-time">⏱ ca. 10 Min · Gruppe / Präsentation</div>
+      <div class="gut-recall" id="gutRecall"></div>
+      <p>Trefft jetzt als Team eine Entscheidung – gestützt auf eure Analyse, nicht auf das Bauchgefühl.</p>
+
+      <div class="task">
+        <div class="task-header">
+          <div class="task-num">B</div>
+          <div><div class="task-title">Eure Empfehlung an CoolCup</div><div class="task-sub">Entscheidung &amp; Pitch · Gruppenarbeit</div></div>
+        </div>
+        <div class="task-body">
+          <div class="icons"><div class="itile" style="border:1.5px solid #7B1FA2;"><svg width="22" height="22" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="8" stroke="#7B1FA2" stroke-width="2" fill="none"/><circle cx="20" cy="5" r="4" fill="#7B1FA2"/><path d="M14 13c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#7B1FA2" stroke-width="1.8" stroke-linecap="round" fill="none"/><circle cx="20" cy="35" r="4" fill="#7B1FA2"/><path d="M14 27c0 3.314 2.686 6 6 6s6-2.686 6-6" stroke="#7B1FA2" stroke-width="1.8" stroke-linecap="round" fill="none"/><circle cx="5" cy="20" r="4" fill="#7B1FA2"/><path d="M13 14c-3.314 0-6 2.686-6 6s2.686 6 6 6" stroke="#7B1FA2" stroke-width="1.8" stroke-linecap="round" fill="none"/><circle cx="35" cy="20" r="4" fill="#7B1FA2"/><path d="M27 14c3.314 0 6 2.686 6 6s-2.686 6-6 6" stroke="#7B1FA2" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg></div></div>
+          <div class="task-content">
+            <ol>
+              <li>Welche <b>Kombination</b> ist möglich, ohne die 10.000 € zu überschreiten?</li>
+              <li>Für welche <b>Variante</b> entscheidet ihr euch – und <b>warum</b>?</li>
+              <li>Bereitet einen <b>1-Minuten-Pitch</b> vor: Entscheidung + zwei Hauptgründe.</li>
+            </ol>
+            <textarea class="answer-area" id="s3b1" placeholder="Wir empfehlen … , weil …"></textarea>
+            <button class="solution-btn" data-target="solB" onclick="solClick(this)">🔒 Musterlösung</button>
+            <div class="solution-reveal" id="solB">
+              <b>Beispielhafte Empfehlung (offen – gute Begründung zählt):</b>
+              <ul>
+                <li><b>Vorsichtige Strategie:</b> zuerst Social-Media-Kampagne (5.000 €), Rest als Puffer. Erst Nachfrage schaffen, dann – im Folgejahr – die Maschine, wenn die Auslastung gesichert ist.</li>
+                <li><b>Wachstumsstrategie:</b> Messestand (8.000 €) für Großaufträge + kleines Werbebudget. Höheres Risiko, aber größere Chance auf B2B-Sprung.</li>
+              </ul>
+              Schlüssel: kurzfristigen und langfristigen Nutzen abwägen, Budget einhalten, Opportunitätskosten benennen und die Risiken offen ansprechen.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        Kurze Pitches + Peer-Feedback (z. B. „stärkstes Argument / offene Frage"). Am Ende bewusst das Einstiegs-Bauchgefühl mit der begründeten Entscheidung kontrastieren – das macht den Mehrwert systematischer Abwägung sichtbar.
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="section" id="step5">
+      <span class="step-label"><span class="sn">5</span> Wissenssicherung</span>
+      <h2>Abschluss-Quiz</h2>
+      <div class="section-time">⏱ ca. 5 Min · Einzelarbeit</div>
+      <div class="info-box green"><b>Unausweichliche Kosten</b> → fallen sicher an &nbsp;•&nbsp; <b>Mögliche Kosten</b> → treten vielleicht auf &nbsp;•&nbsp; <b>Nutzen</b> kurz- <b>und</b> langfristig betrachten &nbsp;•&nbsp; <b>Opportunitätskosten</b> → entgangener Nutzen der nicht gewählten Option.</div>
+
+      <div class="quiz-block">
+        <div class="quiz-q">1. Was sind „unausweichliche Kosten"?</div>
+        <button class="quiz-opt" data-correct="true" onclick="checkQuiz(this)"><span class="ql">A</span><span>Kosten, die sicher anfallen, egal wie es läuft.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">B</span><span>Kosten, die nur vielleicht auftreten.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">C</span><span>Der entgangene Nutzen der nicht gewählten Option.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">D</span><span>Kosten, die man immer vermeiden kann.</span></button>
+        <div class="quiz-fb">Unausweichliche (fixe) Kosten fallen sicher an. C beschreibt Opportunitätskosten, B die möglichen/optionalen Kosten.</div>
+      </div>
+      <hr class="divider">
+
+      <div class="quiz-block">
+        <div class="quiz-q">2. CoolCup kauft die Maschine für die vollen 10.000 €. Was sind die Opportunitätskosten dieser Entscheidung?</div>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">A</span><span>Die 10.000 € Anschaffungspreis.</span></button>
+        <button class="quiz-opt" data-correct="true" onclick="checkQuiz(this)"><span class="ql">B</span><span>Der entgangene Nutzen von Werbung und Messe, die nun nicht mehr finanzierbar sind.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">C</span><span>Die späteren Wartungskosten der Maschine.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">D</span><span>Es entstehen keine Opportunitätskosten.</span></button>
+        <div class="quiz-fb">Opportunitätskosten = entgangener Nutzen der nächstbesten Alternative(n). Der Kaufpreis (A) ist die reale Ausgabe, nicht die Opportunitätskosten.</div>
+      </div>
+      <hr class="divider">
+
+      <div class="quiz-block">
+        <div class="quiz-q">3. Warum sollte CoolCup nicht nur den kurzfristigen Nutzen betrachten?</div>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">A</span><span>Kurzfristiger Nutzen spielt bei Firmen keine Rolle.</span></button>
+        <button class="quiz-opt" data-correct="true" onclick="checkQuiz(this)"><span class="ql">B</span><span>Viele Investitionen entfalten ihren vollen Nutzen erst langfristig (z. B. Markenaufbau, Skalierung).</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">C</span><span>Langfristig kann man Kosten komplett ignorieren.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">D</span><span>Weil kurzfristig immer teurer ist als langfristig.</span></button>
+        <div class="quiz-fb">Eine gute Investitionsentscheidung wägt kurz- und langfristigen Nutzen ab – sonst übersieht man den eigentlichen Wert (oder das Risiko).</div>
+      </div>
+      <hr class="divider">
+
+      <div class="quiz-block">
+        <div class="quiz-q">4. Die Standmiete für die Messe fällt fest an, sobald man sich anmeldet – unabhängig vom Erfolg. Wie nennt man diese Kostenart?</div>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">A</span><span>Mögliche / optionale Kosten.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">B</span><span>Opportunitätskosten.</span></button>
+        <button class="quiz-opt" data-correct="true" onclick="checkQuiz(this)"><span class="ql">C</span><span>Unausweichliche (fixe) Kosten.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">D</span><span>Nutzen.</span></button>
+        <div class="quiz-fb">Sie fällt sicher an → unausweichliche (fixe) Kosten. „Möglich" wäre sie nur, wenn sie vom Erfolg abhinge.</div>
+      </div>
+
+      <div class="quiz-score" id="quizScore"><span class="score-num"></span><span class="score-msg"></span></div>
+      <button class="quiz-retry" id="quizRetry" onclick="retryQuiz()">🔄 Nochmal versuchen</button>
+
+      <p style="margin-top:1rem;font-size:13.5px;color:var(--text-secondary);">Nächste Stunde: <b>Verantwortungsbewusst konsumieren</b> – Nachhaltigkeit und ihre drei Dimensionen.</p>
+    </section>
+
+    <!-- STEP 6 – Lehrkraft -->
+    <section class="section teacher-only" id="step6">
+      <span class="step-label"><span class="sn">6</span> Mündliche Abfrage</span>
+      <h2>Abfrage Stunde 3 – CoolCup</h2>
+      <div class="section-time">⏱ ca. 10 Min · 1 Schüler:in</div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.4rem;">
+        <div class="k-legend">
+          <span class="k-wissen">🔵 Wissen</span>
+          <span class="k-denken">🟢 Kritisches Denken</span>
+          <span class="k-komm">🟡 Kommunikation</span>
+          <span class="k-kreativ">🔴 Kreativität</span>
+        </div>
+        <button class="print-btn" onclick="window.print()">🖨 Drucken</button>
+      </div>
+
+      <div class="abfrage-wrap">
+        <div class="abfrage-q">
+          <div class="abfrage-q-header">
+            <div class="abfrage-q-num wissen">1</div>
+            <div><div class="abfrage-q-label wissen">🔵 Wissen · ca. 2 Min.</div><div class="abfrage-q-text">Unterscheide unausweichliche und mögliche Kosten und nenne für CoolCup je ein Beispiel.</div></div>
+          </div>
+          <div class="abfrage-q-body">
+            <p>Bewertet: korrekte Unterscheidung + je ein passendes Beispiel.</p>
+            <button class="erwartung-btn" onclick="toggleErw('ew1',this)">📋 Erwartungshorizont anzeigen</button>
+            <div class="erwartung-box" id="ew1"><strong>Unausweichliche Kosten (1 P.):</strong> fallen sicher an – z. B. Kaufpreis der Maschine, Standmiete. <strong>Mögliche Kosten (1 P.):</strong> treten vielleicht auf – z. B. Wartung, Nachbesserung der Kampagne. Beispiele je 0,5 P.</div>
+          </div>
+        </div>
+
+        <div class="abfrage-q">
+          <div class="abfrage-q-header">
+            <div class="abfrage-q-num denken">2</div>
+            <div><div class="abfrage-q-label denken">🟢 Kritisches Denken · ca. 3 Min.</div><div class="abfrage-q-text">Ein anderes Start-up hat 5.000 €. Option A: günstige Onlinewerbung. Option B: eine gebrauchte Maschine. Nenne je einen kurz- und langfristigen Nutzen – und die Opportunitätskosten, wenn es sich für B entscheidet.</div></div>
+          </div>
+          <div class="abfrage-q-body">
+            <p>Neuer Fall. Bewertet: schlüssige Nutzen-Einordnung + korrekte Opportunitätskosten.</p>
+            <button class="erwartung-btn" onclick="toggleErw('ew2',this)">📋 Erwartungshorizont anzeigen</button>
+            <div class="erwartung-box" id="ew2">A: kurzfristig schnelle Reichweite, langfristig Markenaufbau. B: kurzfristig höhere Produktion, langfristig sinkende Stückkosten. Opportunitätskosten von B = entgangener Nutzen der Onlinewerbung (Reichweite/Neukunden), die mit den 5.000 € nicht mehr finanzierbar ist.</div>
+          </div>
+        </div>
+
+        <div class="abfrage-q">
+          <div class="abfrage-q-header">
+            <div class="abfrage-q-num komm">3</div>
+            <div><div class="abfrage-q-label komm">🟡 Kommunikation · ca. 2 Min.</div><div class="abfrage-q-text">Erkläre einem Mitschüler in einfachen Worten, warum man bei Investitionsentscheidungen auch langfristig denken muss.</div></div>
+          </div>
+          <div class="abfrage-q-body">
+            <p>Bewertet: einfache Sprache, korrekter Kern.</p>
+            <button class="erwartung-btn" onclick="toggleErw('ew3',this)">📋 Erwartungshorizont anzeigen</button>
+            <div class="erwartung-box" id="ew3">Manche Investitionen kosten erst Geld und zahlen sich erst später aus (z. B. eine Maschine oder eine Marke). Wer nur auf den schnellen Erfolg schaut, verpasst den größeren Nutzen – oder übersieht ein Risiko. Kommunikative Kompetenz im Vordergrund.</div>
+          </div>
+        </div>
+
+        <div class="abfrage-q">
+          <div class="abfrage-q-header">
+            <div class="abfrage-q-num kreativ">4</div>
+            <div><div class="abfrage-q-label kreativ">🔴 Kreativität · ca. 2 Min.</div><div class="abfrage-q-text">Erfinde eine vierte Investitionsoption für CoolCup. Nenne einen Nutzen und die Opportunitätskosten.</div></div>
+          </div>
+          <div class="abfrage-q-body">
+            <p>Eigene Idee. Bewertet: plausible Option + Nutzen + korrekt benannte Opportunitätskosten.</p>
+            <button class="erwartung-btn" onclick="toggleErw('ew4',this)">📋 Erwartungshorizont anzeigen</button>
+            <div class="erwartung-box" id="ew4">Beispiel: Kooperation mit einem Café als Testpartner. Nutzen: echtes Kundenfeedback, lokale Sichtbarkeit. Opportunitätskosten: das Budget/die Zeit steht dann nicht für Werbung oder die Maschine zur Verfügung.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="stepnav">
+      <a class="nav-home" href="index.html">🏠 Übersicht</a>
+      <div class="nav-right">
+        <button class="nav-btn nav-prev" id="navPrev">← Zurück</button>
+        <button class="nav-btn nav-next" id="navNext">Weiter →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIN-Modal -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <h3>Lehrkraft-Bereich</h3>
+      <p>8-stellige PIN eingeben</p>
+      <div class="dots" id="dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="pin-err" id="pinErr"></div>
+      <div class="pad" id="pad"></div>
+      <button class="modal-close" onclick="closeModal()">Abbrechen</button>
+    </div>
+  </div>
+
+<script>
+const PIN_HASH="385319fce53854f96b636f28301b3d31be241dcaf6f1775da31a5e768b3a848e";
+const LOESUNGSCODE="SAFI27";
+
+/* ---- Stepper ---- */
+const STEPS=[
+  {id:"step1",label:"Blitzabstimmung"},{id:"step2",label:"Der Fall"},
+  {id:"step3",label:"Analyse"},{id:"step4",label:"Entscheidung"},
+  {id:"step5",label:"Quiz"},{id:"step6",label:"Abfrage",teacher:true},
+];
+const secEls=STEPS.map(s=>document.getElementById(s.id));
+const prevBtn=document.getElementById("navPrev");
+const nextBtn=document.getElementById("navNext");
+const prog=document.getElementById("prog");
+const pbtns=[];
+let cur=0, maxReached=0;
+function visibleCount(){ return document.body.classList.contains("version-b") ? STEPS.length : STEPS.length-1; }
+STEPS.forEach((s,i)=>{
+  const b=document.createElement("button");
+  b.className="pstep"+(s.teacher?" teacher-only":"");
+  b.innerHTML=`<span class="pnum">${i+1}</span>${s.label}`;
+  b.onclick=()=>{ if(i<=maxReached && i<visibleCount()) showStep(i,true); };
+  prog.appendChild(b); pbtns.push(b);
+});
+function showStep(i,scroll){
+  cur=i; if(i>maxReached)maxReached=i;
+  secEls.forEach((el,k)=>el.classList.toggle("step-visible",k===i));
+  pbtns.forEach((b,k)=>{ b.classList.toggle("active",k===i); b.classList.toggle("locked", k>maxReached || k>=visibleCount()); });
+  prevBtn.disabled=(i===0);
+  const last=(i>=visibleCount()-1);
+  nextBtn.textContent=last?"Geschafft ✓":"Weiter →";
+  nextBtn.classList.toggle("done",last);
+  nextBtn.disabled=last;
+  if(scroll){ const y=secEls[i].getBoundingClientRect().top+window.pageYOffset-100; window.scrollTo({top:Math.max(0,y),behavior:"smooth"}); }
+}
+prevBtn.onclick=()=>{ if(cur>0)showStep(cur-1,true); };
+nextBtn.onclick=()=>{ if(cur<visibleCount()-1)showStep(cur+1,true); };
+
+/* ---- Zwei-Modi / gehashte PIN ---- */
+let entered="";
+const overlay=document.getElementById("overlay"), dots=document.getElementById("dots"), pad=document.getElementById("pad"), pinErr=document.getElementById("pinErr");
+["1","2","3","4","5","6","7","8","9","C","0","⌫"].forEach(k=>{
+  const b=document.createElement("button");b.textContent=k;b.onclick=()=>press(k);pad.appendChild(b);
+});
+function toggleTeacher(){
+  const btn=document.getElementById("teacherToggle");
+  if(document.body.classList.contains("version-b")){
+    document.body.classList.remove("version-b");btn.classList.remove("on");btn.textContent="🔓 Lehrkraft";
+    if(cur>=visibleCount())showStep(visibleCount()-1,false);else showStep(cur,false);
+    refreshSolButtons();
+  }else{openModal();}
+}
+function openModal(){entered="";pinErr.textContent="";renderDots();overlay.classList.add("open");}
+function closeModal(){overlay.classList.remove("open");}
+function press(k){
+  if(k==="C"){entered="";}else if(k==="⌫"){entered=entered.slice(0,-1);pinErr.textContent="";}else if(entered.length<8){entered+=k;}
+  renderDots();if(entered.length===8)setTimeout(check,120);
+}
+function renderDots(){dots.classList.remove("err");[...dots.children].forEach((d,i)=>d.classList.toggle("filled",i<entered.length));}
+async function check(){
+  const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(entered));
+  const h=[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");
+  if(h===PIN_HASH){
+    document.body.classList.add("version-b");
+    const btn=document.getElementById("teacherToggle");btn.classList.add("on");btn.textContent="🔒 Schüler-Ansicht";
+    closeModal();maxReached=STEPS.length-1;showStep(cur,false);refreshSolButtons();
+  }else{ pinErr.textContent="Falscher PIN."; dots.classList.add("err"); entered=""; setTimeout(()=>renderDots(),450); }
+}
+document.addEventListener("keydown",e=>{
+  if(!overlay.classList.contains("open"))return;
+  if(/^[0-9]$/.test(e.key))press(e.key);
+  else if(e.key==="Backspace")press("⌫");
+  else if(e.key==="Escape")closeModal();
+});
+
+/* ---- Quiz mit Punktestand ---- */
+function checkQuiz(btn){
+  const block=btn.closest(".quiz-block");
+  if(block.classList.contains("answered"))return;
+  block.classList.add("answered");
+  const correct=btn.dataset.correct==="true";
+  block.querySelectorAll(".quiz-opt").forEach(o=>{o.classList.add("locked");if(o.dataset.correct==="true")o.classList.add("correct");});
+  if(!correct)btn.classList.add("wrong");
+  const fb=block.querySelector(".quiz-fb"); if(fb)fb.classList.add("show");
+  block.dataset.right=correct?"1":"0";
+  updateScore();
+}
+function updateScore(){
+  const blocks=[...document.querySelectorAll(".quiz-block")];
+  const answered=blocks.filter(b=>b.classList.contains("answered"));
+  if(answered.length<blocks.length)return;
+  const right=blocks.filter(b=>b.dataset.right==="1").length;
+  const el=document.getElementById("quizScore");
+  el.querySelector(".score-num").textContent=right+" / "+blocks.length;
+  el.querySelector(".score-msg").textContent = right===blocks.length?"Perfekt! 🎉" : (right>=blocks.length-1?"Fast alles richtig!" : (right>=blocks.length/2?"Solide – schau dir die Fehler an." : "Wiederhol das ruhig nochmal."));
+  el.style.display="flex";
+  document.getElementById("quizRetry").style.display="inline-flex";
+}
+function retryQuiz(){
+  document.querySelectorAll(".quiz-block").forEach(b=>{
+    b.classList.remove("answered"); delete b.dataset.right;
+    b.querySelectorAll(".quiz-opt").forEach(o=>o.classList.remove("locked","correct","wrong"));
+    const fb=b.querySelector(".quiz-fb"); if(fb)fb.classList.remove("show");
+  });
+  document.getElementById("quizScore").style.display="none";
+  document.getElementById("quizRetry").style.display="none";
+}
+
+/* ---- Musterlösungen mit Lösungscode ---- */
+let solUnlocked=false;
+try{ solUnlocked=localStorage.getItem("wr10_s3_sol")==="1"; }catch(e){}
+function teacherMode(){return document.body.classList.contains("version-b");}
+function toggleSol(btn,target){
+  const vis=target.classList.toggle("visible");
+  btn.textContent=vis?"▲ Lösung ausblenden":"✓ Musterlösung anzeigen";
+}
+function refreshSolButtons(){
+  const open=solUnlocked||teacherMode();
+  document.querySelectorAll(".solution-btn").forEach(btn=>{
+    const t=document.getElementById(btn.dataset.target);
+    if(t.classList.contains("visible"))btn.textContent="▲ Lösung ausblenden";
+    else btn.textContent=open?"✓ Musterlösung anzeigen":"🔒 Musterlösung";
+  });
+}
+function solClick(btn){
+  const target=document.getElementById(btn.dataset.target);
+  if(solUnlocked||teacherMode()){ toggleSol(btn,target); return; }
+  let p=btn.nextElementSibling;
+  if(p&&p.classList.contains("sol-code")){ p.remove(); return; }
+  p=document.createElement("div");
+  p.className="sol-code";
+  p.innerHTML='<input type="text" maxlength="6" placeholder="Lösungscode" aria-label="Lösungscode"><button type="button">freischalten</button><span class="sol-hint">Code von der Lehrkraft</span>';
+  btn.after(p);
+  const inp=p.querySelector("input"), go=p.querySelector("button");
+  const tryc=()=>{
+    if(inp.value.trim().toUpperCase()===LOESUNGSCODE){
+      solUnlocked=true; try{localStorage.setItem("wr10_s3_sol","1");}catch(e){}
+      document.querySelectorAll(".sol-code").forEach(c=>c.remove());
+      toggleSol(btn,target); refreshSolButtons();
+    }else{ inp.classList.add("shake"); setTimeout(()=>inp.classList.remove("shake"),450); }
+  };
+  go.onclick=tryc; inp.onkeydown=e=>{if(e.key==="Enter")tryc();}; inp.focus();
+}
+
+/* ---- Abfrage: Erwartungshorizont ---- */
+function toggleErw(id,btn){
+  const el=document.getElementById(id);
+  const v=el.classList.toggle("show");
+  btn.textContent=v?"▲ Erwartungshorizont ausblenden":"📋 Erwartungshorizont anzeigen";
+}
+
+/* ---- Antwortfelder autospeichern ---- */
+document.querySelectorAll(".answer-area").forEach(t=>{
+  const key="wr10_s3_"+t.id;
+  try{const v=localStorage.getItem(key);if(v)t.value=v;}catch(e){}
+  t.addEventListener("input",()=>{try{localStorage.setItem(key,t.value);}catch(e){}});
+});
+
+/* ---- Bauchgefühl (Blitzabstimmung) ---- */
+function pickGut(btn){
+  document.querySelectorAll(".gut-opt").forEach(o=>o.classList.remove("sel"));
+  btn.classList.add("sel");
+  try{localStorage.setItem("wr10_s3_gut",btn.dataset.opt);}catch(e){}
+  updateGutRecall();
+}
+function updateGutRecall(){
+  let g=""; try{g=localStorage.getItem("wr10_s3_gut")||"";}catch(e){}
+  const note=document.getElementById("gutNote");
+  if(g){
+    document.querySelectorAll(".gut-opt").forEach(o=>o.classList.toggle("sel",o.dataset.opt===g));
+    if(note){note.classList.add("show");note.textContent="Deine erste Wahl aus dem Bauch: "+g+". Am Ende prüfen wir, ob sie standhält.";}
+  }
+  const r=document.getElementById("gutRecall");
+  if(r)r.textContent = g ? ("Dein Bauchgefühl zu Beginn war: "+g+". Deckt sich das mit eurer begründeten Entscheidung?") : "(Zu Beginn hast du noch nicht aus dem Bauch abgestimmt.)";
+}
+
+/* ---- Init ---- */
+showStep(0,false);
+refreshSolButtons();
+updateGutRecall();
+</script>
+</body>
+</html>
