@@ -235,6 +235,8 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(
 .exp{display:flex;gap:1.4rem;justify-content:center;flex-wrap:wrap;margin:1rem 0 .3rem;padding:1.2rem;background:linear-gradient(#e0f2fe,#f8fafc);border-radius:var(--radius);}
 .juice{display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff;border:2px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1.1rem;cursor:pointer;font-family:var(--font);font-weight:900;font-size:17px;color:var(--text);}
 .juice:hover{border-color:var(--accent);}
+.jb{height:110px;display:flex;align-items:flex-end;}
+.juice small{font-size:12px;color:var(--text-secondary);font-weight:700;}
 .juice.on{border-color:var(--accent);background:var(--orange-light);box-shadow:0 0 0 3px rgba(251,140,0,.2);}
 .exp-variant{text-align:center;font-size:12px;color:var(--text-muted);font-weight:700;}
 .shop{border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1rem 0;background:#fff;font-size:14px;}
@@ -300,15 +302,15 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(
       <span class="step-label"><span class="sn">1</span> Einstieg · Experiment</span>
       <h2>Kurze Entscheidung, bitte ohne Nachdenken</h2>
       <div class="section-time">⏱ ca. 5 Min · Einzelarbeit, dann Plenum</div>
-      <p>Du hast Durst und stehst am Kühlregal. Welchen Saft nimmst du? Entscheide spontan – es gibt kein Richtig oder Falsch.</p>
+      <p>Du hast Durst und stehst am Kühlregal. Es gibt deinen Lieblings-Orangensaft in verschiedenen Größen. Welche nimmst du? Entscheide spontan – es gibt kein Richtig oder Falsch.</p>
       <div class="exp" id="exp"></div>
       <p class="exp-variant" id="expVariant"></p>
       <div class="quiz-fb" id="expFb"></div>
 
       <div class="teacher-note">
         <div class="teacher-note-header">👩‍🏫 Hinweis: so läuft das Experiment</div>
-        Die Seite zeigt per Zufall <b>Variante ◆</b> (2 € / 4 €) oder <b>Variante ●</b> (2 € / 4 € / 6 €). Die Schüler sehen nur ihr eigenes Zeichen. Auswertung per Handzeichen: „Wer hatte ◆ und hat 4 € gewählt? Wer hatte ● und hat 4 € gewählt?“ – Strichliste an der Tafel, erst <b>danach</b> auflösen.<br><br>
-        Erwartung: Bei ● wählen mehr Schüler den 4-€-Saft, weil er neben dem teuren Saft als „vernünftige Mitte“ wirkt. <b>Fachlich genauer</b> heißt das Kompromisseffekt – das Buch (M3) fasst es unter Ankereffekt, der 6-€-Saft ist dabei der Anker. Bei rund 25 Schülern ist das Ergebnis vom Zufall abhängig. Kippt es, ist genau das der Gesprächsanlass: Effekte wirken im Durchschnitt vieler Menschen, nicht bei jedem Einzelnen.
+        Die Seite zeigt per Zufall <b>Variante ◆</b> (0,33 l für 1,20 € / 0,5 l für 2,20 €) oder <b>Variante ●</b> (zusätzlich 0,75 l für 3,90 €). Gleicher Saft, nur andere Größen – so spielt der Geschmack keine Rolle. Die Schüler sehen nur ihr eigenes Zeichen. Auswertung per Handzeichen: „Wer hatte ◆ und hat die 0,5-l-Flasche gewählt? Wer hatte ● und hat die 0,5-l-Flasche gewählt?“ – Strichliste an der Tafel, erst <b>danach</b> auflösen.<br><br>
+        Erwartung: Bei ● wählen mehr Schüler die 0,5-l-Flasche, weil sie neben der großen als „vernünftige Mitte“ wirkt – obwohl sie <b>pro Liter teurer</b> ist als die kleine (4,40 €/l statt 3,64 €/l). <b>Fachlich genauer</b> heißt das Kompromisseffekt – das Buch (M3) fasst es unter Ankereffekt, die große Flasche ist dabei der Anker. Pointe für die Auflösung: Im echten Supermarkt steht der <b>Grundpreis pro Liter</b> auf dem Preisschild (Pflicht nach Preisangabenverordnung) – wer ihn liest, fällt seltener herein. Bei rund 25 Schülern ist das Ergebnis vom Zufall abhängig. Kippt es, ist genau das der Gesprächsanlass: Effekte wirken im Durchschnitt vieler Menschen, nicht bei jedem Einzelnen.
       </div>
     </section>
 
@@ -347,7 +349,7 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(
             <p style="margin-top:.8rem"><b>Und dein Saft?</b> Erkläre mit dem passenden Begriff, was in Step 1 passiert ist.</p>
             <textarea class="answer-area" id="s6a1" placeholder="Bei Variante ● …"></textarea>
             <button class="solution-btn" data-target="solA" onclick="solClick(this)">🔒 Musterlösung</button>
-            <div class="solution-reveal" id="solA">Der 6-€-Saft wirkt als <b>Anker</b>: Neben ihm erscheint der 4-€-Saft nicht mehr teuer, sondern als vernünftige Mitte. Ohne ihn wird der 4-€-Saft mit dem 2-€-Saft verglichen und wirkt teuer. Am Saft selbst hat sich nichts geändert – nur am Vergleich.</div>
+            <div class="solution-reveal" id="solA">Die große Flasche wirkt als <b>Anker</b>: Neben 3,90 € erscheint die 0,5-l-Flasche für 2,20 € als vernünftige Mitte. Rechnet man den Literpreis aus, ist sie aber teurer als die kleine (4,40 €/l statt 3,64 €/l). Am Saft hat sich nichts geändert – nur am Vergleich. Gegenmittel: den Grundpreis pro Liter auf dem Preisschild lesen.</div>
           </div>
         </div>
       </div>
@@ -758,12 +760,12 @@ document.querySelectorAll(".answer-area").forEach(t=>{
 /* ---- Experiment ---- */
 let variant=null;try{variant=localStorage.getItem("wr10_s6_var");}catch(e){}
 if(variant!=="A"&&variant!=="B"){variant=Math.random()<.5?"A":"B";try{localStorage.setItem("wr10_s6_var",variant);}catch(e){}}
-const JUICE=variant==="A"?[["#ef4444","2 €"],["#facc15","4 €"]]:[["#ef4444","2 €"],["#facc15","4 €"],["#22c55e","6 €"]];
+const SIZES=[[.72,"0,33 l","1,20 €"],[.86,"0,5 l","2,20 €"],[1,"0,75 l","3,90 €"]];const JUICE=variant==="A"?SIZES.slice(0,2):SIZES;
 const expBox=document.getElementById("exp");
 JUICE.forEach(j=>{const b=document.createElement("button");b.type="button";b.className="juice";
-  b.innerHTML='<svg viewBox="0 0 40 90" width="40" aria-hidden="true"><rect x="14" y="2" width="12" height="10" rx="2" fill="#94a3b8"/><path d="M14 12h12l6 14v58a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4V26z" fill="'+j[0]+'"/><rect x="11" y="44" width="18" height="18" rx="3" fill="#fff" opacity=".85"/></svg><span>'+j[1]+'</span>';
+  b.innerHTML='<div class="jb"><svg viewBox="0 0 40 90" width="'+Math.round(46*j[0])+'" aria-hidden="true"><rect x="14" y="2" width="12" height="10" rx="2" fill="#94a3b8"/><path d="M14 12h12l6 14v58a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4V26z" fill="#fb923c"/><rect x="11" y="44" width="18" height="18" rx="3" fill="#fff" opacity=".85"/></svg></div><small>'+j[1]+'</small><span>'+j[2]+'</span>';
   b.onclick=()=>{[...expBox.children].forEach(x=>x.classList.remove("on"));b.classList.add("on");try{localStorage.setItem("wr10_s6_choice",j[1]);}catch(e){}
-    const fb=document.getElementById("expFb");fb.innerHTML="Deine Wahl: <b>"+j[1]+"</b>. Merk sie dir – und dein Zeichen oben. Die Auflösung kommt gleich im Plenum.";fb.classList.add("show");};
+    const fb=document.getElementById("expFb");fb.innerHTML="Deine Wahl: <b>"+j[1]+" für "+j[2]+"</b>. Merk sie dir – und dein Zeichen oben. Die Auflösung kommt gleich im Plenum.";fb.classList.add("show");};
   expBox.appendChild(b);});
 document.getElementById("expVariant").textContent="Dein Zeichen: "+(variant==="A"?"◆":"●");
 
