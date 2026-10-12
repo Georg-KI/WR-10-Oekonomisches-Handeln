@@ -235,19 +235,58 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(
 .aisas b{display:block;font-size:22px;color:var(--accent);line-height:1;}
 .aisas span{display:block;font-weight:800;font-size:13px;margin-top:3px;}
 .aisas small{display:block;font-size:11.5px;color:var(--text-secondary);margin-top:2px;line-height:1.3;}
-.ad{display:grid;grid-template-columns:1fr 1.2fr;border-radius:var(--radius);overflow:hidden;margin:1rem 0 .3rem;box-shadow:0 6px 20px rgba(30,41,59,.18);}
-.ad-img{position:relative;background:linear-gradient(150deg,#6d28d9,#db2777);min-height:190px;display:flex;flex-direction:column;justify-content:center;}
-.ad-img svg{height:120px;}
-.ad-caption{color:#fff;font-size:11.5px;padding:0 .9rem .7rem;opacity:.9;font-style:italic;}
-.ad-body{background:#111827;color:#fff;padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.45rem;}
-.ad-brand{font-weight:900;letter-spacing:.5px;font-size:13px;color:#f9a8d4;}
-.ad-head{font-weight:900;font-size:22px;line-height:1.15;margin-bottom:.3rem;}
-.ad-line{font-size:14px;display:flex;align-items:center;gap:8px;}
-.ad-push{color:#fde047;font-weight:800;}
-.ad-tag{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#fff;color:#111827;font-weight:900;font-size:12px;flex-shrink:0;}
-.ad-img .ad-tag{position:absolute;top:10px;left:10px;}
-.ad-note{font-size:11.5px;color:var(--text-muted);margin:0 0 .6rem;}
-@media (max-width:600px){.aisas{grid-template-columns:repeat(2,1fr);}.ad{grid-template-columns:1fr;}}
+.anz{display:grid;grid-template-columns:1fr 1.2fr;border-radius:var(--radius);overflow:hidden;margin:1rem 0 .3rem;box-shadow:0 6px 20px rgba(30,41,59,.18);}
+.anz-img{position:relative;background:linear-gradient(150deg,#6d28d9,#db2777);min-height:250px;display:flex;flex-direction:column;justify-content:center;}
+.anz-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:68% 40%;}
+.anz-img .anz-tag{z-index:2;}
+.anz-photo + .anz-caption{display:none;}
+.anz-caption{color:#fff;font-size:14px;padding:1rem;text-align:center;font-weight:700;opacity:.9;}
+.anz-body{background:#111827;color:#fff;padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.45rem;}
+.anz-brand{font-weight:900;letter-spacing:.5px;font-size:13px;color:#f9a8d4;}
+.anz-head{font-weight:900;font-size:22px;line-height:1.15;margin-bottom:.3rem;}
+.anz-line{font-size:14px;display:flex;align-items:center;gap:8px;}
+.anz-push{color:#fde047;font-weight:800;}
+.anz-tag{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#fff;color:#111827;font-weight:900;font-size:12px;flex-shrink:0;}
+.anz-img .anz-tag{position:absolute;top:10px;left:10px;}
+.anz-note{font-size:11.5px;color:var(--text-muted);margin:0 0 .6rem;}
+@media (max-width:600px){.aisas{grid-template-columns:repeat(2,1fr);}.anz{grid-template-columns:1fr;}}
+/* ==== DRUCKMODUL Schülerversion (body.print-student) ==== */
+.print-head{display:none;}
+@media print{
+  body.print-student{background:#fff;}
+  body.print-student .wrap,body.print-student main{max-width:none;padding:0;}
+  body.print-student .print-head{display:flex;justify-content:space-between;font-size:12pt;font-weight:700;border-bottom:1.5px solid #000;padding-bottom:6px;margin-bottom:12px;}
+  body.print-student .section{display:block!important;border:none;box-shadow:none;padding:0 0 .6rem;margin:0 0 1rem;break-inside:auto;animation:none;}
+  body.print-student .section.teacher-only,
+  body.print-student .teacher-note,body.print-student .solution-reveal,body.print-student .erwartung-box,
+  body.print-student .solution-btn,body.print-student .erwartung-btn,body.print-student .sol-code,
+  body.print-student .quiz-fb,body.print-student .quiz-score,body.print-student .quiz-retry,body.print-student .print-btn,
+  body.print-student .chip-count,body.print-student .section-time,body.print-student .no-print{display:none!important;}
+  body.print-student .hero{background:none!important;color:#000;border:none;box-shadow:none;padding:0;margin-bottom:.6rem;}
+  body.print-student .hero *{color:#000!important;}
+  body.print-student .hero-chips{display:none;}
+  body.print-student .task{break-inside:avoid;border:1px solid #999;box-shadow:none;}
+  body.print-student .task-header{background:#eee!important;color:#000!important;}
+  body.print-student .task-header *{color:#000!important;}
+  body.print-student .icons{display:none;}
+  body.print-student textarea{display:block;width:100%;min-height:7em;border:1px solid #999;border-radius:4px;resize:none;background:repeating-linear-gradient(#fff 0 1.7em,#ccc 1.7em calc(1.7em + 1px));}
+  body.print-student textarea::placeholder{color:transparent;}
+  body.print-student .sort-row{background:#fff!important;border:1px solid #999!important;break-inside:avoid;}
+  body.print-student .sort-row select{display:none;}
+  body.print-student .sort-row::after{content:"→ ____________________";white-space:nowrap;}
+  body.print-student .print-options{display:block!important;font-size:10.5pt;margin:.3rem 0 .6rem;padding:.4rem .6rem;border:1px dashed #999;}
+  body.print-student .chip,body.print-student .chip.on{background:#fff!important;color:#000!important;border:1px solid #999!important;}
+  body.print-student .chip::before{content:"☐ ";}
+  body.print-student .quiz-opt{background:#fff!important;border:1px solid #bbb!important;color:#000!important;break-inside:avoid;}
+  body.print-student .quiz-opt::before{content:"☐";margin-right:6px;}
+  body.print-student .quiz-block{break-inside:avoid;}
+  body.print-student .book-ref{break-inside:avoid;background:none!important;}
+  body.print-student a.para-link::after{content:" (" attr(href) ")";font-weight:400;font-size:9pt;}
+  body.print-student .step-label,body.print-student .section h2{break-after:avoid;page-break-after:avoid;}
+  body.print-student .section h2{margin-top:.2rem;}
+  body.print-student *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+.print-options{display:none;}
 </style>
 </head>
 <body>
@@ -358,27 +397,22 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(
         <div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 15 · M2 Techniken der Werbung · M3 Alleinstellungsmerkmal (USP)</div></div>
       </div>
 
-      <div class="ad" aria-label="Fiktive Werbeanzeige">
-        <div class="ad-img">
-          <span class="ad-tag">1</span>
-          <svg viewBox="0 0 200 120" width="100%" height="100%" aria-hidden="true">
-            <rect x="58" y="62" width="14" height="44" rx="7" fill="#fff"/><circle cx="70" cy="62" r="26" fill="#fff" opacity=".95"/><circle cx="70" cy="62" r="11" fill="#1e293b"/>
-            <rect x="128" y="62" width="14" height="44" rx="7" fill="#fff"/><circle cx="130" cy="62" r="26" fill="#fff" opacity=".95"/><circle cx="130" cy="62" r="11" fill="#1e293b"/>
-            <path d="M20 30q15 30 0 60M180 30q-15 30 0 60" stroke="#fff" stroke-width="3" fill="none" opacity=".5" stroke-linecap="round"/>
-            <path d="M35 40q8 22 0 44M165 40q-8 22 0 44" stroke="#fff" stroke-width="3" fill="none" opacity=".35" stroke-linecap="round"/>
-          </svg>
-          <div class="ad-caption">Mädchen mit Kopfhörern im vollen Bus – lächelt, Augen zu.</div>
+      <div class="anz" aria-label="Fiktive Werbeanzeige">
+        <div class="anz-img">
+          <span class="anz-tag">1</span>
+          <img class="anz-photo" src="stunde05_nuvo.jpg" alt="Mädchen mit Kopfhörern, entspannt im vollen Bus" onerror="this.remove()">
+          <div class="anz-caption">📷 Bild: Mädchen mit Kopfhörern im vollen Bus – lächelt, Augen zu.</div>
         </div>
-        <div class="ad-body">
-          <div class="ad-brand">nuvo buds</div>
-          <div class="ad-head">Die Welt aus. Deine Musik an.</div>
-          <div class="ad-line"><span class="ad-tag">2</span>48 Stunden Akku – eine ganze Woche ohne Laden.</div>
-          <div class="ad-line"><span class="ad-tag">3</span>★ 4,8 aus über 12.000 Bewertungen</div>
-          <div class="ad-line ad-push"><span class="ad-tag">4</span>Nur bis Sonntag: –30 % mit Code SCHULE30</div>
-          <div class="ad-line"><span class="ad-tag">5</span>Zeig uns deinen Moment: #nuvoday</div>
+        <div class="anz-body">
+          <div class="anz-brand">nuvo buds</div>
+          <div class="anz-head">Die Welt aus. Deine Musik an.</div>
+          <div class="anz-line"><span class="anz-tag">2</span>48 Stunden Akku – eine ganze Woche ohne Laden.</div>
+          <div class="anz-line"><span class="anz-tag">3</span>★ 4,8 aus über 12.000 Bewertungen</div>
+          <div class="anz-line anz-push"><span class="anz-tag">4</span>Nur bis Sonntag: –30 % mit Code SCHULE30</div>
+          <div class="anz-line"><span class="anz-tag">5</span>Zeig uns deinen Moment: #nuvoday</div>
         </div>
       </div>
-      <p class="ad-note">Fiktive Marke – nur für den Unterricht erfunden.</p>
+      <p class="anz-note">Fiktive Marke – nur für den Unterricht erfunden.</p>
 
       <div class="task">
         <div class="task-header"><div class="task-num">C</div><div><div class="task-title">Welche Technik steckt in welchem Element?</div><div class="task-sub">Partnerarbeit · Sofortfeedback</div></div></div>
@@ -789,6 +823,33 @@ Object.entries(GRIDS).forEach(([k,g])=>{const box=document.getElementById(k+"Box
 function checkGrid(k){const g=GRIDS[k],box=document.getElementById(k+"Box");let ok=0;
   [...box.children].forEach((r,i)=>{const good=r.querySelector("select").value===g.items[i][1];if(good)ok++;r.classList.toggle("ok",good);r.classList.toggle("no",!good);});
   const fb=document.getElementById(k+"Fb");fb.innerHTML="<b>"+ok+" / "+g.items.length+" richtig.</b> "+(ok===g.items.length?"Stark!":"Rot markierte nochmal prüfen. "+g.hint);fb.classList.add("show");}
+
+
+/* ==== DRUCKMODUL Schülerversion ==== */
+(function(){
+  const bar=document.getElementById("teacherToggle");
+  if(bar){const b=document.createElement("button");b.type="button";b.className="tbtn teacher-only";b.id="printStudent";
+    b.textContent="🖨 Schülerversion";b.title="Druckversion für Schüler ohne Tablet (als PDF sichern möglich)";b.onclick=printStudent;
+    bar.parentNode.insertBefore(b,bar);}
+  const head=document.createElement("div");head.className="print-head";
+  head.innerHTML="<span>"+document.title+"</span><span>Name: ______________________ &nbsp; Datum: ____________</span>";
+  const first=document.querySelector(".hero");if(first)first.parentNode.insertBefore(head,first);
+})();
+function printStudent(){
+  /* Antwortmöglichkeiten der Auswahlfelder einmal pro Aufgabe auflisten */
+  document.querySelectorAll(".print-options").forEach(x=>x.remove());
+  const seen=new Set();
+  document.querySelectorAll(".sort-row select").forEach(sel=>{
+    const box=sel.closest(".sort-row").parentNode; if(seen.has(box))return; seen.add(box);
+    const opts=[...sel.options].filter(o=>o.value).map(o=>o.textContent);
+    const d=document.createElement("div");d.className="print-options";d.innerHTML="<b>Mögliche Antworten:</b> "+opts.join(" · ");
+    box.parentNode.insertBefore(d,box);
+  });
+  document.body.classList.add("print-student");
+  const done=()=>{document.body.classList.remove("print-student");window.removeEventListener("afterprint",done);};
+  window.addEventListener("afterprint",done);
+  window.print();
+}
 
 /* ---- Init ---- */
 showStep(0,false);
