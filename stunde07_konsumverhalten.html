@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stunde 7 · Warum handeln wir nicht immer rational?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --font:'Nunito',system-ui,sans-serif;
+  --blue-900:#0D47A1;--blue-800:#1565C0;--blue-700:#1976D2;--blue-400:#29B6F6;--blue-50:#E3F2FD;
+  --green:#43A047;--green-light:#E8F5E9;--orange:#FF9800;--orange-light:#FFF3E0;
+  --purple:#AB47BC;--purple-light:#F3E5F5;--red:#E53935;--red-light:#FFEBEE;
+  --teal:#0d9488;--teal-light:#ccfbf1;
+  --text:#1A1A1A;--text-secondary:#555;--text-muted:#AAA;--border:#E0E0E0;--bg-page:#F0F4F8;--bg-card:#fff;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;
+  --shadow:0 2px 8px rgba(0,0,0,.08);--shadow-lg:0 4px 20px rgba(0,0,0,.12);
+  --accent:#FB8C00;--grad:linear-gradient(135deg,#F57C00,#FFB300);
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:var(--font);background:var(--bg-page);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.55;}
+p{margin:.5rem 0;}
+
+.topbar{background:var(--blue-700);height:52px;position:sticky;top:env(safe-area-inset-top,0px);
+  padding:0 1.25rem;display:flex;align-items:center;gap:1rem;box-shadow:0 2px 12px rgba(25,118,210,.25);z-index:40;}
+.topbar-logo{font-weight:900;font-size:15px;color:#fff;text-decoration:none;}
+.topbar-logo span{color:var(--blue-400);}
+.topbar-back{color:rgba(255,255,255,.85);font-size:12.5px;font-weight:700;text-decoration:none;}
+.topbar-actions{margin-left:auto;display:flex;gap:8px;}
+.tbtn{background:rgba(255,255,255,.15);border:none;color:#fff;font-family:var(--font);font-weight:800;
+  font-size:12.5px;padding:7px 13px;border-radius:20px;cursor:pointer;}
+.tbtn:hover{background:rgba(255,255,255,.28);}
+.tbtn.on{background:#fff;color:var(--blue-800);}
+
+.progress{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:calc(52px + env(safe-area-inset-top,0px));
+  z-index:30;overflow-x:auto;}
+.progress-inner{display:flex;gap:4px;max-width:1080px;margin:0 auto;padding:.6rem 1rem;min-width:max-content;}
+.pstep{display:flex;align-items:center;gap:7px;border:none;background:transparent;font-family:var(--font);
+  cursor:pointer;padding:5px 10px;border-radius:20px;color:var(--text-secondary);font-weight:700;font-size:12.5px;white-space:nowrap;}
+.pstep .pnum{width:22px;height:22px;border-radius:50%;background:var(--bg-page);color:var(--text-secondary);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;}
+.pstep:hover{background:var(--bg-page);}
+.pstep.active{color:var(--accent);}
+.pstep.active .pnum{background:var(--accent);color:#fff;}
+.pstep.locked{opacity:.4;cursor:default;pointer-events:none;}
+.teacher-only{display:none;}
+body.version-b .teacher-only{display:flex;}
+body.version-b .section.teacher-only{display:block;}
+
+.wrap{max-width:1080px;margin:0 auto;padding:1.25rem 1rem 3rem;}
+
+.hero{background:var(--grad);border-radius:var(--radius-lg);padding:2.2rem 2rem;color:#fff;
+  position:relative;overflow:hidden;box-shadow:var(--shadow-lg);margin-bottom:1.4rem;}
+.hero::before{content:'€';position:absolute;right:1.2rem;top:-26px;font-size:150px;font-weight:900;color:rgba(255,255,255,.10);line-height:1;pointer-events:none;}
+.hero-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.9);position:relative;}
+.hero h1{font-size:27px;font-weight:900;margin:.4rem 0 .5rem;line-height:1.15;position:relative;max-width:85%;}
+.hero .lead{font-size:15px;font-weight:700;color:rgba(255,255,255,.96);position:relative;margin:0;}
+.hero-chips{display:flex;gap:6px;margin-top:.9rem;flex-wrap:wrap;position:relative;}
+.hero-chips span{background:rgba(255,255,255,.22);color:#fff;font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:20px;}
+
+.section{background:#fff;border-radius:var(--radius-lg);border:1px solid var(--border);box-shadow:var(--shadow);
+  padding:1.4rem 1.5rem;margin-bottom:1.2rem;animation:fadeUp .3s ease both;scroll-margin-top:120px;display:none;}
+.section.step-visible{display:block;}
+.step-label{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--accent);margin-bottom:.5rem;}
+.step-label .sn{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.section h2{font-size:20px;font-weight:900;margin:.1rem 0 .3rem;}
+.section h3{font-size:15px;font-weight:800;margin:1.1rem 0 .4rem;}
+.section-time{font-size:12.5px;color:var(--text-muted);font-weight:700;margin:0 0 .9rem;}
+
+.info-box{border-radius:var(--radius-sm);padding:.8rem 1rem;margin:.8rem 0;font-size:14px;}
+.info-box.blue{background:var(--blue-50);border-left:3px solid var(--blue-700);color:var(--blue-800);}
+.info-box.green{background:var(--green-light);border-left:3px solid var(--green);color:#1b5e20;}
+.info-box.orange{background:var(--orange-light);border-left:3px solid var(--orange);color:#78350f;}
+.info-box.teal{background:var(--teal-light);border-left:3px solid var(--teal);color:#134e4a;}
+.info-box b{font-weight:800;}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.7rem;margin:.8rem 0;}
+.mini{background:var(--bg-page);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.8rem .9rem;}
+.mini b{display:block;font-size:14px;color:var(--text);margin-bottom:2px;}
+.mini span{font-size:12.5px;color:var(--text-secondary);}
+
+.dtable{width:100%;border-collapse:collapse;margin:.7rem 0;font-size:13.5px;}
+.dtable th,.dtable td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top;}
+.dtable th{background:var(--bg-page);font-weight:800;}
+.dtable td.rowh{background:var(--bg-page);font-weight:700;width:30%;}
+
+.book-ref{background:#faf5ff;border:1.5px solid #d8b4fe;border-radius:var(--radius-md);padding:.9rem 1.1rem;margin:.9rem 0;display:flex;gap:.7rem;align-items:flex-start;}
+.book-ref svg{flex-shrink:0;margin-top:2px;}
+.book-ref-title{color:#6b21a8;font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.3px;}
+.book-ref-text{color:#581c87;font-size:14px;}
+
+.task{border:1.5px solid var(--accent);border-radius:var(--radius-md);overflow:hidden;margin:1rem 0;}
+.task-header{background:var(--accent);padding:.7rem 1.1rem;display:flex;align-items:center;gap:11px;}
+.task-num{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.25);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.task-title{color:#fff;font-weight:800;font-size:14.5px;line-height:1.2;}
+.task-sub{color:rgba(255,255,255,.8);font-size:11px;font-weight:600;}
+.task-body{background:#F0F4F8;padding:1rem 1.1rem;display:flex;gap:1rem;}
+.icons{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
+.itile{background:#fff;border-radius:8px;padding:8px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;}
+.task-content{flex:1;font-size:14px;}
+.task-content ol,.task-content ul{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+.task-content li{margin:.25rem 0;}
+
+.answer-area{width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-family:var(--font);font-size:14px;resize:vertical;min-height:78px;background:#fff;margin-top:.6rem;}
+.answer-area:focus{outline:none;border-color:var(--accent);}
+
+/* Musterlösung + Lösungscode-Sperre */
+.solution-btn{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:8px 15px;font-family:var(--font);font-weight:700;font-size:13px;color:var(--text-secondary);cursor:pointer;margin-top:.6rem;}
+.solution-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--orange-light);}
+.sol-code{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:.5rem;}
+.sol-code input{width:130px;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;font-family:var(--font);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.sol-code input:focus{outline:none;border-color:var(--accent);}
+.sol-code input.shake{animation:shake .4s;border-color:var(--red);}
+.sol-code button{border:none;background:var(--accent);color:#fff;border-radius:var(--radius-sm);padding:8px 14px;font-family:var(--font);font-weight:800;font-size:13px;cursor:pointer;}
+.sol-hint{font-size:11.5px;color:var(--text-muted);}
+.solution-reveal{background:var(--green-light);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:.7rem 1rem;color:#1b5e20;font-size:13.5px;margin-top:.6rem;display:none;}
+.solution-reveal.visible{display:block;}
+.solution-reveal ul{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+
+.teacher-note{background:#fffbeb;border:1.5px solid #fbbf24;border-radius:var(--radius-md);padding:1rem 1.1rem;margin:1rem 0;display:none;font-size:13.5px;color:#78350f;}
+body.version-b .teacher-note{display:block;}
+.teacher-note-header{font-weight:800;font-size:12px;color:#92400e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem;display:flex;align-items:center;gap:7px;}
+.teacher-note ul{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+
+/* Quiz-System */
+.quiz-block{margin:.4rem 0 1rem;}
+.quiz-q{font-weight:800;font-size:14.5px;margin:.6rem 0 .6rem;}
+.quiz-opt{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:11px 13px;background:#fff;font-family:var(--font);font-size:14px;font-weight:600;margin-bottom:8px;cursor:pointer;transition:.12s;color:var(--text);}
+.quiz-opt:hover{border-color:var(--accent);background:var(--orange-light);}
+.quiz-opt .ql{width:24px;height:24px;flex-shrink:0;border-radius:6px;background:var(--bg-page);color:var(--text-secondary);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.quiz-opt.locked{pointer-events:none;}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-light);color:#1b5e20;}
+.quiz-opt.correct .ql{background:var(--green);color:#fff;}
+.quiz-opt.wrong{border-color:var(--red);background:var(--red-light);color:#7f1d1d;}
+.quiz-opt.wrong .ql{background:var(--red);color:#fff;}
+.quiz-fb{display:none;font-size:13px;color:var(--text-secondary);background:var(--bg-page);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:.55rem .9rem;margin:.1rem 0 .3rem;}
+.quiz-fb.show{display:block;}
+.divider{border:none;border-top:1px solid var(--border);margin:1rem 0;}
+.quiz-score{display:none;align-items:center;gap:12px;background:var(--blue-50);border-radius:var(--radius-md);padding:.9rem 1.1rem;margin-top:.6rem;}
+.quiz-score .score-num{font-size:22px;font-weight:900;color:var(--blue-800);}
+.quiz-score .score-msg{font-size:13.5px;font-weight:700;color:var(--blue-700);}
+.quiz-retry{display:none;align-items:center;gap:6px;margin-top:.7rem;border:1.5px solid var(--red);background:#fff;color:var(--red);border-radius:var(--radius-sm);padding:8px 15px;font-family:var(--font);font-weight:800;font-size:13px;cursor:pointer;}
+
+/* 4K-Abfrage */
+.k-legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;}
+.k-legend span{font-size:11px;font-weight:800;padding:3px 10px;border-radius:100px;}
+.k-wissen{background:var(--blue-50);border:1px solid var(--blue-400);color:var(--blue-700);}
+.k-denken{background:#ccfbf1;border:1px solid #99f6e4;color:#0f766e;}
+.k-komm{background:var(--orange-light);border:1px solid #fde68a;color:#92400e;}
+.k-kreativ{background:var(--red-light);border:1px solid #fecdd3;color:#9f1239;}
+.abfrage-wrap{display:flex;flex-direction:column;gap:1rem;}
+.abfrage-q{border:1.5px solid var(--border);border-radius:var(--radius-md);overflow:hidden;}
+.abfrage-q-header{padding:.9rem 1.1rem;display:flex;align-items:flex-start;gap:11px;background:#f8fafc;}
+.abfrage-q-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
+.abfrage-q-num.wissen{background:var(--blue-700);}
+.abfrage-q-num.denken{background:var(--teal);}
+.abfrage-q-num.komm{background:var(--orange);}
+.abfrage-q-num.kreativ{background:var(--red);}
+.abfrage-q-label{font-size:11px;font-weight:800;margin-bottom:2px;}
+.abfrage-q-label.wissen{color:var(--blue-700);}
+.abfrage-q-label.denken{color:#0f766e;}
+.abfrage-q-label.komm{color:#92400e;}
+.abfrage-q-label.kreativ{color:#9f1239;}
+.abfrage-q-text{font-size:14px;font-weight:700;color:var(--text);line-height:1.5;}
+.abfrage-q-body{padding:.9rem 1.1rem;}
+.abfrage-q-body p{font-size:12.5px;color:var(--text-secondary);line-height:1.6;margin:0 0 .5rem;}
+.erwartung-btn{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:7px 13px;font-family:var(--font);font-weight:700;font-size:12.5px;color:var(--text-secondary);cursor:pointer;}
+.erwartung-btn:hover{border-color:var(--green);color:#1b5e20;}
+.erwartung-box{display:none;margin-top:.6rem;background:var(--green-light);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:.7rem 1rem;font-size:13px;color:#1b5e20;line-height:1.6;}
+.erwartung-box.show{display:block;}
+.print-btn{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:7px 13px;font-family:var(--font);font-weight:700;font-size:12.5px;color:var(--text-secondary);cursor:pointer;}
+.print-btn:hover{border-color:var(--blue-700);color:var(--blue-700);}
+
+/* Schritt-Navigation */
+.stepnav{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin:.2rem 0 .5rem;flex-wrap:wrap;}
+.nav-home{text-decoration:none;font-family:var(--font);font-weight:800;font-size:13.5px;color:var(--text-secondary);background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-md);padding:11px 18px;}
+.nav-home:hover{border-color:var(--blue-700);color:var(--blue-700);}
+.nav-right{display:flex;gap:10px;}
+.nav-btn{border:none;border-radius:var(--radius-md);padding:12px 24px;font-family:var(--font);font-weight:800;font-size:14.5px;cursor:pointer;}
+.nav-next{background:var(--accent);color:#fff;}
+.nav-next:hover{filter:brightness(.95);}
+.nav-next.done{background:var(--green);}
+.nav-next[disabled]{cursor:default;}
+.nav-prev{background:#fff;color:var(--text-secondary);border:1.5px solid var(--border);}
+.nav-prev:hover{border-color:var(--accent);color:var(--accent);}
+.nav-prev[disabled]{opacity:.4;cursor:default;pointer-events:none;}
+
+/* PIN-Modal (8-stellig) */
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:100;padding:1rem;}
+.overlay.open{display:flex;}
+.modal{background:#fff;border-radius:var(--radius-lg);padding:1.6rem;width:100%;max-width:330px;box-shadow:var(--shadow-lg);text-align:center;}
+.modal h3{margin:.2rem 0 .3rem;font-size:18px;font-weight:900;}
+.modal p{font-size:13px;color:var(--text-secondary);margin:0 0 1rem;}
+.dots{display:flex;justify-content:center;gap:9px;margin-bottom:.5rem;}
+.dots span{width:12px;height:12px;border-radius:50%;background:var(--border);transition:.15s;}
+.dots span.filled{background:var(--blue-700);}
+.dots.err span{background:var(--red);animation:shake .4s;}
+.pin-err{height:18px;font-size:12.5px;color:var(--red);font-weight:700;margin-bottom:.5rem;}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.pad button{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:14px 0;font-family:var(--font);font-size:18px;font-weight:800;cursor:pointer;color:var(--text);}
+.pad button:hover{border-color:var(--blue-700);background:var(--blue-50);}
+.modal-close{margin-top:1rem;background:none;border:none;color:var(--text-muted);font-family:var(--font);font-weight:700;font-size:13px;cursor:pointer;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-7px);}40%,80%{transform:translateX(7px);}}
+
+@media print{
+  .topbar,.progress,.stepnav,.overlay,.tbtn,.topbar-actions{display:none!important;}
+  .section{display:block!important;box-shadow:none;border:1px solid #ccc;margin-bottom:1rem;break-inside:avoid;}
+  .teacher-note,.erwartung-box,.solution-reveal{display:block!important;}
+  .hero{color:#000;background:none;border:1px solid #ccc;}
+  .hero::before{display:none;}
+}
+
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:.6rem 0 .2rem;}
+.chip{border:1.5px solid var(--border);background:#fff;border-radius:20px;padding:7px 13px;font-family:var(--font);font-weight:700;font-size:13px;cursor:pointer;color:var(--text);}
+.chip:hover{border-color:var(--accent);}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+.chip-count{font-size:12px;color:var(--text-muted);font-weight:700;margin:.2rem 0;}
+.sort-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 11px;margin-bottom:6px;font-size:13.5px;flex-wrap:wrap;}
+.sort-row select{font-family:var(--font);font-size:13px;font-weight:700;border:1.5px solid var(--border);border-radius:6px;padding:5px 8px;background:#fff;}
+.sort-row.ok{border-color:var(--green);background:var(--green-light);}
+.sort-row.no{border-color:var(--red);background:var(--red-light);}
+.tscroll{overflow-x:auto;}
+a.para-link{color:var(--blue-700);text-decoration:none;border-bottom:1px dotted var(--blue-700);font-weight:700;}
+button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(--blue-700);outline-offset:2px;}
+@media (max-width:600px){.task-body{flex-direction:column;}.icons{flex-direction:row;}}
+@media (prefers-reduced-motion:reduce){.section{animation:none;}}
+.anz-tag{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#1e293b;color:#fff;font-weight:900;font-size:12px;flex-shrink:0;}
+.small-muted{font-size:12.5px;color:var(--text-muted);}
+.exp{display:flex;gap:1.4rem;justify-content:center;flex-wrap:wrap;margin:1rem 0 .3rem;padding:1.2rem;background:linear-gradient(#e0f2fe,#f8fafc);border-radius:var(--radius);}
+.juice{display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff;border:2px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1.1rem;cursor:pointer;font-family:var(--font);font-weight:900;font-size:17px;color:var(--text);}
+.juice:hover{border-color:var(--accent);}
+.jb{height:110px;display:flex;align-items:flex-end;}
+.juice small{font-size:12px;color:var(--text-secondary);font-weight:700;}
+.juice.on{border-color:var(--accent);background:var(--orange-light);box-shadow:0 0 0 3px rgba(251,140,0,.2);}
+.exp-variant{text-align:center;font-size:12px;color:var(--text-muted);font-weight:700;}
+.shop{border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1rem 0;background:#fff;font-size:14px;}
+.shop-bar{display:flex;align-items:center;gap:5px;background:#e2e8f0;padding:7px 10px;}
+.shop-bar>span{width:9px;height:9px;border-radius:50%;background:#94a3b8;}
+.shop-url{margin-left:8px;background:#fff;border-radius:6px;padding:2px 10px;font-size:12px;color:var(--text-muted);flex:1;}
+.shop-banner{background:#0f766e;color:#fff;font-weight:800;padding:8px 12px;display:flex;align-items:center;gap:8px;}
+.shop-banner .anz-tag{background:#fff;color:#0f766e;}
+.shop-main{display:grid;grid-template-columns:1fr 1.4fr;gap:1rem;padding:1rem;}
+.shop-img{background:#f0fdfa;border-radius:var(--radius-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem;gap:.8rem;}
+.shop-photo{width:100%;max-width:260px;aspect-ratio:1/1;object-fit:cover;border-radius:8px;display:block;}
+.shop-gift{background:#fff7ed;border:1.5px dashed #fb923c;border-radius:8px;padding:6px 9px;font-size:12.5px;display:flex;gap:6px;align-items:center;}
+.shop-info{display:flex;flex-direction:column;gap:.55rem;}
+.shop-title{font-weight:900;font-size:17px;}
+.shop-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.stars{color:#f59e0b;letter-spacing:1px;}
+.badge{background:#fde68a;color:#78350f;font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;}
+.strike{text-decoration:line-through;color:var(--text-muted);}
+.price{font-size:22px;font-weight:900;color:#dc2626;}
+.hot{color:#dc2626;font-weight:700;}
+.pre{display:flex;gap:6px;align-items:center;font-size:13px;}
+.shop-btns{display:flex;gap:8px;align-items:center;margin-top:.3rem;}
+.buy{background:#f59e0b;border:none;border-radius:8px;padding:11px 26px;font-family:var(--font);font-weight:900;font-size:15px;color:#1e293b;cursor:pointer;}
+.later{background:none;border:none;font-size:11px;color:#94a3b8;cursor:pointer;font-family:var(--font);}
+.track-shop{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:.6rem 0;}
+.tp{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.7rem .4rem;cursor:pointer;font-family:var(--font);font-weight:700;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--text);}
+.tp-e{font-size:26px;}
+.tp.on{border-color:var(--accent);background:var(--orange-light);}
+.track-log{background:#0f172a;color:#cbd5e1;border-radius:var(--radius-sm);padding:.7rem .9rem;font-size:12.5px;font-family:ui-monospace,Menlo,monospace;margin:.6rem 0;}
+.track-log-head{color:#fbbf24;font-weight:700;margin-bottom:4px;font-family:var(--font);}
+.track-log .small-muted{color:#94a3b8;}
+.tl{padding:2px 0;}
+.tl.prof{color:#fbbf24;margin-top:4px;}
+.news{display:none;border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;margin:.6rem 0 1rem;}
+.news.show{display:block;}
+.news-head{background:var(--bg-page);padding:6px 10px;font-weight:800;font-size:13px;}
+.news-body{display:grid;grid-template-columns:1.5fr 1fr;gap:10px;padding:10px;font-size:13.5px;}
+.news-anz{background:#fef3c7;border:1.5px solid #f59e0b;border-radius:8px;padding:8px;font-weight:700;font-size:13px;}
+.anz-label{display:block;font-size:10px;color:#92400e;font-weight:800;margin-bottom:3px;}
+@media (max-width:600px){.shop-main,.news-body{grid-template-columns:1fr;}.track-shop{grid-template-columns:repeat(2,1fr);}}
+/* ==== DRUCKMODUL Schülerversion (body.print-student) ==== */
+.print-head{display:none;}
+@media print{
+  body.print-student{background:#fff;}
+  body.print-student .wrap,body.print-student main{max-width:none;padding:0;}
+  body.print-student .print-head{display:flex;justify-content:space-between;font-size:12pt;font-weight:700;border-bottom:1.5px solid #000;padding-bottom:6px;margin-bottom:12px;}
+  body.print-student .section{display:block!important;border:none;box-shadow:none;padding:0 0 .6rem;margin:0 0 1rem;break-inside:auto;animation:none;}
+  body.print-student .section.teacher-only,
+  body.print-student .teacher-note,body.print-student .solution-reveal,body.print-student .erwartung-box,
+  body.print-student .solution-btn,body.print-student .erwartung-btn,body.print-student .sol-code,
+  body.print-student .quiz-fb,body.print-student .quiz-score,body.print-student .quiz-retry,body.print-student .print-btn,
+  body.print-student .chip-count,body.print-student .section-time,body.print-student .no-print{display:none!important;}
+  body.print-student .hero{background:none!important;color:#000;border:none;box-shadow:none;padding:0;margin-bottom:.6rem;}
+  body.print-student .hero *{color:#000!important;}
+  body.print-student .hero-chips{display:none;}
+  body.print-student .task{break-inside:avoid;border:1px solid #999;box-shadow:none;}
+  body.print-student .task-header{background:#eee!important;color:#000!important;}
+  body.print-student .task-header *{color:#000!important;}
+  body.print-student .icons{display:none;}
+  body.print-student textarea{display:block;width:100%;min-height:7em;border:1px solid #999;border-radius:4px;resize:none;background:repeating-linear-gradient(#fff 0 1.7em,#ccc 1.7em calc(1.7em + 1px));}
+  body.print-student textarea::placeholder{color:transparent;}
+  body.print-student .sort-row{background:#fff!important;border:1px solid #999!important;break-inside:avoid;}
+  body.print-student .sort-row select{display:none;}
+  body.print-student .sort-row::after{content:"→ ____________________";white-space:nowrap;}
+  body.print-student .print-options{display:block!important;font-size:10.5pt;margin:.3rem 0 .6rem;padding:.4rem .6rem;border:1px dashed #999;}
+  body.print-student .chip,body.print-student .chip.on{background:#fff!important;color:#000!important;border:1px solid #999!important;}
+  body.print-student .chip::before{content:"☐ ";}
+  body.print-student .quiz-opt{background:#fff!important;border:1px solid #bbb!important;color:#000!important;break-inside:avoid;}
+  body.print-student .quiz-opt::before{content:"☐";margin-right:6px;}
+  body.print-student .quiz-block{break-inside:avoid;}
+  body.print-student .book-ref{break-inside:avoid;background:none!important;}
+  body.print-student a.para-link::after{content:" (" attr(href) ")";font-weight:400;font-size:9pt;}
+  body.print-student .step-label,body.print-student .section h2{break-after:avoid;page-break-after:avoid;}
+  body.print-student .section h2{margin-top:.2rem;}
+  body.print-student *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+.print-options{display:none;}
+.chat{background:#e7ded3;border-radius:var(--radius);padding:.8rem;margin:1rem 0 .3rem;display:flex;flex-direction:column;gap:6px;max-width:560px;}
+.chat-head{font-weight:800;font-size:13px;color:#3f3f46;padding:2px 4px 6px;}
+.msg{max-width:82%;padding:7px 11px;border-radius:12px;font-size:14px;line-height:1.5;position:relative;}
+.msg .anz-tag{margin-right:6px;vertical-align:middle;width:20px;height:20px;font-size:11px;}
+.msg .who{display:block;font-size:11px;font-weight:800;color:#0f766e;}
+.msg.l{background:#fff;align-self:flex-start;border-top-left-radius:3px;}
+.msg.r{background:#d9fdd3;align-self:flex-end;border-top-right-radius:3px;}
+.msg.r .who{color:#7c3aed;}
+.msg.sys{align-self:center;background:#fef3c7;border:1px solid #f59e0b;font-weight:700;font-size:13px;}
+.anz-note{font-size:11.5px;color:var(--text-muted);margin:0 0 .6rem;}
+.own-rule{width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:9px 12px;font-family:var(--font);font-size:14px;margin:.3rem 0 .8rem;}
+.rulecard{background:linear-gradient(135deg,#fff7ed,#fffbeb);border:2px solid var(--accent);border-radius:var(--radius);padding:1rem 1.2rem;max-width:460px;}
+.rulecard-head{font-weight:900;font-size:17px;margin-bottom:.4rem;}
+.rulecard ol{margin:0;padding-left:1.3rem;font-weight:700;font-size:14.5px;line-height:1.7;}
+.scale{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px;margin:.4rem 0;}
+.scale input{flex:1;accent-color:var(--accent);}
+.scale-val{text-align:center;font-weight:800;color:var(--accent);margin:0 0 .6rem;}
+@media print{body.print-student .rulecard ol li.small-muted{list-style:none;}body.print-student .rulecard ol{min-height:9em;}body.print-student .scale input{display:none;}body.print-student .scale{justify-content:space-between;border-bottom:2px solid #000;padding-bottom:4px;}body.print-student .scale-val{display:none;}}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="topbar-logo" href="index.html">WR<span>&amp;</span>10</a>
+    <a class="topbar-back" href="index.html">← Übersicht</a>
+    <div class="topbar-actions">
+      <button class="tbtn" id="teacherToggle" onclick="toggleTeacher()">🔓 Lehrkraft</button>
+    </div>
+  </div>
+
+  <nav class="progress"><div class="progress-inner" id="prog"></div></nav>
+
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-eyebrow">Ökonomisches Handeln auf dem Markt · Stunde 7</div>
+      <h1>Warum handeln wir nicht immer rational?</h1>
+      <p class="lead">Wir halten uns für vernünftige Käufer. Ein Blick in einen ganz normalen Gruppenchat zeigt etwas anderes.</p>
+      <div class="hero-chips"><span>Kapitel 1.4</span><span>Buch S. 16–19</span><span>Konsumverhalten</span></div>
+    </div>
+
+    <!-- STEP 1 -->
+    <section class="section" id="step1">
+      <span class="step-label"><span class="sn">1</span> Einstieg · Hausaufgabe</span>
+      <h2>Faktencheck im Supermarkt: Was hast du herausgefunden?</h2>
+      <div class="section-time">⏱ ca. 5 Min · Plenum</div>
+      <p>Du hast fünf Behauptungen über Verkaufstricks im Supermarkt überprüft. Trag hier dein Ergebnis zu diesen Klassikern ein – dann vergleichen wir.</p>
+
+      <div class="task">
+        <div class="task-header"><div class="task-num">A</div><div><div class="task-title">Fakt oder Mythos?</div><div class="task-sub">Abstimmung · Plenum</div></div></div>
+        <div class="task-body">
+          <div class="icons">
+            <div class="itile" style="border:1.5px solid #E65100;"><svg width="22" height="22" viewBox="0 0 44 38" fill="none"><circle cx="22" cy="30" r="5" fill="#E65100"/><path d="M13 38c0-4.418 4.03-8 9-8s9 3.582 9 8" stroke="#E65100" stroke-width="2.2" stroke-linecap="round" fill="none"/><circle cx="7" cy="14" r="3.5" fill="#E65100" opacity=".7"/><circle cx="16" cy="10" r="3.5" fill="#E65100" opacity=".75"/><circle cx="28" cy="10" r="3.5" fill="#E65100" opacity=".75"/><circle cx="37" cy="14" r="3.5" fill="#E65100" opacity=".7"/></svg></div>
+          </div>
+          <div class="task-content">
+            <div id="hwBox"></div>
+            <p style="margin-top:.6rem"><b>Was hat dich am meisten überrascht?</b></p>
+            <textarea class="answer-area" id="s7a1" placeholder="Im Supermarkt ist mir aufgefallen, dass …"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        Kurze Umfrage per Handzeichen je Behauptung. Gut belegt bzw. leicht beobachtbar: teure Ware auf Augenhöhe, Quengelware an der Kasse, Grundnahrungsmittel quer verteilt, Obst und Gemüse am Eingang. Eher Mythos bzw. kaum prüfbar: geneigter Wagenboden, Musik im Ruhepuls-Tempo. Überleitung: Viele Tricks wirken – aber warum fallen wir überhaupt darauf herein? Genau darum geht es heute.
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="section" id="step2">
+      <span class="step-label"><span class="sn">2</span> Erarbeitung</span>
+      <h2>Der Shopping-Chat</h2>
+      <div class="section-time">⏱ ca. 8 Min · Partnerarbeit</div>
+      <p>Mia, Zoe und Lena sitzen nachmittags zusammen und scrollen durch einen Online-Shop. Lies ihren Chat.</p>
+
+      <div class="chat" aria-label="Fiktiver Gruppenchat">
+        <div class="chat-head">💬 Shopping-Gang 🛍️ · 3 Teilnehmerinnen</div>
+        <div class="msg l"><span class="who">Mia</span><span class="anz-tag">1</span>OMG StyleDrop hat 70 % auf alles!!! Das sind doch keine Preise mehr 😍</div>
+        <div class="msg r"><span class="who">Zoe</span>Hab diesen Monat eigentlich kein Geld mehr… und genug Klamotten 🙈</div>
+        <div class="msg l"><span class="who">Lena</span><span class="anz-tag">2</span>Egal, du kannst doch „jetzt kaufen, in 30 Tagen bezahlen“. Merkst du gar nicht 😎</div>
+        <div class="msg l"><span class="who">Mia</span><span class="anz-tag">3</span>Und die Jeansjacke hat echt JEDE in der Klasse. Du musst die haben, sonst bist du raus 😂</div>
+        <div class="msg sys"><span class="anz-tag">4</span>⚠️ Pop-up: „Nur noch 2 Stück in deiner Größe!“</div>
+        <div class="msg r"><span class="who">Zoe</span>Oh nein Panik 😬 ok ok ich bestell!!!</div>
+        <div class="msg r"><span class="who">Zoe</span><span class="anz-tag">5</span>Ich bestell eh immer bei StyleDrop, andere Shops schau ich mir gar nicht an</div>
+        <div class="msg r"><span class="who">Zoe</span><span class="anz-tag">6</span>… Mist. Bei einem anderen Shop wär die Jacke 15 € billiger gewesen 🙄</div>
+      </div>
+      <p class="anz-note">Fiktiver Chat und fiktiver Shop – angelehnt an die Situation in M1.</p>
+
+      <div class="book-ref">
+        <svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg>
+        <div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 16 · M1 „Vernünftige Kaufentscheidung?" · Aufgabe 1 · Fachwissen S. 41–43</div></div>
+      </div>
+
+      <div class="cards">
+        <div class="mini"><b>😵 Emotionen</b><span>Freude, Stress, Frust oder Panik treiben den Kauf.</span></div>
+        <div class="mini"><b>👯 Sozialer Druck</b><span>Freunde, Familie oder Social Media setzen Maßstäbe.</span></div>
+        <div class="mini"><b>🎯 Werbung &amp; Verkaufstricks</b><span>Unternehmen lenken gezielt unsere Entscheidung.</span></div>
+        <div class="mini"><b>🔁 Gewohnheiten</b><span>Wir kaufen immer gleich, ohne Alternativen zu prüfen.</span></div>
+        <div class="mini"><b>❓ Fehlende Information</b><span>Wichtiges wissen wir nicht oder blenden es aus.</span></div>
+      </div>
+
+      <div class="task">
+        <div class="task-header"><div class="task-num">B</div><div><div class="task-title">Wo wird es irrational?</div><div class="task-sub">Buchaufgabe (Aufgabe 1) · Partnerarbeit · Sofortfeedback</div></div></div>
+        <div class="task-body">
+          <div class="icons">
+            <div class="itile" style="border:1.5px solid #0d9488;"><svg width="22" height="22" viewBox="0 0 44 36" fill="none"><circle cx="12" cy="10" r="6.5" fill="#0d9488"/><circle cx="32" cy="10" r="6.5" fill="#0d9488"/><path d="M1 34c0-6.075 4.925-11 11-11s11 4.925 11 11" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round" fill="none"/><path d="M21 34c0-6.075 4.925-11 11-11s11 4.925 11 11" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg></div>
+          </div>
+          <div class="task-content">
+            <p>Ordne jeder markierten Stelle den Grund zu, der <b>am stärksten</b> wirkt.</p>
+            <div id="chatBox"></div>
+            <button class="erwartung-btn" style="margin-top:.4rem" onclick="checkGrid('chat')">✓ Zuordnung prüfen</button>
+            <div class="quiz-fb" id="chatFb"></div>
+            <p style="margin-top:.8rem"><b>Und Zoes zweite Nachricht?</b> Ist sie auch irrational? Begründe.</p>
+            <textarea class="answer-area" id="s7b1" placeholder="Zoes zweite Nachricht ist …, weil …"></textarea>
+            <button class="solution-btn" data-target="solB" onclick="solClick(this)">🔒 Musterlösung</button>
+            <div class="solution-reveal" id="solB">Nein – das ist die <b>einzige vernünftige Stimme</b> im Chat: Zoe denkt an ihr Budget und an ihren Bedarf. Rational wäre gewesen, dabei zu bleiben. Ihre Fehler danach: kein Budget beachtet, Gruppendruck nachgegeben, unter Zeitdruck spontan gekauft, keine Angebote verglichen.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        Mehrfachzuordnungen ausdrücklich zulassen – z. B. ist Stelle 4 Verknappung (Trick) <b>und</b> löst Panik (Emotion) aus. Gefragt ist der stärkste Grund für Zoes Reaktion. Fehler laut AL: kein Anbietervergleich, Impulskauf, Gruppendruck, Budget nicht bedacht. „Jetzt kaufen, später bezahlen“ kurz als Vorgriff auf Stunde 10 (Überschuldung) markieren.
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="section" id="step3">
+      <span class="step-label"><span class="sn">3</span> Vertiefung</span>
+      <h2>Wer steckt hinter Zoes Entscheidung?</h2>
+      <div class="section-time">⏱ ca. 8 Min · Einzelarbeit</div>
+      <p>Zoe hat das Gefühl, selbst entschieden zu haben. Mit deinem Wissen aus Stunde 6 kannst du zeigen, wer alles mitentschieden hat.</p>
+
+      <div class="book-ref">
+        <svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg>
+        <div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 16–18 · M1, M3, M5 · Aufgaben 3 und 7</div></div>
+      </div>
+
+      <div class="task">
+        <div class="task-header"><div class="task-num">C</div><div><div class="task-title">Warum gerade Zoe, warum gerade jetzt?</div><div class="task-sub">Buchaufgabe (Aufgabe 7) · Einzelarbeit</div></div></div>
+        <div class="task-body">
+          <div class="icons">
+            <div class="itile" style="border:1.5px solid #1976D2;"><svg width="22" height="22" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="12" r="7" fill="#1976D2"/><path d="M4 34c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="#1976D2" stroke-width="3" stroke-linecap="round" fill="none"/></svg></div>
+          </div>
+          <div class="task-content">
+            <p>Erkläre, wie der Shop Zoes Entscheidung beeinflusst hat. Verwende mindestens <b>drei</b> dieser Begriffe: Tracking · Nutzerprofil · Retargeting · Verknappung · Ankereffekt · sozialer Beweis.</p>
+            <textarea class="answer-area" id="s7c1" placeholder="Der Shop wusste über Zoe, dass … Deshalb …"></textarea>
+            <button class="solution-btn" data-target="solC" onclick="solClick(this)">🔒 Musterlösung</button>
+            <div class="solution-reveal" id="solC">
+              Durch <b>Tracking</b> (Cookies, Likes, frühere Besuche) hat der Shop ein <b>Nutzerprofil</b>: Alter, Lieblingsmarken, Größe, Neigung zu Spontankäufen. Deshalb bekommt genau Zoes Gruppe die Jeansjacke angezeigt (<b>Retargeting</b>/personalisierte Werbung) – nicht ihre Eltern. „70 % Rabatt“ wirkt als <b>Anker</b>, „jeder in der Klasse hat sie“ als <b>sozialer Beweis</b>, „nur noch 2 Stück“ als <b>Verknappung</b>, genau im Moment des Zögerns. Der Preis wird dabei nebensächlich – sogar der Preisvergleich fällt weg.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task-header"><div class="task-num">D</div><div><div class="task-title">Die Jacke im Influencer-Video</div><div class="task-sub">Buchaufgabe (Aufgabe 3) · Einzelarbeit, dann Plenum</div></div></div>
+        <div class="task-body">
+          <div class="icons">
+            <div class="itile" style="border:1.5px solid #1976D2;"><svg width="22" height="22" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="12" r="7" fill="#1976D2"/><path d="M4 34c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="#1976D2" stroke-width="3" stroke-linecap="round" fill="none"/></svg></div>
+          </div>
+          <div class="task-content">
+            <p>Mia hat die Jacke zuerst bei ihrer Lieblings-Influencerin gesehen. <b>Wo begegnet dir Werbung am häufigsten?</b></p>
+            <div class="chips" id="mediaChips"></div>
+            <p>Erkläre, warum Influencer-Marketing bei Jugendlichen oft erfolgreicher ist als klassische Werbung. Denk an eine Influencerin oder einen Streamer, dem du folgst: Welche Produkte tauchen auf?</p>
+            <textarea class="answer-area" id="s7d1" placeholder="Influencer wirken stärker, weil …"></textarea>
+            <button class="solution-btn" data-target="solD" onclick="solClick(this)">🔒 Musterlösung</button>
+            <div class="solution-reveal" id="solD">
+              <ul>
+                <li><b>Nähe und Vertrauen:</b> Man folgt ihnen freiwillig, sieht ihren Alltag und fühlt sich wie mit einer Freundin verbunden – die Empfehlung wirkt persönlich, nicht wie Werbung.</li>
+                <li><b>Passende Zielgruppe:</b> Die Follower haben ähnliche Interessen und ein ähnliches Alter.</li>
+                <li><b>Richtiger Kanal:</b> Jugendliche schauen kaum lineares Fernsehen oder Zeitung, aber täglich Instagram, TikTok, YouTube.</li>
+                <li><b>Sozialer Beweis:</b> Viele Likes und Kommentare zeigen: Alle finden das gut.</li>
+              </ul>
+              Bezahlte Beiträge müssen als Werbung gekennzeichnet sein – trotzdem nimmt man sie oft nicht als Werbung wahr.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="section" id="step4">
+      <span class="step-label"><span class="sn">4</span> Anwendung</span>
+      <h2>Meine Anti-Trick-Regeln</h2>
+      <div class="section-time">⏱ ca. 6 Min · Einzelarbeit</div>
+      <p>Wissen allein schützt nicht – die Tricks wirken trotzdem. Was hilft, sind feste Regeln, an die man sich vor dem Kauf hält.</p>
+      <div class="book-ref">
+        <svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg>
+        <div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 19 · Aufgabe 8</div></div>
+      </div>
+
+      <div class="task">
+        <div class="task-header"><div class="task-num">E</div><div><div class="task-title">Meine Regelkarte</div><div class="task-sub">Buchaufgabe (Aufgabe 8) · Einzelarbeit</div></div></div>
+        <div class="task-body">
+          <div class="icons">
+            <div class="itile" style="border:1.5px solid #FF9800;"><svg width="22" height="22" viewBox="0 0 36 40" fill="none"><path d="M18 4C11.373 4 6 9.373 6 16c0 4.136 2.022 7.789 5.1 10.053C12.2 27.26 13 28.5 13 30h10c0-1.5.8-2.74 1.9-3.947C27.978 23.789 30 20.136 30 16c0-6.627-5.373-12-12-12z" fill="#FFC107" stroke="#FF9800" stroke-width="2"/><rect x="13" y="30" width="10" height="3" rx="1" fill="#9E9E9E"/><rect x="14" y="33" width="8" height="3" rx="1" fill="#9E9E9E"/></svg></div>
+          </div>
+          <div class="task-content">
+            <p>Wähle die <b>vier</b> Regeln, die dir am meisten helfen würden – und ergänze eine eigene. Denk an Zoe: Welche Regel hätte sie gerettet?</p>
+            <div class="chips rules" id="ruleChips"></div>
+            <p class="chip-count" id="ruleCount">0 / 4 gewählt</p>
+            <input type="text" class="own-rule" id="ownRule" maxlength="90" placeholder="Meine eigene Regel: …">
+            <div class="rulecard" id="ruleCard">
+              <div class="rulecard-head">🛡️ Meine Anti-Trick-Regeln</div>
+              <ol id="ruleList"><li class="small-muted">Wähle oben deine Regeln aus.</li></ol>
+            </div>
+            <p class="small-muted no-print">Tipp: Mach einen Screenshot und speichere die Karte als Hintergrund oder in deinen Notizen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="section" id="step5">
+      <span class="step-label"><span class="sn">5</span> Urteil &amp; Sicherung</span>
+      <h2>Werbung – Inspiration oder Manipulation?</h2>
+      <div class="section-time">⏱ ca. 6 Min · Einzelarbeit, dann Plenum</div>
+      <div class="book-ref">
+        <svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg>
+        <div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 19 · Aufgabe 9 – Rückblick auf Stunden 5 bis 7</div></div>
+      </div>
+
+      <div class="task">
+        <div class="task-header"><div class="task-num">F</div><div><div class="task-title">Meine Position</div><div class="task-sub">Stellungnahme (Aufgabe 9) · Einzelarbeit</div></div></div>
+        <div class="task-body">
+          <div class="icons">
+            <div class="itile" style="border:1.5px solid #0d9488;"><svg width="22" height="22" viewBox="0 0 44 38" fill="none"><rect x="2" y="3" width="22" height="16" rx="4" fill="#0d9488"/><rect x="20" y="18" width="22" height="16" rx="4" fill="#0d9488" opacity=".7"/></svg></div>
+          </div>
+          <div class="task-content">
+            <div class="scale">
+              <span>💡 Inspiration</span>
+              <input type="range" min="0" max="100" value="50" id="posRange" aria-label="Position zwischen Inspiration und Manipulation">
+              <span>🎭 Manipulation</span>
+            </div>
+            <p class="scale-val" id="posVal">Genau in der Mitte</p>
+            <textarea class="answer-area" id="s7f1" placeholder="Ich sehe Werbung eher als …, weil&#10;1. …&#10;2. …&#10;Allerdings …"></textarea>
+            <button class="solution-btn" data-target="solF" onclick="solClick(this)">🔒 Argumente-Sammlung</button>
+            <div class="solution-reveal" id="solF">
+              <b>Inspiration:</b> neue Produkte kennenlernen · Informationen über Angebote und Preise · kreative Spots als eigene Kunstform · finanziert kostenlose Inhalte (Apps, Videos).<br>
+              <b>Manipulation:</b> Impulskäufe durch Tricks · Nutzerprofile oft ohne bewusste Zustimmung · Nachhaltigkeit spielt keine Rolle, Greenwashing · Bedürfnisse werden erst geweckt.<br>
+              <b>Gutes Urteil:</b> wägt ab, z. B. „Werbung ist nicht automatisch Manipulation – sie wird es dort, wo sie unsere Denkabkürzungen gezielt ausnutzt und wir es nicht merken.“
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box green"><b>Warum wir nicht immer rational handeln:</b> Emotionen · sozialer Druck · Werbung und Verkaufstricks · Gewohnheiten · fehlende Information &nbsp;•&nbsp; <b>Was hilft:</b> feste Regeln vor dem Kauf – Bedarf prüfen, Budget, vergleichen, Zeit lassen, Daten schützen.</div>
+
+      <div class="quiz-block">
+        <div class="quiz-q">1. Tom kauft seit Jahren dieselbe Zahnpasta, obwohl es eine günstigere mit gleichen Inhaltsstoffen gibt. Welcher Grund liegt vor?</div>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">A</span><span>Sozialer Druck</span></button>
+        <button class="quiz-opt" data-correct="true" onclick="checkQuiz(this)"><span class="ql">B</span><span>Gewohnheit</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">C</span><span>Verknappung</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">D</span><span>Emotionen</span></button>
+        <div class="quiz-fb">Er prüft keine Alternativen mehr – typisch für Gewohnheitskäufe.</div>
+      </div>
+      <hr class="divider">
+      <div class="quiz-block">
+        <div class="quiz-q">2. Nach einem stressigen Schultag bestellt Ella „zur Belohnung“ Kopfhörer. Was hätte am ehesten geholfen?</div>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">A</span><span>Mehr Bewertungen lesen</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">B</span><span>Einen Rabattcode suchen</span></button>
+        <button class="quiz-opt" data-correct="true" onclick="checkQuiz(this)"><span class="ql">C</span><span>In emotionalen Momenten nichts kaufen und eine Nacht darüber schlafen</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">D</span><span>Mit „später bezahlen“ kaufen</span></button>
+        <div class="quiz-fb">Stress ist ein Emotionskauf-Auslöser – Abstand nehmen ist die beste Gegenstrategie.</div>
+      </div>
+      <hr class="divider">
+      <div class="quiz-block">
+        <div class="quiz-q">3. Warum wirkt Influencer-Werbung bei Jugendlichen oft stärker als ein TV-Spot?</div>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">A</span><span>Weil Influencer nicht als Werbung gekennzeichnet werden müssen.</span></button>
+        <button class="quiz-opt" data-correct="true" onclick="checkQuiz(this)"><span class="ql">B</span><span>Weil man ihnen freiwillig folgt, ihnen vertraut und die Empfehlung persönlich wirkt.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">C</span><span>Weil ihre Produkte immer günstiger sind.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">D</span><span>Weil TV-Werbung verboten ist.</span></button>
+        <div class="quiz-fb">Vertrauen und Nähe machen die Empfehlung glaubwürdig – bezahlte Posts müssen trotzdem gekennzeichnet sein.</div>
+      </div>
+      <hr class="divider">
+      <div class="quiz-block">
+        <div class="quiz-q">4. Welche Regel schützt am besten davor, dass ein Shop ein genaues Nutzerprofil von dir anlegt?</div>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">A</span><span>Nur bei bekannten Marken kaufen</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">B</span><span>Einkaufszettel schreiben</span></button>
+        <button class="quiz-opt" data-correct="true" onclick="checkQuiz(this)"><span class="ql">C</span><span>Nur notwendige Cookies zulassen und Tracking-Schutz im Browser nutzen</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">D</span><span>Immer per Rechnung bezahlen</span></button>
+        <div class="quiz-fb">Ohne Cookies und Tracking fehlen die Daten für das Profil.</div>
+      </div>
+
+      <div class="quiz-score" id="quizScore"><span class="score-num"></span><span class="score-msg"></span></div>
+      <button class="quiz-retry" id="quizRetry" onclick="retryQuiz()">🔄 Nochmal versuchen</button>
+    </section>
+
+    <!-- STEP 6 – Lehrkraft -->
+    <section class="section teacher-only" id="step6">
+      <span class="step-label"><span class="sn">6</span> Mündliche Abfrage</span>
+      <h2>Abfrage Stunde 7 – Warum handeln wir nicht immer rational?</h2>
+      <div class="section-time">⏱ ca. 10 Min · 1 Schüler:in</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.4rem;">
+        <div class="k-legend"><span class="k-wissen">🔵 Wissen</span><span class="k-denken">🟢 Kritisches Denken</span><span class="k-komm">🟡 Kommunikation</span><span class="k-kreativ">🔴 Kreativität</span></div>
+        <button class="print-btn" onclick="window.print()">🖨 Drucken</button>
+      </div>
+      <div class="abfrage-wrap">
+        <div class="abfrage-q"><div class="abfrage-q-header"><div class="abfrage-q-num wissen">1</div><div><div class="abfrage-q-label wissen">🔵 Wissen · ca. 2 Min.</div><div class="abfrage-q-text">Nenne vier Gründe, warum Menschen beim Einkaufen nicht immer rational handeln, und erläutere einen davon an einem Beispiel.</div></div></div>
+          <div class="abfrage-q-body"><p>Bewertet: vier Gründe + ein ausgeführtes Beispiel.</p><button class="erwartung-btn" onclick="toggleErw('ew1',this)">📋 Erwartungshorizont anzeigen</button>
+          <div class="erwartung-box" id="ew1">Emotionen, sozialer Druck, Werbung/Verkaufstricks, Gewohnheiten, fehlende Information (je 0,5 P.). Beispiel ausgeführt (2 P.), z. B. Frustkauf nach schlechter Note.</div></div></div>
+        <div class="abfrage-q"><div class="abfrage-q-header"><div class="abfrage-q-num denken">2</div><div><div class="abfrage-q-label denken">🟢 Kritisches Denken · ca. 3 Min.</div><div class="abfrage-q-text">„Wer die Verkaufstricks kennt, fällt nicht mehr darauf herein.“ Nimm Stellung.</div></div></div>
+          <div class="abfrage-q-body"><p>Bewertet: Differenzierung + begründetes Urteil.</p><button class="erwartung-btn" onclick="toggleErw('ew2',this)">📋 Erwartungshorizont anzeigen</button>
+          <div class="erwartung-box" id="ew2">Teilweise richtig: Wissen hilft, Tricks zu erkennen. Aber: Effekte wirken oft unbewusst und in emotionalen Momenten (Stress, Zeitdruck, Gruppe) – dann hilft Wissen wenig. Deshalb sind <strong>feste Regeln vor dem Kauf</strong> wirksamer (z. B. 24-Stunden-Regel, Budget). Gutes Urteil: Wissen ist notwendig, aber nicht ausreichend.</div></div></div>
+        <div class="abfrage-q"><div class="abfrage-q-header"><div class="abfrage-q-num komm">3</div><div><div class="abfrage-q-label komm">🟡 Kommunikation · ca. 2 Min.</div><div class="abfrage-q-text">Deine Freundin will mit „jetzt kaufen, später bezahlen“ eine Konsole bestellen. Überzeuge sie in einer kurzen Sprachnachricht, es sich noch einmal zu überlegen – ohne zu belehren.</div></div></div>
+          <div class="abfrage-q-body"><p>Bewertet: adressatengerecht, konkrete Argumente, freundlicher Ton.</p><button class="erwartung-btn" onclick="toggleErw('ew3',this)">📋 Erwartungshorizont anzeigen</button>
+          <div class="erwartung-box" id="ew3">Z. B.: „Hey, coole Konsole! Aber denk dran: Bezahlen musst du trotzdem – in 30 Tagen hast du dann vielleicht weniger, als du denkst. Schlaf doch eine Nacht drüber und vergleich kurz die Preise, dann kaufst du entspannt.“ (Budget, Zeit lassen, Vergleich)</div></div></div>
+        <div class="abfrage-q"><div class="abfrage-q-header"><div class="abfrage-q-num kreativ">4</div><div><div class="abfrage-q-label kreativ">🔴 Kreativität · ca. 2 Min.</div><div class="abfrage-q-text">Erfinde eine Funktion für eine Shopping-App, die Jugendliche vor Impulskäufen schützt.</div></div></div>
+          <div class="abfrage-q-body"><p>Eigene Idee. Bewertet: wirkt gegen einen benannten Grund für irrationales Verhalten.</p><button class="erwartung-btn" onclick="toggleErw('ew4',this)">📋 Erwartungshorizont anzeigen</button>
+          <div class="erwartung-box" id="ew4">Beispiele: „Abkühl-Timer“ – Warenkorb erst nach 24 h bestellbar (gegen Emotionen/Verknappung); Budget-Anzeige vor jedem Kauf (gegen fehlende Information); „Preisvergleich mit einem Klick“ (gegen Gewohnheit).</div></div></div>
+      </div>
+    </section>
+
+    <div class="stepnav">
+      <a class="nav-home" href="index.html">🏠 Übersicht</a>
+      <div class="nav-right">
+        <button class="nav-btn nav-prev" id="navPrev">← Zurück</button>
+        <button class="nav-btn nav-next" id="navNext">Weiter →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIN-Modal -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <h3>Lehrkraft-Bereich</h3>
+      <p>8-stellige PIN eingeben</p>
+      <div class="dots" id="dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="pin-err" id="pinErr"></div>
+      <div class="pad" id="pad"></div>
+      <button class="modal-close" onclick="closeModal()">Abbrechen</button>
+    </div>
+  </div>
+
+<script>
+const PIN_HASH="385319fce53854f96b636f28301b3d31be241dcaf6f1775da31a5e768b3a848e";
+const LOESUNGSCODE="RATIO74";
+
+/* ---- Stepper ---- */
+const STEPS=[
+  {id:"step1",label:"Einstieg"},{id:"step2",label:"Chat"},
+  {id:"step3",label:"Einflüsse"},{id:"step4",label:"Regeln"},
+  {id:"step5",label:"Urteil"},{id:"step6",label:"Abfrage",teacher:true},
+];
+const secEls=STEPS.map(s=>document.getElementById(s.id));
+const prevBtn=document.getElementById("navPrev");
+const nextBtn=document.getElementById("navNext");
+const prog=document.getElementById("prog");
+const pbtns=[];
+let cur=0, maxReached=0;
+function visibleCount(){ return document.body.classList.contains("version-b") ? STEPS.length : STEPS.length-1; }
+STEPS.forEach((s,i)=>{
+  const b=document.createElement("button");
+  b.className="pstep"+(s.teacher?" teacher-only":"");
+  b.innerHTML=`<span class="pnum">${i+1}</span>${s.label}`;
+  b.onclick=()=>{ if(i<=maxReached && i<visibleCount()) showStep(i,true); };
+  prog.appendChild(b); pbtns.push(b);
+});
+function showStep(i,scroll){
+  cur=i; if(i>maxReached)maxReached=i;
+  secEls.forEach((el,k)=>el.classList.toggle("step-visible",k===i));
+  pbtns.forEach((b,k)=>{ b.classList.toggle("active",k===i); b.classList.toggle("locked", k>maxReached || k>=visibleCount()); });
+  prevBtn.disabled=(i===0);
+  const last=(i>=visibleCount()-1);
+  nextBtn.textContent=last?"Geschafft ✓":"Weiter →";
+  nextBtn.classList.toggle("done",last);
+  nextBtn.disabled=last;
+  if(scroll){ const y=secEls[i].getBoundingClientRect().top+window.pageYOffset-100; window.scrollTo({top:Math.max(0,y),behavior:"smooth"}); }
+}
+prevBtn.onclick=()=>{ if(cur>0)showStep(cur-1,true); };
+nextBtn.onclick=()=>{ if(cur<visibleCount()-1)showStep(cur+1,true); };
+
+/* ---- Zwei-Modi / gehashte PIN ---- */
+let entered="";
+const overlay=document.getElementById("overlay"), dots=document.getElementById("dots"), pad=document.getElementById("pad"), pinErr=document.getElementById("pinErr");
+["1","2","3","4","5","6","7","8","9","C","0","⌫"].forEach(k=>{
+  const b=document.createElement("button");b.textContent=k;b.onclick=()=>press(k);pad.appendChild(b);
+});
+function toggleTeacher(){
+  const btn=document.getElementById("teacherToggle");
+  if(document.body.classList.contains("version-b")){
+    document.body.classList.remove("version-b");btn.classList.remove("on");btn.textContent="🔓 Lehrkraft";
+    if(cur>=visibleCount())showStep(visibleCount()-1,false);else showStep(cur,false);
+    refreshSolButtons();
+  }else{openModal();}
+}
+function openModal(){entered="";pinErr.textContent="";renderDots();overlay.classList.add("open");}
+function closeModal(){overlay.classList.remove("open");}
+function press(k){
+  if(k==="C"){entered="";}else if(k==="⌫"){entered=entered.slice(0,-1);pinErr.textContent="";}else if(entered.length<8){entered+=k;}
+  renderDots();if(entered.length===8)setTimeout(check,120);
+}
+function renderDots(){dots.classList.remove("err");[...dots.children].forEach((d,i)=>d.classList.toggle("filled",i<entered.length));}
+async function check(){
+  const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(entered));
+  const h=[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");
+  if(h===PIN_HASH){
+    document.body.classList.add("version-b");
+    const btn=document.getElementById("teacherToggle");btn.classList.add("on");btn.textContent="🔒 Schüler-Ansicht";
+    closeModal();maxReached=STEPS.length-1;showStep(cur,false);refreshSolButtons();
+  }else{ pinErr.textContent="Falscher PIN."; dots.classList.add("err"); entered=""; setTimeout(()=>renderDots(),450); }
+}
+document.addEventListener("keydown",e=>{
+  if(!overlay.classList.contains("open"))return;
+  if(/^[0-9]$/.test(e.key))press(e.key);
+  else if(e.key==="Backspace")press("⌫");
+  else if(e.key==="Escape")closeModal();
+});
+
+/* ---- Quiz mit Punktestand ---- */
+function checkQuiz(btn){
+  const block=btn.closest(".quiz-block");
+  if(block.classList.contains("answered"))return;
+  block.classList.add("answered");
+  const correct=btn.dataset.correct==="true";
+  block.querySelectorAll(".quiz-opt").forEach(o=>{o.classList.add("locked");if(o.dataset.correct==="true")o.classList.add("correct");});
+  if(!correct)btn.classList.add("wrong");
+  const fb=block.querySelector(".quiz-fb"); if(fb)fb.classList.add("show");
+  block.dataset.right=correct?"1":"0";
+  updateScore();
+}
+function updateScore(){
+  const blocks=[...document.querySelectorAll(".quiz-block")];
+  const answered=blocks.filter(b=>b.classList.contains("answered"));
+  if(answered.length<blocks.length)return;
+  const right=blocks.filter(b=>b.dataset.right==="1").length;
+  const el=document.getElementById("quizScore");
+  el.querySelector(".score-num").textContent=right+" / "+blocks.length;
+  el.querySelector(".score-msg").textContent = right===blocks.length?"Perfekt! 🎉" : (right>=blocks.length-1?"Fast alles richtig!" : (right>=blocks.length/2?"Solide – schau dir die Fehler an." : "Wiederhol das ruhig nochmal."));
+  el.style.display="flex";
+  document.getElementById("quizRetry").style.display="inline-flex";
+}
+function retryQuiz(){
+  document.querySelectorAll(".quiz-block").forEach(b=>{
+    b.classList.remove("answered"); delete b.dataset.right;
+    b.querySelectorAll(".quiz-opt").forEach(o=>o.classList.remove("locked","correct","wrong"));
+    const fb=b.querySelector(".quiz-fb"); if(fb)fb.classList.remove("show");
+  });
+  document.getElementById("quizScore").style.display="none";
+  document.getElementById("quizRetry").style.display="none";
+}
+
+/* ---- Musterlösungen mit Lösungscode ---- */
+let solUnlocked=false;
+try{ solUnlocked=localStorage.getItem("wr10_s7_sol")==="1"; }catch(e){}
+function teacherMode(){return document.body.classList.contains("version-b");}
+function toggleSol(btn,target){
+  const vis=target.classList.toggle("visible");
+  btn.textContent=vis?"▲ Lösung ausblenden":"✓ Musterlösung anzeigen";
+}
+function refreshSolButtons(){
+  const open=solUnlocked||teacherMode();
+  document.querySelectorAll(".solution-btn").forEach(btn=>{
+    const t=document.getElementById(btn.dataset.target);
+    if(t.classList.contains("visible"))btn.textContent="▲ Lösung ausblenden";
+    else btn.textContent=open?"✓ Musterlösung anzeigen":"🔒 Musterlösung";
+  });
+}
+function solClick(btn){
+  const target=document.getElementById(btn.dataset.target);
+  if(solUnlocked||teacherMode()){ toggleSol(btn,target); return; }
+  let p=btn.nextElementSibling;
+  if(p&&p.classList.contains("sol-code")){ p.remove(); return; }
+  p=document.createElement("div");
+  p.className="sol-code";
+  p.innerHTML='<input type="text" maxlength="6" placeholder="Lösungscode" aria-label="Lösungscode"><button type="button">freischalten</button><span class="sol-hint">Code von der Lehrkraft</span>';
+  btn.after(p);
+  const inp=p.querySelector("input"), go=p.querySelector("button");
+  const tryc=()=>{
+    if(inp.value.trim().toUpperCase()===LOESUNGSCODE){
+      solUnlocked=true; try{localStorage.setItem("wr10_s7_sol","1");}catch(e){}
+      document.querySelectorAll(".sol-code").forEach(c=>c.remove());
+      toggleSol(btn,target); refreshSolButtons();
+    }else{ inp.classList.add("shake"); setTimeout(()=>inp.classList.remove("shake"),450); }
+  };
+  go.onclick=tryc; inp.onkeydown=e=>{if(e.key==="Enter")tryc();}; inp.focus();
+}
+
+/* ---- Abfrage: Erwartungshorizont ---- */
+function toggleErw(id,btn){
+  const el=document.getElementById(id);
+  const v=el.classList.toggle("show");
+  btn.textContent=v?"▲ Erwartungshorizont ausblenden":"📋 Erwartungshorizont anzeigen";
+}
+
+/* ---- Antwortfelder autospeichern ---- */
+document.querySelectorAll(".answer-area").forEach(t=>{
+  const key="wr10_s7_"+t.id;
+  try{const v=localStorage.getItem(key);if(v)t.value=v;}catch(e){}
+  t.addEventListener("input",()=>{try{localStorage.setItem(key,t.value);}catch(e){}});
+});
+
+
+
+
+/* ---- Zuordnungsübungen ---- */
+const GRIDS={
+  hw:{opts:{ja:"bestätigt",nein:"nicht bestätigt",np:"nicht prüfbar"},items:[
+    ["Teure Produkte stehen auf Augenhöhe, günstige unten.",null],
+    ["An der Kasse liegen Süßigkeiten und Kleinkram.",null],
+    ["Milch, Brot und Eier stehen weit auseinander.",null],
+    ["Obst und Gemüse kommen gleich am Eingang.",null],
+    ["Der Boden des Einkaufswagens ist nach hinten geneigt.",null],
+    ["Die Musik läuft im Tempo des Ruhepulses.",null]],hint:""},
+  chat:{opts:{emo:"Emotionen",soz:"Sozialer Druck",wer:"Werbung & Verkaufstricks",gew:"Gewohnheit",inf:"Fehlende Information"},items:[
+    ["① „70 % auf alles!! Das sind doch keine Preise mehr“","wer"],
+    ["② „Jetzt kaufen, in 30 Tagen bezahlen – merkst du gar nicht“","wer"],
+    ["③ „Die Jacke hat JEDE in der Klasse, sonst bist du raus“","soz"],
+    ["④ Pop-up „Nur noch 2 Stück“ → „Panik, ok ich bestell!“","emo"],
+    ["⑤ „Ich bestell eh immer bei StyleDrop“","gew"],
+    ["⑥ „Woanders wär sie 15 € billiger gewesen“","inf"]],
+    hint:"Frag dich bei jeder Stelle: Was bringt Zoe in diesem Moment dazu weiterzumachen?"}
+};
+Object.entries(GRIDS).forEach(([k,g])=>{const box=document.getElementById(k+"Box");
+  g.items.forEach(it=>{const r=document.createElement("div");r.className="sort-row";
+    let o='<option value="">wählen …</option>';Object.entries(g.opts).forEach(([v,l])=>o+='<option value="'+v+'">'+l+'</option>');
+    r.innerHTML='<span>'+it[0]+'</span><select aria-label="Zuordnung">'+o+'</select>';box.appendChild(r);});});
+function checkGrid(k){const g=GRIDS[k],box=document.getElementById(k+"Box");let ok=0;
+  [...box.children].forEach((r,i)=>{const good=r.querySelector("select").value===g.items[i][1];if(good)ok++;r.classList.toggle("ok",good);r.classList.toggle("no",!good);});
+  const fb=document.getElementById(k+"Fb");fb.innerHTML="<b>"+ok+" / "+g.items.length+" richtig.</b> "+(ok===g.items.length?"Stark! Viele Stellen passen auch zu mehreren Gründen – hier zählt der stärkste.":"Rot markierte nochmal prüfen. "+g.hint);fb.classList.add("show");}
+
+/* ---- Chips ---- */
+function chipGroup(id,items,max,key,cb){
+  const box=document.getElementById(id);let sel=[];
+  try{sel=JSON.parse(localStorage.getItem(key)||"[]");}catch(e){}
+  items.forEach(c=>{const b=document.createElement("button");b.type="button";b.className="chip"+(sel.includes(c)?" on":"");b.textContent=c;
+    b.onclick=()=>{if(sel.includes(c)){sel=sel.filter(x=>x!==c);}else{if(sel.length>=max)return;sel.push(c);}
+      [...box.children].forEach(x=>x.classList.toggle("on",sel.includes(x.textContent)));
+      try{localStorage.setItem(key,JSON.stringify(sel));}catch(e){} if(cb)cb(sel);};
+    box.appendChild(b);});
+  if(cb)cb(sel);
+}
+chipGroup("mediaChips",["TikTok","Instagram","YouTube","Twitch","Fernsehen","Radio","Zeitung/Zeitschrift","Plakate"],3,"wr10_s7_media");
+
+const RULES=["Brauche ich das wirklich?","Bei größeren Käufen eine Nacht darüber schlafen","Budget festlegen und einhalten","Preise in mindestens zwei Shops vergleichen","Grundpreis pro Liter/Kilo lesen","Nicht aus Stress, Frust oder Langeweile kaufen","Einkaufszettel schreiben – und dabei bleiben","Bewertungen kritisch prüfen","Nur notwendige Cookies zulassen","Kein „jetzt kaufen, später bezahlen“","„Nur noch 2 Stück“? Erst recht durchatmen"];
+function renderCard(sel){
+  const own=document.getElementById("ownRule").value.trim();
+  const list=sel.slice();if(own)list.push(own);
+  document.getElementById("ruleList").innerHTML=list.length?list.map(r=>"<li>"+r.replace(/</g,"&lt;")+"</li>").join(""):'<li class="small-muted">Wähle oben deine Regeln aus.</li>';
+  document.getElementById("ruleCount").textContent=sel.length+" / 4 gewählt";
+}
+let ruleSel=[];
+chipGroup("ruleChips",RULES,4,"wr10_s7_rules",s=>{ruleSel=s;renderCard(s);});
+const ownEl=document.getElementById("ownRule");
+try{ownEl.value=localStorage.getItem("wr10_s7_own")||"";}catch(e){}
+ownEl.addEventListener("input",()=>{try{localStorage.setItem("wr10_s7_own",ownEl.value);}catch(e){}renderCard(ruleSel);});
+renderCard(ruleSel);
+
+/* ---- Positionsskala ---- */
+const pr=document.getElementById("posRange"),pv=document.getElementById("posVal");
+function posText(v){v=+v;if(v<15)return"Klar Inspiration";if(v<40)return"Eher Inspiration";if(v<=60)return"Genau in der Mitte";if(v<=85)return"Eher Manipulation";return"Klar Manipulation";}
+try{const s=localStorage.getItem("wr10_s7_pos");if(s!==null)pr.value=s;}catch(e){}
+pv.textContent=posText(pr.value);
+pr.addEventListener("input",()=>{pv.textContent=posText(pr.value);try{localStorage.setItem("wr10_s7_pos",pr.value);}catch(e){}});
+
+/* ==== DRUCKMODUL Schülerversion ==== */
+(function(){
+  const bar=document.getElementById("teacherToggle");
+  if(bar){const b=document.createElement("button");b.type="button";b.className="tbtn teacher-only";b.id="printStudent";
+    b.textContent="🖨 Schülerversion";b.title="Druckversion für Schüler ohne Tablet (als PDF sichern möglich)";b.onclick=printStudent;
+    bar.parentNode.insertBefore(b,bar);}
+  const head=document.createElement("div");head.className="print-head";
+  head.innerHTML="<span>"+document.title+"</span><span>Name: ______________________ &nbsp; Datum: ____________</span>";
+  const first=document.querySelector(".hero");if(first)first.parentNode.insertBefore(head,first);
+})();
+function printStudent(){
+  /* Antwortmöglichkeiten der Auswahlfelder einmal pro Aufgabe auflisten */
+  document.querySelectorAll(".print-options").forEach(x=>x.remove());
+  const seen=new Set();
+  document.querySelectorAll(".sort-row select").forEach(sel=>{
+    const box=sel.closest(".sort-row").parentNode; if(seen.has(box))return; seen.add(box);
+    const opts=[...sel.options].filter(o=>o.value).map(o=>o.textContent);
+    const d=document.createElement("div");d.className="print-options";d.innerHTML="<b>Mögliche Antworten:</b> "+opts.join(" · ");
+    box.parentNode.insertBefore(d,box);
+  });
+  document.body.classList.add("print-student");
+  const done=()=>{document.body.classList.remove("print-student");window.removeEventListener("afterprint",done);};
+  window.addEventListener("afterprint",done);
+  window.print();
+}
+
+/* ---- Init ---- */
+showStep(0,false);
+refreshSolButtons();
+</script>
+</body>
+</html>
