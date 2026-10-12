@@ -230,7 +230,7 @@ a.para-link{color:var(--blue-700);text-decoration:none;border-bottom:1px dotted 
 button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(--blue-700);outline-offset:2px;}
 @media (max-width:600px){.task-body{flex-direction:column;}.icons{flex-direction:row;}}
 @media (prefers-reduced-motion:reduce){.section{animation:none;}}
-.ad-tag{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#1e293b;color:#fff;font-weight:900;font-size:12px;flex-shrink:0;}
+.anz-tag{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#1e293b;color:#fff;font-weight:900;font-size:12px;flex-shrink:0;}
 .small-muted{font-size:12.5px;color:var(--text-muted);}
 .exp{display:flex;gap:1.4rem;justify-content:center;flex-wrap:wrap;margin:1rem 0 .3rem;padding:1.2rem;background:linear-gradient(#e0f2fe,#f8fafc);border-radius:var(--radius);}
 .juice{display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff;border:2px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1.1rem;cursor:pointer;font-family:var(--font);font-weight:900;font-size:17px;color:var(--text);}
@@ -244,9 +244,10 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(
 .shop-bar>span{width:9px;height:9px;border-radius:50%;background:#94a3b8;}
 .shop-url{margin-left:8px;background:#fff;border-radius:6px;padding:2px 10px;font-size:12px;color:var(--text-muted);flex:1;}
 .shop-banner{background:#0f766e;color:#fff;font-weight:800;padding:8px 12px;display:flex;align-items:center;gap:8px;}
-.shop-banner .ad-tag{background:#fff;color:#0f766e;}
+.shop-banner .anz-tag{background:#fff;color:#0f766e;}
 .shop-main{display:grid;grid-template-columns:1fr 1.4fr;gap:1rem;padding:1rem;}
 .shop-img{background:#f0fdfa;border-radius:var(--radius-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem;gap:.8rem;}
+.shop-photo{width:100%;max-width:260px;aspect-ratio:1/1;object-fit:cover;border-radius:8px;display:block;}
 .shop-gift{background:#fff7ed;border:1.5px dashed #fb923c;border-radius:8px;padding:6px 9px;font-size:12.5px;display:flex;gap:6px;align-items:center;}
 .shop-info{display:flex;flex-direction:column;gap:.55rem;}
 .shop-title{font-weight:900;font-size:17px;}
@@ -273,9 +274,46 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(
 .news.show{display:block;}
 .news-head{background:var(--bg-page);padding:6px 10px;font-weight:800;font-size:13px;}
 .news-body{display:grid;grid-template-columns:1.5fr 1fr;gap:10px;padding:10px;font-size:13.5px;}
-.news-ad{background:#fef3c7;border:1.5px solid #f59e0b;border-radius:8px;padding:8px;font-weight:700;font-size:13px;}
-.ad-label{display:block;font-size:10px;color:#92400e;font-weight:800;margin-bottom:3px;}
+.news-anz{background:#fef3c7;border:1.5px solid #f59e0b;border-radius:8px;padding:8px;font-weight:700;font-size:13px;}
+.anz-label{display:block;font-size:10px;color:#92400e;font-weight:800;margin-bottom:3px;}
 @media (max-width:600px){.shop-main,.news-body{grid-template-columns:1fr;}.track-shop{grid-template-columns:repeat(2,1fr);}}
+/* ==== DRUCKMODUL Schülerversion (body.print-student) ==== */
+.print-head{display:none;}
+@media print{
+  body.print-student{background:#fff;}
+  body.print-student .wrap,body.print-student main{max-width:none;padding:0;}
+  body.print-student .print-head{display:flex;justify-content:space-between;font-size:12pt;font-weight:700;border-bottom:1.5px solid #000;padding-bottom:6px;margin-bottom:12px;}
+  body.print-student .section{display:block!important;border:none;box-shadow:none;padding:0 0 .6rem;margin:0 0 1rem;break-inside:auto;animation:none;}
+  body.print-student .section.teacher-only,
+  body.print-student .teacher-note,body.print-student .solution-reveal,body.print-student .erwartung-box,
+  body.print-student .solution-btn,body.print-student .erwartung-btn,body.print-student .sol-code,
+  body.print-student .quiz-fb,body.print-student .quiz-score,body.print-student .quiz-retry,body.print-student .print-btn,
+  body.print-student .chip-count,body.print-student .section-time,body.print-student .no-print{display:none!important;}
+  body.print-student .hero{background:none!important;color:#000;border:none;box-shadow:none;padding:0;margin-bottom:.6rem;}
+  body.print-student .hero *{color:#000!important;}
+  body.print-student .hero-chips{display:none;}
+  body.print-student .task{break-inside:avoid;border:1px solid #999;box-shadow:none;}
+  body.print-student .task-header{background:#eee!important;color:#000!important;}
+  body.print-student .task-header *{color:#000!important;}
+  body.print-student .icons{display:none;}
+  body.print-student textarea{display:block;width:100%;min-height:7em;border:1px solid #999;border-radius:4px;resize:none;background:repeating-linear-gradient(#fff 0 1.7em,#ccc 1.7em calc(1.7em + 1px));}
+  body.print-student textarea::placeholder{color:transparent;}
+  body.print-student .sort-row{background:#fff!important;border:1px solid #999!important;break-inside:avoid;}
+  body.print-student .sort-row select{display:none;}
+  body.print-student .sort-row::after{content:"→ ____________________";white-space:nowrap;}
+  body.print-student .print-options{display:block!important;font-size:10.5pt;margin:.3rem 0 .6rem;padding:.4rem .6rem;border:1px dashed #999;}
+  body.print-student .chip,body.print-student .chip.on{background:#fff!important;color:#000!important;border:1px solid #999!important;}
+  body.print-student .chip::before{content:"☐ ";}
+  body.print-student .quiz-opt{background:#fff!important;border:1px solid #bbb!important;color:#000!important;break-inside:avoid;}
+  body.print-student .quiz-opt::before{content:"☐";margin-right:6px;}
+  body.print-student .quiz-block{break-inside:avoid;}
+  body.print-student .book-ref{break-inside:avoid;background:none!important;}
+  body.print-student a.para-link::after{content:" (" attr(href) ")";font-weight:400;font-size:9pt;}
+  body.print-student .step-label,body.print-student .section h2{break-after:avoid;page-break-after:avoid;}
+  body.print-student .section h2{margin-top:.2rem;}
+  body.print-student *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+.print-options{display:none;}
 </style>
 </head>
 <body>
@@ -371,19 +409,19 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(
 
       <div class="shop" aria-label="Fiktiver Online-Shop">
         <div class="shop-bar"><span></span><span></span><span></span><div class="shop-url">urbnpack.shop/rucksack-city</div></div>
-        <div class="shop-banner"><span class="ad-tag">1</span>Nie wieder nasse Laptops. Sorgenfrei durch jeden Tag.</div>
+        <div class="shop-banner"><span class="anz-tag">1</span>Nie wieder nasse Laptops. Sorgenfrei durch jeden Tag.</div>
         <div class="shop-main">
           <div class="shop-img">
-            <svg viewBox="0 0 120 140" width="120" aria-hidden="true"><rect x="22" y="30" width="76" height="100" rx="18" fill="#0f766e"/><rect x="34" y="70" width="52" height="38" rx="8" fill="#115e59"/><path d="M42 30c0-16 36-16 36 0" stroke="#0f766e" stroke-width="8" fill="none"/><rect x="50" y="84" width="20" height="5" rx="2.5" fill="#5eead4"/></svg>
-            <div class="shop-gift"><span class="ad-tag">2</span><span>🎁 Dein Willkommensgeschenk: <b>10 €</b> liegen schon in deinem Konto!</span></div>
+            <img class="shop-photo" src="stunde06_rucksack.jpg" alt="Wasserdichter Rucksack urbn pack City" onerror="this.nextElementSibling.style.display='block';this.remove()"><svg class="shop-fallback" style="display:none" viewBox="0 0 120 140" width="120" aria-hidden="true"><rect x="22" y="30" width="76" height="100" rx="18" fill="#0f766e"/><rect x="34" y="70" width="52" height="38" rx="8" fill="#115e59"/><path d="M42 30c0-16 36-16 36 0" stroke="#0f766e" stroke-width="8" fill="none"/><rect x="50" y="84" width="20" height="5" rx="2.5" fill="#5eead4"/></svg>
+            <div class="shop-gift"><span class="anz-tag">2</span><span>🎁 Dein Willkommensgeschenk: <b>10 €</b> liegen schon in deinem Konto!</span></div>
           </div>
           <div class="shop-info">
             <div class="shop-title">urbn pack City – wasserdichter Rucksack</div>
-            <div class="shop-row"><span class="ad-tag">3</span><span class="stars">★★★★★</span> 4,7 · 2.814 Bewertungen <span class="badge">Bestseller</span></div>
-            <div class="shop-row"><span class="ad-tag">4</span><span class="strike">89,99 €</span> <span class="price">59,99 €</span></div>
-            <div class="shop-row hot"><span class="ad-tag">5</span>Angebot endet in <b id="countdown">02:14:37</b></div>
-            <div class="shop-row hot"><span class="ad-tag">6</span>Nur noch 3 auf Lager</div>
-            <div class="shop-row"><span class="ad-tag">7</span><label class="pre"><input type="checkbox" checked> Regenhülle dazu (+ 9,99 €)</label></div>
+            <div class="shop-row"><span class="anz-tag">3</span><span class="stars">★★★★★</span> 4,7 · 2.814 Bewertungen <span class="badge">Bestseller</span></div>
+            <div class="shop-row"><span class="anz-tag">4</span><span class="strike">89,99 €</span> <span class="price">59,99 €</span></div>
+            <div class="shop-row hot"><span class="anz-tag">5</span>Angebot endet in <b id="countdown">02:14:37</b></div>
+            <div class="shop-row hot"><span class="anz-tag">6</span>Nur noch 3 auf Lager</div>
+            <div class="shop-row"><span class="anz-tag">7</span><label class="pre"><input type="checkbox" checked> Regenhülle dazu (+ 9,99 €)</label></div>
             <div class="shop-btns"><button type="button" class="buy">Jetzt kaufen</button><button type="button" class="later">später</button></div>
           </div>
         </div>
@@ -426,12 +464,12 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(
       <div class="section-time">⏱ ca. 10 Min · Einzelarbeit, dann Partner</div>
       <p><b>Teil 1:</b> Du stöberst in einem Online-Shop. Klicke <b>drei Produkte</b> an, die dich interessieren.</p>
       <div class="track-shop" id="trackShop"></div>
-      <div class="track-log" id="trackLog"><div class="track-log-head">🍪 Was der Shop über dich speichert</div><div id="trackLines"><span class="small-muted">Noch nichts – klick ein Produkt an.</span></div></div>
+      <div class="track-log no-print" id="trackLog"><div class="track-log-head">🍪 Was der Shop über dich speichert</div><div id="trackLines"><span class="small-muted">Noch nichts – klick ein Produkt an.</span></div></div>
       <div class="news" id="news">
         <div class="news-head">Teil 2: Einen Tag später liest du die Nachrichten …</div>
         <div class="news-body">
           <div class="news-text"><b>Schule startet ins neue Halbjahr</b><br><span class="small-muted">Was sich für die Oberstufe ändert und wann die Zwischenzeugnisse kommen …</span></div>
-          <div class="news-ad" id="newsAd"></div>
+          <div class="news-anz" id="newsPromo"></div>
         </div>
       </div>
 
@@ -826,9 +864,36 @@ function renderTrack(){
   const t=new Date();const lines=clicks.map((i,k)=>{const p=PRODUCTS[i];return '<div class="tl">'+String(t.getHours()).padStart(2,"0")+":"+String(t.getMinutes()+k).padStart(2,"0").slice(-2)+' · angesehen: <b>'+p.n+'</b> · Kategorie: '+p.c+' · Gerät: Smartphone · Ort: Wertingen (ca.)</div>';});
   if(clicks.length===3){const cats={};clicks.forEach(i=>cats[PRODUCTS[i].c]=(cats[PRODUCTS[i].c]||0)+1);
     lines.push('<div class="tl prof">👤 Profil: Interesse an '+Object.keys(cats).join(", ")+' · vermutlich 14–19 Jahre · kauft eher bei Rabatt</div>');
-    const last=PRODUCTS[clicks[2]];document.getElementById("newsAd").innerHTML='<span class="ad-label">Anzeige</span>'+last.ad;
+    const last=PRODUCTS[clicks[2]];document.getElementById("newsPromo").innerHTML='<span class="anz-label">Anzeige</span>'+last.ad;
     document.getElementById("news").classList.add("show");}
   document.getElementById("trackLines").innerHTML=lines.join("");}
+
+
+/* ==== DRUCKMODUL Schülerversion ==== */
+(function(){
+  const bar=document.getElementById("teacherToggle");
+  if(bar){const b=document.createElement("button");b.type="button";b.className="tbtn teacher-only";b.id="printStudent";
+    b.textContent="🖨 Schülerversion";b.title="Druckversion für Schüler ohne Tablet (als PDF sichern möglich)";b.onclick=printStudent;
+    bar.parentNode.insertBefore(b,bar);}
+  const head=document.createElement("div");head.className="print-head";
+  head.innerHTML="<span>"+document.title+"</span><span>Name: ______________________ &nbsp; Datum: ____________</span>";
+  const first=document.querySelector(".hero");if(first)first.parentNode.insertBefore(head,first);
+})();
+function printStudent(){
+  /* Antwortmöglichkeiten der Auswahlfelder einmal pro Aufgabe auflisten */
+  document.querySelectorAll(".print-options").forEach(x=>x.remove());
+  const seen=new Set();
+  document.querySelectorAll(".sort-row select").forEach(sel=>{
+    const box=sel.closest(".sort-row").parentNode; if(seen.has(box))return; seen.add(box);
+    const opts=[...sel.options].filter(o=>o.value).map(o=>o.textContent);
+    const d=document.createElement("div");d.className="print-options";d.innerHTML="<b>Mögliche Antworten:</b> "+opts.join(" · ");
+    box.parentNode.insertBefore(d,box);
+  });
+  document.body.classList.add("print-student");
+  const done=()=>{document.body.classList.remove("print-student");window.removeEventListener("afterprint",done);};
+  window.addEventListener("afterprint",done);
+  window.print();
+}
 
 /* ---- Init ---- */
 showStep(0,false);
