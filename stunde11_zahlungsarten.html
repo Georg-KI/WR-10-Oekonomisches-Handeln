@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stunde 11 · Welche Zahlungsart passt zur Situation?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --font:'Nunito',system-ui,sans-serif;
+  --blue-900:#0D47A1;--blue-800:#1565C0;--blue-700:#1976D2;--blue-400:#29B6F6;--blue-50:#E3F2FD;
+  --green:#43A047;--green-light:#E8F5E9;--orange:#FF9800;--orange-light:#FFF3E0;
+  --purple:#AB47BC;--purple-light:#F3E5F5;--red:#E53935;--red-light:#FFEBEE;
+  --teal:#0d9488;--teal-light:#ccfbf1;
+  --text:#1A1A1A;--text-secondary:#555;--text-muted:#AAA;--border:#E0E0E0;--bg-page:#F0F4F8;--bg-card:#fff;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius:12px;
+  --shadow:0 2px 8px rgba(0,0,0,.08);--shadow-lg:0 4px 20px rgba(0,0,0,.12);
+  --accent:#0d9488;--accent-light:#ccfbf1;--grad:linear-gradient(135deg,#0f766e,#14b8a6);
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:var(--font);background:var(--bg-page);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.55;}
+p{margin:.5rem 0;}
+
+.topbar{background:var(--blue-700);height:52px;position:sticky;top:env(safe-area-inset-top,0px);
+  padding:0 1.25rem;display:flex;align-items:center;gap:1rem;box-shadow:0 2px 12px rgba(25,118,210,.25);z-index:40;}
+.topbar-logo{font-weight:900;font-size:15px;color:#fff;text-decoration:none;}
+.topbar-logo span{color:var(--blue-400);}
+.topbar-back{color:rgba(255,255,255,.85);font-size:12.5px;font-weight:700;text-decoration:none;}
+.topbar-actions{margin-left:auto;display:flex;gap:8px;}
+.tbtn{background:rgba(255,255,255,.15);border:none;color:#fff;font-family:var(--font);font-weight:800;
+  font-size:12.5px;padding:7px 13px;border-radius:20px;cursor:pointer;}
+.tbtn:hover{background:rgba(255,255,255,.28);}
+.tbtn.on{background:#fff;color:var(--blue-800);}
+
+.progress{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:calc(52px + env(safe-area-inset-top,0px));
+  z-index:30;overflow-x:auto;}
+.progress-inner{display:flex;gap:4px;max-width:1080px;margin:0 auto;padding:.6rem 1rem;min-width:max-content;}
+.pstep{display:flex;align-items:center;gap:7px;border:none;background:transparent;font-family:var(--font);
+  cursor:pointer;padding:5px 10px;border-radius:20px;color:var(--text-secondary);font-weight:700;font-size:12.5px;white-space:nowrap;}
+.pstep .pnum{width:22px;height:22px;border-radius:50%;background:var(--bg-page);color:var(--text-secondary);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;}
+.pstep:hover{background:var(--bg-page);}
+.pstep.active{color:var(--accent);}
+.pstep.active .pnum{background:var(--accent);color:#fff;}
+.pstep.locked{opacity:.4;cursor:default;pointer-events:none;}
+.teacher-only{display:none;}
+body.version-b .teacher-only{display:flex;}
+body.version-b .section.teacher-only{display:block;}
+
+.wrap{max-width:1080px;margin:0 auto;padding:1.25rem 1rem 3rem;}
+
+.hero{background:var(--grad);border-radius:var(--radius-lg);padding:2.2rem 2rem;color:#fff;
+  position:relative;overflow:hidden;box-shadow:var(--shadow-lg);margin-bottom:1.4rem;}
+.hero::before{content:'€';position:absolute;right:1.2rem;top:-26px;font-size:150px;font-weight:900;color:rgba(255,255,255,.10);line-height:1;pointer-events:none;}
+.hero-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.9);position:relative;}
+.hero h1{font-size:27px;font-weight:900;margin:.4rem 0 .5rem;line-height:1.15;position:relative;max-width:85%;}
+.hero .lead{font-size:15px;font-weight:700;color:rgba(255,255,255,.96);position:relative;margin:0;}
+.hero-chips{display:flex;gap:6px;margin-top:.9rem;flex-wrap:wrap;position:relative;}
+.hero-chips span{background:rgba(255,255,255,.22);color:#fff;font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:20px;}
+
+.section{background:#fff;border-radius:var(--radius-lg);border:1px solid var(--border);box-shadow:var(--shadow);
+  padding:1.4rem 1.5rem;margin-bottom:1.2rem;animation:fadeUp .3s ease both;scroll-margin-top:120px;display:none;}
+.section.step-visible{display:block;}
+.step-label{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--accent);margin-bottom:.5rem;}
+.step-label .sn{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.section h2{font-size:20px;font-weight:900;margin:.1rem 0 .3rem;}
+.section h3{font-size:15px;font-weight:800;margin:1.1rem 0 .4rem;}
+.section-time{font-size:12.5px;color:#888;font-weight:700;margin:0 0 .9rem;}
+
+.info-box{border-radius:var(--radius-sm);padding:.8rem 1rem;margin:.8rem 0;font-size:14px;}
+.info-box.blue{background:var(--blue-50);border-left:3px solid var(--blue-700);color:var(--blue-800);}
+.info-box.green{background:var(--green-light);border-left:3px solid var(--green);color:#1b5e20;}
+.info-box.orange{background:var(--orange-light);border-left:3px solid var(--orange);color:#78350f;}
+.info-box.teal{background:var(--teal-light);border-left:3px solid var(--teal);color:#134e4a;}
+.info-box b{font-weight:800;}
+.info-box ul{margin:.3rem 0 .1rem 1.1rem;padding:0;}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.7rem;margin:.8rem 0;}
+.mini{background:var(--bg-page);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.8rem .9rem;}
+.mini b{display:block;font-size:14px;color:var(--text);margin-bottom:2px;}
+.mini span{font-size:12.5px;color:var(--text-secondary);}
+
+.dtable{width:100%;border-collapse:collapse;margin:.7rem 0;font-size:13.5px;}
+.dtable th,.dtable td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top;}
+.dtable th{background:var(--bg-page);font-weight:800;}
+.dtable td.rowh{background:var(--bg-page);font-weight:700;}
+.tscroll{overflow-x:auto;}
+
+.book-ref{background:#faf5ff;border:1.5px solid #d8b4fe;border-radius:var(--radius-md);padding:.9rem 1.1rem;margin:.9rem 0;display:flex;gap:.7rem;align-items:flex-start;}
+.book-ref svg{flex-shrink:0;margin-top:2px;}
+.book-ref-title{color:#6b21a8;font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.3px;}
+.book-ref-text{color:#581c87;font-size:14px;}
+.book-ref-text a{color:#6b21a8;font-weight:800;}
+
+.task{border:1.5px solid var(--accent);border-radius:var(--radius-md);overflow:hidden;margin:1rem 0;}
+.task-header{background:var(--accent);padding:.7rem 1.1rem;display:flex;align-items:center;gap:11px;}
+.task-num{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.25);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.task-title{color:#fff;font-weight:800;font-size:14.5px;line-height:1.2;}
+.task-sub{color:rgba(255,255,255,.85);font-size:11px;font-weight:600;}
+.task-body{background:#F0F4F8;padding:1rem 1.1rem;display:flex;gap:1rem;}
+.icons{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
+.itile{background:#fff;border-radius:8px;padding:8px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;}
+.task-content{flex:1;font-size:14px;min-width:0;}
+.task-content ol,.task-content ul{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+.task-content li{margin:.25rem 0;}
+
+.answer-area{width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-family:var(--font);font-size:14px;resize:vertical;min-height:78px;background:#fff;margin-top:.6rem;}
+.answer-area:focus{outline:none;border-color:var(--accent);}
+
+.solution-btn{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:8px 15px;font-family:var(--font);font-weight:700;font-size:13px;color:var(--text-secondary);cursor:pointer;margin-top:.6rem;}
+.solution-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light);}
+.sol-code{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:.5rem;}
+.sol-code input{width:130px;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;font-family:var(--font);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.sol-code input:focus{outline:none;border-color:var(--accent);}
+.sol-code input.shake{animation:shake .4s;border-color:var(--red);}
+.sol-code button{border:none;background:var(--accent);color:#fff;border-radius:var(--radius-sm);padding:8px 14px;font-family:var(--font);font-weight:800;font-size:13px;cursor:pointer;}
+.sol-hint{font-size:11.5px;color:#888;}
+.solution-reveal{background:var(--green-light);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:.7rem 1rem;color:#1b5e20;font-size:13.5px;margin-top:.6rem;display:none;}
+.solution-reveal.visible{display:block;}
+.solution-reveal ul{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+
+.teacher-note{background:#fffbeb;border:1.5px solid #fbbf24;border-radius:var(--radius-md);padding:1rem 1.1rem;margin:1rem 0;display:none;font-size:13.5px;color:#78350f;}
+body.version-b .teacher-note{display:block;}
+.teacher-note-header{font-weight:800;font-size:12px;color:#92400e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem;display:flex;align-items:center;gap:7px;}
+.teacher-note ul{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+
+.quiz-block{margin:.4rem 0 1rem;}
+.quiz-q{font-weight:800;font-size:14.5px;margin:.6rem 0 .6rem;}
+.quiz-opt{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:11px 13px;background:#fff;font-family:var(--font);font-size:14px;font-weight:600;margin-bottom:8px;cursor:pointer;transition:.12s;color:var(--text);}
+.quiz-opt:hover{border-color:var(--accent);background:var(--accent-light);}
+.quiz-opt .ql{width:24px;height:24px;flex-shrink:0;border-radius:6px;background:var(--bg-page);color:var(--text-secondary);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.quiz-opt.locked{pointer-events:none;}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-light);color:#1b5e20;}
+.quiz-opt.correct .ql{background:var(--green);color:#fff;}
+.quiz-opt.wrong{border-color:var(--red);background:var(--red-light);color:#7f1d1d;}
+.quiz-opt.wrong .ql{background:var(--red);color:#fff;}
+.quiz-fb{display:none;font-size:13px;color:var(--text-secondary);background:var(--bg-page);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:.55rem .9rem;margin:.1rem 0 .3rem;}
+.quiz-fb.show{display:block;}
+.divider{border:none;border-top:1px solid var(--border);margin:1rem 0;}
+.quiz-score{display:none;align-items:center;gap:12px;background:var(--blue-50);border-radius:var(--radius-md);padding:.9rem 1.1rem;margin-top:.6rem;}
+.quiz-score .score-num{font-size:22px;font-weight:900;color:var(--blue-800);}
+.quiz-score .score-msg{font-size:13.5px;font-weight:700;color:var(--blue-700);}
+.quiz-retry{display:none;align-items:center;gap:6px;margin-top:.7rem;border:1.5px solid var(--red);background:#fff;color:var(--red);border-radius:var(--radius-sm);padding:8px 15px;font-family:var(--font);font-weight:800;font-size:13px;cursor:pointer;}
+
+.k-legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;}
+.k-legend span{font-size:11px;font-weight:800;padding:3px 10px;border-radius:100px;}
+.k-wissen{background:var(--blue-50);border:1px solid var(--blue-400);color:var(--blue-700);}
+.k-denken{background:#ccfbf1;border:1px solid #99f6e4;color:#0f766e;}
+.k-komm{background:var(--orange-light);border:1px solid #fde68a;color:#92400e;}
+.k-kreativ{background:var(--red-light);border:1px solid #fecdd3;color:#9f1239;}
+.abfrage-wrap{display:flex;flex-direction:column;gap:1rem;}
+.abfrage-q{border:1.5px solid var(--border);border-radius:var(--radius-md);overflow:hidden;}
+.abfrage-q-header{padding:.9rem 1.1rem;display:flex;align-items:flex-start;gap:11px;background:#f8fafc;}
+.abfrage-q-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
+.abfrage-q-num.wissen{background:var(--blue-700);}
+.abfrage-q-num.denken{background:var(--teal);}
+.abfrage-q-num.komm{background:var(--orange);}
+.abfrage-q-num.kreativ{background:var(--red);}
+.abfrage-q-label{font-size:11px;font-weight:800;margin-bottom:2px;}
+.abfrage-q-label.wissen{color:var(--blue-700);}
+.abfrage-q-label.denken{color:#0f766e;}
+.abfrage-q-label.komm{color:#92400e;}
+.abfrage-q-label.kreativ{color:#9f1239;}
+.abfrage-q-text{font-size:14px;font-weight:700;color:var(--text);line-height:1.5;}
+.abfrage-q-body{padding:.9rem 1.1rem;}
+.abfrage-q-body p{font-size:12.5px;color:var(--text-secondary);line-height:1.6;margin:0 0 .5rem;}
+.erwartung-btn{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:7px 13px;font-family:var(--font);font-weight:700;font-size:12.5px;color:var(--text-secondary);cursor:pointer;}
+.erwartung-btn:hover{border-color:var(--green);color:#1b5e20;}
+.erwartung-box{display:none;margin-top:.6rem;background:var(--green-light);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:.7rem 1rem;font-size:13px;color:#1b5e20;line-height:1.6;}
+.erwartung-box.show{display:block;}
+.print-btn{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:7px 13px;font-family:var(--font);font-weight:700;font-size:12.5px;color:var(--text-secondary);cursor:pointer;}
+.print-btn:hover{border-color:var(--blue-700);color:var(--blue-700);}
+
+.stepnav{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin:.2rem 0 .5rem;flex-wrap:wrap;}
+.nav-home{text-decoration:none;font-family:var(--font);font-weight:800;font-size:13.5px;color:var(--text-secondary);background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-md);padding:11px 18px;}
+.nav-home:hover{border-color:var(--blue-700);color:var(--blue-700);}
+.nav-right{display:flex;gap:10px;}
+.nav-btn{border:none;border-radius:var(--radius-md);padding:12px 24px;font-family:var(--font);font-weight:800;font-size:14.5px;cursor:pointer;}
+.nav-next{background:var(--accent);color:#fff;}
+.nav-next:hover{filter:brightness(.95);}
+.nav-next.done{background:var(--green);}
+.nav-next[disabled]{cursor:default;}
+.nav-prev{background:#fff;color:var(--text-secondary);border:1.5px solid var(--border);}
+.nav-prev:hover{border-color:var(--accent);color:var(--accent);}
+.nav-prev[disabled]{opacity:.4;cursor:default;pointer-events:none;}
+
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:100;padding:1rem;}
+.overlay.open{display:flex;}
+.modal{background:#fff;border-radius:var(--radius-lg);padding:1.6rem;width:100%;max-width:330px;box-shadow:var(--shadow-lg);text-align:center;}
+.modal h3{margin:.2rem 0 .3rem;font-size:18px;font-weight:900;}
+.modal p{font-size:13px;color:var(--text-secondary);margin:0 0 1rem;}
+.dots{display:flex;justify-content:center;gap:9px;margin-bottom:.5rem;}
+.dots span{width:12px;height:12px;border-radius:50%;background:var(--border);transition:.15s;}
+.dots span.filled{background:var(--blue-700);}
+.dots.err span{background:var(--red);animation:shake .4s;}
+.pin-err{height:18px;font-size:12.5px;color:var(--red);font-weight:700;margin-bottom:.5rem;}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.pad button{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:14px 0;font-family:var(--font);font-size:18px;font-weight:800;cursor:pointer;color:var(--text);}
+.pad button:hover{border-color:var(--blue-700);background:var(--blue-50);}
+.modal-close{margin-top:1rem;background:none;border:none;color:#888;font-family:var(--font);font-weight:700;font-size:13px;cursor:pointer;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-7px);}40%,80%{transform:translateX(7px);}}
+
+@media print{
+  .topbar,.progress,.stepnav,.overlay,.tbtn,.topbar-actions{display:none!important;}
+  .section{display:block!important;box-shadow:none;border:1px solid #ccc;margin-bottom:1rem;break-inside:avoid;}
+  .teacher-note,.erwartung-box,.solution-reveal{display:block!important;}
+  .hero{color:#000;background:none;border:1px solid #ccc;}
+  .hero::before{display:none;}
+}
+
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:.6rem 0 .2rem;}
+.chip{border:1.5px solid var(--border);background:#fff;border-radius:20px;padding:7px 13px;font-family:var(--font);font-weight:700;font-size:13px;cursor:pointer;color:var(--text);}
+.chip:hover{border-color:var(--accent);}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+.chip-count{font-size:12px;color:#888;font-weight:700;margin:.2rem 0;}
+.sort-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 11px;margin-bottom:6px;font-size:13.5px;flex-wrap:wrap;}
+.sort-row select{font-family:var(--font);font-size:13px;font-weight:700;border:1.5px solid var(--border);border-radius:6px;padding:5px 8px;background:#fff;max-width:100%;}
+.sort-row.ok{border-color:var(--green);background:var(--green-light);}
+.sort-row.no{border-color:var(--red);background:var(--red-light);}
+.sort-row.mid{border-color:var(--orange);background:var(--orange-light);}
+.row-fb{flex-basis:100%;font-size:12.5px;color:var(--text-secondary);font-weight:600;}
+a.para-link{color:var(--blue-700);text-decoration:none;border-bottom:1px dotted var(--blue-700);font-weight:700;}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--blue-700);outline-offset:2px;}
+.small-muted{font-size:12.5px;color:#777;}
+.scale{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px;margin:.4rem 0;}
+.scale input{flex:1;accent-color:var(--accent);}
+.scale-val{text-align:center;font-weight:800;color:var(--text);margin:0 0 .6rem;font-size:15px;}
+.track-shop{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:.6rem 0;}
+.tp{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.7rem .4rem;cursor:pointer;font-family:var(--font);font-weight:700;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--text);}
+.tp-e{font-size:26px;}
+.tp.on{border-color:var(--accent);background:var(--accent-light);}
+.track-log{background:#0f172a;color:#cbd5e1;border-radius:var(--radius-sm);padding:.7rem .9rem;font-size:13px;margin:.6rem 0;min-height:92px;}
+.track-log-head{color:#fbbf24;font-weight:800;margin-bottom:4px;}
+.tl{padding:2px 0;}
+.tl b{color:#fff;}
+
+/* Diagramme */
+.chart-card{border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem 1.1rem;background:#fcfcfb;margin:.9rem 0;}
+.chart-title{font-weight:800;font-size:14.5px;}
+.chart-sub{font-size:12.5px;color:var(--text-secondary);margin-bottom:.4rem;}
+.chart-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;font-weight:700;color:var(--text-secondary);margin:.3rem 0;}
+.chart-legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px;}
+.chart-wrap{position:relative;}
+.chart-wrap svg{width:100%;height:auto;display:block;font-family:var(--font);}
+.chart-tip{position:absolute;top:6px;pointer-events:none;background:#fff;border:1px solid var(--border);box-shadow:var(--shadow);border-radius:8px;padding:6px 10px;font-size:12.5px;display:none;white-space:nowrap;z-index:2;}
+.chart-tip b{display:block;margin-bottom:2px;}
+.chart-tip i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;}
+.chart-src{font-size:11.5px;color:#777;margin-top:.4rem;line-height:1.45;}
+.chart-table{margin-top:.4rem;font-size:12.5px;}
+.chart-table summary{cursor:pointer;font-weight:700;color:var(--text-secondary);}
+.hbar{display:grid;grid-template-columns:minmax(120px,200px) 1fr;gap:10px;align-items:center;margin:7px 0;font-size:13px;}
+.hbar-l{font-weight:700;color:var(--text);}
+.hbar-t{display:flex;align-items:center;gap:8px;}
+.hbar-b{height:18px;border-radius:0 4px 4px 0;min-width:2px;}
+.hbar-v{font-weight:800;color:var(--text);white-space:nowrap;}
+details.zusatz{border:1.5px dashed var(--border);border-radius:var(--radius-sm);padding:.6rem .9rem;margin:.5rem 0;background:#fff;font-size:13.5px;}
+details.zusatz summary{cursor:pointer;font-weight:800;}
+details.zusatz ul{margin:.4rem 0 .2rem 1.1rem;padding:0;}
+@media (max-width:600px){.task-body{flex-direction:column;}.icons{flex-direction:row;}.track-shop{grid-template-columns:repeat(2,1fr);}.hero h1{max-width:100%;font-size:23px;}}
+@media (prefers-reduced-motion:reduce){.section{animation:none;}}
+
+/* ==== DRUCKMODUL Schülerversion (body.print-student) ==== */
+.print-head{display:none;}
+@media print{
+  body.print-student{background:#fff;}
+  body.print-student .wrap,body.print-student main{max-width:none;padding:0;}
+  body.print-student .print-head{display:flex;justify-content:space-between;font-size:12pt;font-weight:700;border-bottom:1.5px solid #000;padding-bottom:6px;margin-bottom:12px;}
+  body.print-student .section{display:block!important;border:none;box-shadow:none;padding:0 0 .6rem;margin:0 0 1rem;break-inside:auto;animation:none;}
+  body.print-student .section.teacher-only,
+  body.print-student .teacher-note,body.print-student .solution-reveal,body.print-student .erwartung-box,
+  body.print-student .solution-btn,body.print-student .erwartung-btn,body.print-student .sol-code,
+  body.print-student .quiz-fb,body.print-student .quiz-score,body.print-student .quiz-retry,body.print-student .print-btn,
+  body.print-student .chip-count,body.print-student .section-time,body.print-student .no-print,
+  body.print-student .row-fb,body.print-student .chart-tip,body.print-student .chart-table{display:none!important;}
+  body.print-student .hero{background:none!important;color:#000;border:none;box-shadow:none;padding:0;margin-bottom:.6rem;}
+  body.print-student .hero *{color:#000!important;}
+  body.print-student .hero-chips{display:none;}
+  body.print-student .task{break-inside:avoid;border:1px solid #999;box-shadow:none;}
+  body.print-student .task-header{background:#eee!important;color:#000!important;}
+  body.print-student .task-header *{color:#000!important;}
+  body.print-student .icons{display:none;}
+  body.print-student textarea{display:block;width:100%;min-height:7em;border:1px solid #999;border-radius:4px;resize:none;background:repeating-linear-gradient(#fff 0 1.7em,#ccc 1.7em calc(1.7em + 1px));}
+  body.print-student textarea::placeholder{color:transparent;}
+  body.print-student .sort-row{background:#fff!important;border:1px solid #999!important;break-inside:avoid;}
+  body.print-student .sort-row select{display:none;}
+  body.print-student .sort-row::after{content:"→ ____________________";white-space:nowrap;}
+  body.print-student .print-options{display:block!important;font-size:10.5pt;margin:.3rem 0 .6rem;padding:.4rem .6rem;border:1px dashed #999;}
+  body.print-student .chip,body.print-student .chip.on{background:#fff!important;color:#000!important;border:1px solid #999!important;}
+  body.print-student .chip::before{content:"☐ ";}
+  body.print-student .quiz-opt{background:#fff!important;border:1px solid #bbb!important;color:#000!important;break-inside:avoid;}
+  body.print-student .quiz-opt::before{content:"☐";margin-right:6px;}
+  body.print-student .quiz-block{break-inside:avoid;}
+  body.print-student .book-ref{break-inside:avoid;background:none!important;}
+  body.print-student a.para-link::after{content:" (" attr(href) ")";font-weight:400;font-size:9pt;}
+  body.print-student .step-label,body.print-student .section h2{break-after:avoid;page-break-after:avoid;}
+  body.print-student .section h2{margin-top:.2rem;}
+  body.print-student .chart-card{break-inside:avoid;background:#fff;}
+  body.print-student .scale input{display:none;}
+  body.print-student .scale-val{display:none;}
+  body.print-student select.gap{appearance:none;-webkit-appearance:none;border:none;border-bottom:1px solid #000;border-radius:0;background:none;color:transparent;width:9em;}
+  body.print-student input.num{border:none;border-bottom:1px solid #000;border-radius:0;color:transparent;}
+  body.print-student *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+.print-options{display:none;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="topbar-logo" href="index.html">WR<span>&amp;</span>10</a>
+    <a class="topbar-back" href="index.html">← Übersicht</a>
+    <div class="topbar-actions">
+      <button class="tbtn" id="teacherToggle" onclick="toggleTeacher()">🔓 Lehrkraft</button>
+    </div>
+  </div>
+
+  <nav class="progress"><div class="progress-inner" id="prog"></div></nav>
+
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-eyebrow">Ökonomisches Handeln auf dem Markt · Stunde 11</div>
+      <h1>Welche Zahlungsart passt zur Situation?</h1>
+      <p class="lead">Bar, Karte, Handy, PayPal – bezahlen kann man heute auf viele Arten. Aber welche ist wann die klügste?</p>
+      <div class="hero-chips"><span>Kapitel 1.6</span><span>Buch S. 22–23</span><span>Zahlungsarten</span></div>
+    </div>
+
+    <!-- STEP 1 -->
+    <section class="section" id="step1">
+      <span class="step-label"><span class="sn">1</span> Einstieg</span>
+      <h2>Wie wurde bei euch zuletzt bezahlt?</h2>
+      <div class="section-time">⏱ ca. 5 Min · Einzelarbeit, dann Plenum</div>
+      <p>Du selbst zahlst vermutlich meistens bar. Bei Erwachsenen sieht das oft anders aus. Erinnere dich: Wie haben deine Eltern (oder andere Erwachsene in deiner Familie) in diesen Situationen <b>zuletzt</b> bezahlt?</p>
+
+      <div class="task">
+        <div class="task-header"><div class="task-num">A</div><div><div class="task-title">Bezahl-Protokoll meiner Familie</div><div class="task-sub">Abstimmung · Einzelarbeit, dann Plenum</div></div></div>
+        <div class="task-body">
+          <div class="icons"><div class="itile" style="border:1.5px solid #E65100;"><svg width="22" height="22" viewBox="0 0 44 38" fill="none"><circle cx="22" cy="30" r="5" fill="#E65100"/><path d="M13 38c0-4.418 4.03-8 9-8s9 3.582 9 8" stroke="#E65100" stroke-width="2.2" stroke-linecap="round" fill="none"/><circle cx="7" cy="14" r="3.5" fill="#E65100" opacity=".7"/><circle cx="16" cy="10" r="3.5" fill="#E65100" opacity=".75"/><circle cx="28" cy="10" r="3.5" fill="#E65100" opacity=".75"/><circle cx="37" cy="14" r="3.5" fill="#E65100" opacity=".7"/></svg></div></div>
+          <div class="task-content">
+            <div id="famBox"></div>
+            <p class="small-muted no-print" id="famSum"></p>
+            <p style="margin-top:.7rem"><b>Und du? Womit hast du selbst schon bezahlt?</b></p>
+            <div class="chips" id="meChips"></div>
+            <p style="margin-top:.7rem"><b>Warum zahlen deine Eltern nicht überall gleich?</b> Notiere eine Vermutung.</p>
+            <textarea class="answer-area" id="s11a1" placeholder="Im Supermarkt zahlen sie mit …, weil … Beim Bäcker dagegen …"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        Je Situation kurz per Handzeichen abfragen (bar / Karte / Handy / online / Konto) und als Strichliste an der Tafel festhalten – sie wird in Step 5 mit den bundesweiten Zahlen verglichen. Gefragt ist nur die Zahlungsart, nichts zu den Finanzen der Familie. Überleitung: Dieselben Leute zahlen je nach Situation anders. Wovon hängt die Wahl ab? Die Seite kann die Antworten der Klasse nicht zusammenzählen; jedes Tablet speichert nur die eigene Auswahl.
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="section" id="step2">
+      <span class="step-label"><span class="sn">2</span> Erarbeitung · Kennen</span>
+      <h2>Acht Arten zu bezahlen – wie funktionieren sie?</h2>
+      <div class="section-time">⏱ ca. 8 Min · Partnerarbeit</div>
+      <div class="book-ref"><svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg><div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 22 · M1 „Bezahlen im stationären und Online-Handel" · Aufgaben 1 und 3 · Fachwissen S. 44–46</div></div></div>
+
+      <div class="cards">
+        <div class="mini"><b>💶 Bargeld</b><span>Scheine und Münzen wechseln direkt den Besitzer. Kein Konto, keine Technik nötig.</span></div>
+        <div class="mini"><b>💳 Girocard / Debitkarte</b><span>Karte ans Terminal, der Betrag wird direkt vom Girokonto abgebucht.</span></div>
+        <div class="mini"><b>💳 Kreditkarte</b><span>Die Umsätze werden gesammelt und meist einmal im Monat abgerechnet – ein kurzer Kredit. Weltweit und online einsetzbar.</span></div>
+        <div class="mini"><b>📱 Mobile Payment</b><span>Die Karte ist in einer Wallet-App auf Smartphone oder Smartwatch hinterlegt. Bezahlt wird per Funk (NFC).</span></div>
+        <div class="mini"><b>🛒 Online-Bezahldienst</b><span>Ein Dienst wie PayPal schaltet sich zwischen Käufer und Händler. Der Händler sieht keine Kontodaten, oft gibt es Käuferschutz.</span></div>
+        <div class="mini"><b>➡️ Überweisung</b><span>Du beauftragst deine Bank, einmalig Geld auf ein anderes Konto zu senden – als Echtzeitüberweisung in Sekunden.</span></div>
+        <div class="mini"><b>🔁 Dauerauftrag</b><span>Deine Bank überweist regelmäßig denselben Betrag zum selben Termin, bis du es änderst.</span></div>
+        <div class="mini"><b>⬅️ Lastschrift</b><span>Du erlaubst dem Empfänger, Beträge von deinem Konto einzuziehen – auch wenn sie jedes Mal anders sind.</span></div>
+      </div>
+
+      <h3>Drei, die oft verwechselt werden</h3>
+      <div class="tscroll"><table class="dtable">
+        <tr><th></th><th>Wer stößt die Zahlung an?</th><th>Betrag</th><th>Typisch für</th></tr>
+        <tr><td class="rowh">Überweisung</td><td>du, jedes Mal neu</td><td>beliebig</td><td>einzelne Rechnung, Geld an Freunde</td></tr>
+        <tr><td class="rowh">Dauerauftrag</td><td>deine Bank, automatisch – du richtest ihn einmal ein</td><td>immer gleich</td><td>Miete, Vereinsbeitrag, Taschengeld</td></tr>
+        <tr><td class="rowh">Lastschrift</td><td>der Empfänger – du hast es ihm vorher erlaubt</td><td>kann sich ändern</td><td>Strom, Handyvertrag, Streaming-Abo</td></tr>
+      </table></div>
+      <div class="info-box blue"><b>Gut zu wissen:</b> Eine Lastschrift kannst du innerhalb von acht Wochen ohne Begründung von deiner Bank zurückbuchen lassen. Eine Überweisung dagegen ist weg, sobald sie ausgeführt ist.</div>
+
+      <div class="task">
+        <div class="task-header"><div class="task-num">B</div><div><div class="task-title">Wer bin ich?</div><div class="task-sub">Zuordnung · Partnerarbeit · Sofortfeedback</div></div></div>
+        <div class="task-body">
+          <div class="icons"><div class="itile" style="border:1.5px solid #0d9488;"><svg width="22" height="22" viewBox="0 0 44 36" fill="none"><circle cx="12" cy="10" r="6.5" fill="#0d9488"/><circle cx="32" cy="10" r="6.5" fill="#0d9488"/><path d="M1 34c0-6.075 4.925-11 11-11s11 4.925 11 11" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round" fill="none"/><path d="M21 34c0-6.075 4.925-11 11-11s11 4.925 11 11" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg></div></div>
+          <div class="task-content">
+            <p>Sieben Zahlungsarten stellen sich vor. Ordne zu.</p>
+            <div id="werBox"></div>
+            <button class="erwartung-btn" style="margin-top:.4rem" onclick="checkGrid('wer')">✓ Zuordnung prüfen</button>
+            <div class="quiz-fb" id="werFb"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box teal"><b>Neu dabei: Wero.</b> Der europäische Bezahldienst der Banken schickt Geld in Sekunden von Konto zu Konto – es genügt die Handynummer. Inzwischen kann man damit auch in ersten Online-Shops zahlen, an der Ladenkasse soll es folgen.</div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        Ziel ist kein Detailwissen zu jeder Zahlungsart (das veraltet schnell), sondern genug Verständnis, um in Step 3 bewerten zu können. Kern: Wer löst die Zahlung aus, und lässt sie sich zurückholen? Buch-Aufgabe 3 (Recherche) ist hier durch die Steckbriefe ersetzt; als Hausaufgabe eignet sich die Recherche zu einer selbst gewählten Zahlungsart bei Verbraucherzentrale oder Bundesbank. Zu den Karten: Maestro wird seit Juli 2023 nicht mehr neu ausgegeben, auch V Pay läuft aus – neue Girocards tragen oft zusätzlich ein Debit-Zeichen von Mastercard oder Visa. Die Legende der Buchgrafik M2 nennt noch die alten Namen.
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="section" id="step3">
+      <span class="step-label"><span class="sn">3</span> Erarbeitung · Bewerten und hinterfragen</span>
+      <h2>Reflektiert bezahlen in drei Schritten</h2>
+      <div class="section-time">⏱ ca. 8 Min · Partnerarbeit</div>
+      <div class="book-ref"><svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg><div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 22 · M1 · Aufgabe 2</div></div></div>
+
+      <div class="cards">
+        <div class="mini"><b>1 · Kennen</b><span>Wie funktioniert die Zahlungsart?</span></div>
+        <div class="mini"><b>2 · Bewerten</b><span>Wie schneidet sie bei den Kriterien ab?</span></div>
+        <div class="mini"><b>3 · Hinterfragen</b><span>Welche Kriterien zählen in genau dieser Situation? Zeitdruck? Kenne ich den Verkäufer? Wie hoch ist der Betrag?</span></div>
+      </div>
+
+      <h3>Sechs Kriterien</h3>
+      <div class="cards">
+        <div class="mini"><b>🔒 Sicherheit</b><span>Schutz vor Diebstahl und Betrug. Bekomme ich mein Geld zurück, wenn etwas schiefgeht?</span></div>
+        <div class="mini"><b>💰 Kosten</b><span>Fallen Gebühren an, etwa im Ausland oder für die Karte?</span></div>
+        <div class="mini"><b>⚡ Zweckmäßigkeit</b><span>Geht es schnell und bequem? Passt die Zahlungsart zum Betrag?</span></div>
+        <div class="mini"><b>🌍 Verfügbarkeit</b><span>Wird sie hier akzeptiert? Brauche ich Technik, Netz oder Akku?</span></div>
+        <div class="mini"><b>🕶 Datenschutz</b><span>Wer erfährt, was ich wann und wo kaufe?</span></div>
+        <div class="mini"><b>📊 Überblick</b><span>Behalte ich im Blick, wie viel ich schon ausgegeben habe?</span></div>
+      </div>
+
+      <div class="task">
+        <div class="task-header"><div class="task-num">C</div><div><div class="task-title">Sechs Situationen – deine Wahl</div><div class="task-sub">Buchaufgabe (Aufgabe 2) angewandt · Partnerarbeit · Rückmeldung</div></div></div>
+        <div class="task-body">
+          <div class="icons"><div class="itile" style="border:1.5px solid #0d9488;"><svg width="22" height="22" viewBox="0 0 44 36" fill="none"><circle cx="12" cy="10" r="6.5" fill="#0d9488"/><circle cx="32" cy="10" r="6.5" fill="#0d9488"/><path d="M1 34c0-6.075 4.925-11 11-11s11 4.925 11 11" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round" fill="none"/><path d="M21 34c0-6.075 4.925-11 11-11s11 4.925 11 11" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg></div></div>
+          <div class="task-content">
+            <p>Wähle für jede Situation die Zahlungsart, die du für die klügste hältst. Danach bekommst du eine Einschätzung: <b>grün</b> = passt gut, <b>orange</b> = möglich mit Haken, <b>rot</b> = ungeeignet.</p>
+            <div id="sitBox"></div>
+            <button class="erwartung-btn" style="margin-top:.4rem" onclick="checkSit()">✓ Wahl einschätzen</button>
+            <div class="quiz-fb" id="sitFb"></div>
+            <p style="margin-top:.8rem"><b>Begründe eine deiner Entscheidungen mit zwei Kriterien.</b></p>
+            <textarea class="answer-area" id="s11c1" placeholder="In Situation … wähle ich …, weil hier … besonders wichtig ist. Außerdem …"></textarea>
+            <button class="solution-btn" data-target="solC" onclick="solClick(this)">🔒 Musterlösung</button>
+            <div class="solution-reveal" id="solC">
+              <b>Beispiel Situation 3 (unbekannter Online-Shop):</b> Ich wähle einen Online-Bezahldienst mit Käuferschutz. Entscheidend ist hier die <b>Sicherheit</b>, weil ich den Verkäufer nicht kenne und die Ware erst nach der Zahlung sehe. Außerdem spricht der <b>Datenschutz</b> dafür: Der Shop erfährt meine Kontodaten nicht. Vorkasse per Überweisung wäre ungeeignet, weil ich das Geld bei Betrug kaum zurückbekomme.<br><br>
+              <b>Erkenntnis:</b> Keine Zahlungsart ist immer die beste. Bargeld ist beim Fahrradkauf von privat ideal und im Online-Shop unbrauchbar. Welche Kriterien zählen, entscheidet die Situation: Betrag, Zeitdruck, Vertrauen zum Verkäufer, einmalig oder regelmäßig.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        Die Einschätzung (grün/orange/rot) ist keine Richtig-falsch-Korrektur, sondern ein Gesprächsanlass – orange Antworten sind oft die spannendsten. Lehrplanbezug: Kriterien der Auswahl geeigneter Zahlungsarten (Sicherheit, Kosten, Zweckmäßigkeit). Datenschutz und Überblick sind ergänzt; „Überblick“ knüpft an Stunde 10 (Überschuldung) an. Die Situationen 4 und 6 gehen über die Bilder in M1 hinaus, damit auch Lastschrift, Dauerauftrag und Überweisung vorkommen.
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="section" id="step4">
+      <span class="step-label"><span class="sn">4</span> Vertiefung · Digitale Zahlungsverfahren</span>
+      <h2>Bezahlen mit dem Smartphone – praktisch, aber …</h2>
+      <div class="section-time">⏱ ca. 7 Min · Einzelarbeit</div>
+      <div class="book-ref"><svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg><div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 23 · M3 „Kontaktloses Bezahlen mit dem Smartphone" · Aufgabe 4</div></div></div>
+
+      <p>Für Mobile Payment braucht man ein Smartphone mit NFC-Funk, ein passendes Kassenterminal und eine Wallet-App, in der eine Karte hinterlegt ist. Freigegeben wird mit Fingerabdruck, Gesicht oder Code. An das Terminal wird dabei nicht die echte Kartennummer gesendet, sondern eine Ersatznummer.</p>
+
+      <h3>Wer erfährt eigentlich, was du kaufst?</h3>
+      <p>Du holst dir für 4,20 € einen Döner. Tippe eine Zahlungsart an und sieh dir die Datenspur an.</p>
+      <div class="track-shop no-print" id="spurBtns"></div>
+      <div class="track-log no-print" id="spurLog"><div class="track-log-head">📡 Datenspur</div><div class="tl">Noch keine Zahlungsart gewählt.</div></div>
+
+      <div class="task">
+        <div class="task-header"><div class="task-num">D</div><div><div class="task-title">Chance oder Risiko?</div><div class="task-sub">Zuordnung · Einzelarbeit · Sofortfeedback</div></div></div>
+        <div class="task-body">
+          <div class="icons"><div class="itile" style="border:1.5px solid #1976D2;"><svg width="22" height="22" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="12" r="7" fill="#1976D2"/><path d="M4 34c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="#1976D2" stroke-width="3" stroke-linecap="round" fill="none"/></svg></div></div>
+          <div class="task-content">
+            <div id="crBox"></div>
+            <button class="erwartung-btn" style="margin-top:.4rem" onclick="checkGrid('cr')">✓ Zuordnung prüfen</button>
+            <div class="quiz-fb" id="crFb"></div>
+            <p style="margin-top:.8rem"><b>Beurteile Mobile Payment</b> anhand von drei Kriterien aus Step 3. Schließe mit einem Urteil: Für wen und in welchen Situationen ist es sinnvoll?</p>
+            <textarea class="answer-area" id="s11d1" placeholder="Bei der Sicherheit …&#10;Beim Datenschutz …&#10;Beim Überblick …&#10;Insgesamt halte ich Mobile Payment für …"></textarea>
+            <button class="solution-btn" data-target="solD" onclick="solClick(this)">🔒 Musterlösung</button>
+            <div class="solution-reveal" id="solD">
+              <ul>
+                <li><b>Zweckmäßigkeit:</b> sehr hoch – schnell, kontaktlos, das Handy ist fast immer dabei.</li>
+                <li><b>Sicherheit:</b> gut, solange das Gerät gesperrt ist: Ohne Fingerabdruck, Gesicht oder Code geht nichts, die echte Kartennummer wird nicht übertragen. Schwachstelle ist der Mensch – wer auf Fake-Nachrichten hereinfällt und Codes weitergibt, öffnet Betrügern die Tür.</li>
+                <li><b>Verfügbarkeit:</b> eingeschränkt – man braucht ein NFC-fähiges Gerät, Akku und ein passendes Terminal.</li>
+                <li><b>Datenschutz:</b> schwach – jede Zahlung hinterlässt Daten bei Bank, Kartenfirma und je nach App auch beim Wallet-Anbieter.</li>
+                <li><b>Überblick:</b> zweischneidig – jede Zahlung steht sofort in der App, aber das Ausgeben fällt leichter als mit Bargeld.</li>
+              </ul>
+              <b>Mögliches Urteil:</b> Sinnvoll für alle, die ihr Gerät absichern und ihre Umsätze regelmäßig prüfen. Wer leicht den Überblick verliert oder Wert auf Anonymität legt, fährt mit Bargeld besser. Klug ist, beides nutzen zu können.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box teal"><b>Vier Schutzregeln für digitales Bezahlen</b>
+        <ul>
+          <li>Bildschirmsperre nutzen – ohne sie ist die Wallet ein offener Geldbeutel.</li>
+          <li>Benachrichtigung bei jeder Zahlung einschalten.</li>
+          <li>Codes und TANs nie weitergeben, auch wenn die Nachricht angeblich von der Bank kommt.</li>
+          <li>Kontoumsätze regelmäßig prüfen: Nur so fallen falsche Abbuchungen rechtzeitig auf.</li>
+        </ul>
+      </div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        Dieser Step deckt den Lehrplanpunkt „digitale Zahlungsverfahren: Möglichkeiten und Risiken“ ab, den das Buch nur über M3 und Aufgabe 4 streift. Die vierte Schutzregel beantwortet Buch-Aufgabe 6 (Kontoauszüge kontrollieren). Rückbezug Stunde 10: Digitales Bezahlen und „jetzt kaufen, später zahlen“ senken die Hemmschwelle beim Geldausgeben. Aktuelle Entwicklungen für das Gespräch (Stand November 2026): Wero als europäische Alternative zu US-Diensten; digitaler Euro – das EU-Gesetz wird für Ende 2026 erwartet, nach derzeitiger Planung folgt ab 2027 ein Pilotbetrieb, eine Einführung frühestens 2029. Er soll Bargeld ergänzen, nicht ersetzen.
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="section" id="step5">
+      <span class="step-label"><span class="sn">5</span> Auswertung &amp; Sicherung</span>
+      <h2>So bezahlt Deutschland – und ihr?</h2>
+      <div class="section-time">⏱ ca. 7 Min · Einzelarbeit, dann Plenum</div>
+      <div class="book-ref"><svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg><div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 22 · M2 · Aufgabe 5 · aktuelle Fassung der Buchgrafik: <a href="https://www.ccbuchner.de/clip_code/73000-380" target="_blank" rel="noopener">Mediencode 73000-380</a></div></div></div>
+
+      <div class="chart-card" id="chLine"></div>
+      <div class="chart-card" id="chBars"></div>
+      <div class="info-box orange"><b>Zwei Blickwinkel:</b> Gemessen am <b>Umsatz</b> liegt die Karte klar vorn. Zählt man dagegen die <b>einzelnen Einkäufe</b>, wurde 2025 noch gut die Hälfte bar bezahlt (50,5 %), mit Karte 48,1 %. Ein Bareinkauf kostet im Schnitt rund 16 €, einer mit Girocard rund 34 €.</div>
+
+      <div class="task">
+        <div class="task-header"><div class="task-num">E</div><div><div class="task-title">Grafik auswerten und vergleichen</div><div class="task-sub">Buchaufgabe (Aufgabe 5) · Einzelarbeit</div></div></div>
+        <div class="task-body">
+          <div class="icons"><div class="itile" style="border:1.5px solid #1976D2;"><svg width="22" height="22" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="12" r="7" fill="#1976D2"/><path d="M4 34c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="#1976D2" stroke-width="3" stroke-linecap="round" fill="none"/></svg></div></div>
+          <div class="task-content">
+            <ol>
+              <li>Beschreibe die Entwicklung von Bargeld und Karte seit 2018 mit konkreten Zahlen.</li>
+              <li>Erkläre, wie es sein kann, dass die Hälfte aller Einkäufe bar bezahlt wird, Bargeld aber nur ein Drittel des Umsatzes ausmacht.</li>
+              <li>Vergleiche mit dem Bezahl-Protokoll deiner Familie aus Step 1.</li>
+            </ol>
+            <p class="small-muted no-print" id="famSum2"></p>
+            <textarea class="answer-area" id="s11e1" placeholder="1. Der Anteil des Bargelds …&#10;2. Das liegt daran, dass …&#10;3. In meiner Familie …" style="min-height:120px"></textarea>
+            <button class="solution-btn" data-target="solE" onclick="solClick(this)">🔒 Musterlösung</button>
+            <div class="solution-reveal" id="solE">
+              <b>1.</b> 2018 lagen Bargeld (48,3 %) und Karte (48,6 %) fast gleichauf. Seitdem verliert Bargeld jedes Jahr: 2025 entfielen nur noch 32,3 % des Umsatzes im stationären Einzelhandel auf Barzahlungen, 65,1 % auf Karten. Besonders stark war der Sprung 2020 – in der Corona-Zeit wurde kontaktloses Zahlen zur Gewohnheit. Wichtigste einzelne Zahlungsart ist die Girocard mit 40,5 %.<br>
+              <b>2.</b> Bar bezahlt werden vor allem kleine Beträge (Bäcker, Kiosk), große Einkäufe eher mit Karte. Viele kleine Barzahlungen ergeben zusammen weniger Umsatz als weniger, aber größere Kartenzahlungen.<br>
+              <b>3.</b> Individuell – typisch: kleine Beträge bar, Wocheneinkauf und Tanken mit Karte, regelmäßige Rechnungen per Lastschrift oder Dauerauftrag.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box green"><b>Das nimmst du mit:</b> Reflektiert bezahlen heißt: die Zahlungsart <b>kennen</b>, sie anhand von Kriterien <b>bewerten</b> (Sicherheit, Kosten, Zweckmäßigkeit, Verfügbarkeit, Datenschutz, Überblick) und <b>hinterfragen</b>, welche Kriterien in der konkreten Situation zählen. Digitale Verfahren sind schnell und bequem, hinterlassen aber Daten und machen das Ausgeben leichter.</div>
+
+      <div class="info-box blue"><b>Zum Weiterdenken</b> (Buch S. 23, Aufgaben 7 und 8): Wäre eine Welt ganz ohne Bargeld wünschenswert? Und womit bezahlen wir in 50 Jahren?</div>
+
+      <div class="quiz-block">
+        <div class="quiz-q">1. Was unterscheidet eine Lastschrift von einem Dauerauftrag?</div>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">A</span><span>Die Lastschrift gibt es nur für Unternehmen, den Dauerauftrag nur für Privatleute.</span></button>
+        <button class="quiz-opt" data-correct="true" onclick="checkQuiz(this)"><span class="ql">B</span><span>Bei der Lastschrift zieht der Empfänger das Geld ein, beim Dauerauftrag überweist die eigene Bank regelmäßig denselben Betrag.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">C</span><span>Ein Dauerauftrag lässt sich acht Wochen lang zurückbuchen, eine Lastschrift nie.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">D</span><span>Es gibt keinen Unterschied.</span></button>
+        <div class="quiz-fb">Entscheidend ist, wer die Zahlung anstößt. Zurückbuchen lässt sich die Lastschrift.</div>
+      </div>
+      <hr class="divider">
+      <div class="quiz-block">
+        <div class="quiz-q">2. Ein unbekannter Online-Shop bietet ein Handy 40 % unter dem üblichen Preis an, verlangt aber Vorkasse per Überweisung. Was ist am klügsten?</div>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">A</span><span>Schnell überweisen, bevor das Angebot weg ist.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">B</span><span>Als Echtzeitüberweisung zahlen, das ist sicherer.</span></button>
+        <button class="quiz-opt" data-correct="true" onclick="checkQuiz(this)"><span class="ql">C</span><span>Nur mit einer Zahlungsart mit Käuferschutz kaufen – oder gar nicht.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">D</span><span>Die Hälfte überweisen und den Rest nach Lieferung.</span></button>
+        <div class="quiz-fb">Überwiesenes Geld ist kaum zurückzuholen. Unbekannter Verkäufer plus Vorkasse plus Schnäppchenpreis ist ein typisches Betrugsmuster.</div>
+      </div>
+      <hr class="divider">
+      <div class="quiz-block">
+        <div class="quiz-q">3. Warum sollte man beim bargeldlosen Zahlen seine Kontoumsätze regelmäßig prüfen?</div>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">A</span><span>Weil die Bank sonst das Konto sperrt.</span></button>
+        <button class="quiz-opt" data-correct="true" onclick="checkQuiz(this)"><span class="ql">B</span><span>Um falsche oder betrügerische Abbuchungen rechtzeitig zu entdecken und den Überblick über die Ausgaben zu behalten.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">C</span><span>Weil Kartenzahlungen erst nach der Kontrolle gültig werden.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">D</span><span>Das ist nur bei Kreditkarten nötig.</span></button>
+        <div class="quiz-fb">Anders als beim Blick in den Geldbeutel sieht man unbare Ausgaben nicht – und für Reklamationen gelten Fristen.</div>
+      </div>
+      <hr class="divider">
+      <div class="quiz-block">
+        <div class="quiz-q">4. Welche Aussage über das Bezahlen im stationären Einzelhandel 2025 stimmt?</div>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">A</span><span>Bargeld spielt praktisch keine Rolle mehr.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">B</span><span>Die Kreditkarte ist die wichtigste Zahlungsart.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">C</span><span>Rund zwei Drittel des Umsatzes werden bar bezahlt.</span></button>
+        <button class="quiz-opt" data-correct="true" onclick="checkQuiz(this)"><span class="ql">D</span><span>Rund zwei Drittel des Umsatzes laufen über Karten, etwa ein Drittel über Bargeld.</span></button>
+        <div class="quiz-fb">Karte 65,1 %, Bargeld 32,3 % – wichtigste Einzelzahlungsart ist die Girocard.</div>
+      </div>
+
+      <div class="quiz-score" id="quizScore"><span class="score-num"></span><span class="score-msg"></span></div>
+      <button class="quiz-retry" id="quizRetry" onclick="retryQuiz()">🔄 Nochmal versuchen</button>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        Die Diagramme sind aus öffentlich berichteten Zahlen der jährlichen EHI-Studie selbst erstellt (keine Buchgrafik). Sie zeigen bewusst nur 2018 bis 2025, weil diese Werte gesichert vorliegen; die Buchgrafik M2 bzw. der Mediencode reicht bis 2005 zurück und eignet sich für den langen Trend. Vergleich mit der Strichliste aus Step 1: Wo weicht die Klasse vom Bundesschnitt ab, und warum (ländlicher Raum, kleine Läden, Alter)? Buch-Aufgabe 9 (Abstimmung) ist mit dem Einstieg erledigt.
+      </div>
+    </section>
+
+    <!-- STEP 6 – Lehrkraft -->
+    <section class="section teacher-only" id="step6">
+      <span class="step-label"><span class="sn">6</span> Mündliche Abfrage</span>
+      <h2>Abfrage Stunde 11 – Welche Zahlungsart passt zur Situation?</h2>
+      <div class="section-time">⏱ ca. 10 Min · 1 Schüler:in</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.4rem;">
+        <div class="k-legend"><span class="k-wissen">🔵 Wissen</span><span class="k-denken">🟢 Kritisches Denken</span><span class="k-komm">🟡 Kommunikation</span><span class="k-kreativ">🔴 Kreativität</span></div>
+        <button class="print-btn" onclick="window.print()">🖨 Drucken</button>
+      </div>
+      <div class="abfrage-wrap">
+        <div class="abfrage-q"><div class="abfrage-q-header"><div class="abfrage-q-num wissen">1</div><div><div class="abfrage-q-label wissen">🔵 Wissen · ca. 2 Min.</div><div class="abfrage-q-text">Erkläre den Unterschied zwischen Überweisung, Dauerauftrag und Lastschrift und nenne je ein passendes Beispiel.</div></div></div>
+          <div class="abfrage-q-body"><p>Bewertet: drei korrekte Erklärungen + drei Beispiele.</p><button class="erwartung-btn" onclick="toggleErw('ew1',this)">📋 Erwartungshorizont anzeigen</button>
+          <div class="erwartung-box" id="ew1">Überweisung: Zahler beauftragt seine Bank einmalig (z. B. Rechnung vom Handwerker). Dauerauftrag: Bank überweist regelmäßig denselben Betrag (z. B. Miete, Vereinsbeitrag). Lastschrift: Empfänger zieht mit Erlaubnis des Zahlers ein, Betrag kann wechseln (z. B. Strom, Handyvertrag); Rückgabe binnen acht Wochen möglich. Je 1 P. Erklärung, je 0,5 P. Beispiel.</div></div></div>
+        <div class="abfrage-q"><div class="abfrage-q-header"><div class="abfrage-q-num denken">2</div><div><div class="abfrage-q-label denken">🟢 Kritisches Denken · ca. 3 Min.</div><div class="abfrage-q-text">„Bargeld ist altmodisch und sollte abgeschafft werden.“ Nimm Stellung.</div></div></div>
+          <div class="abfrage-q-body"><p>Bewertet: Argumente beider Seiten + begründetes Urteil.</p><button class="erwartung-btn" onclick="toggleErw('ew2',this)">📋 Erwartungshorizont anzeigen</button>
+          <div class="erwartung-box" id="ew2">Dafür: unbare Zahlungen sind schnell und nachvollziehbar, erschweren Schwarzarbeit und Steuerhinterziehung, der Bargeldanteil sinkt ohnehin. Dagegen: Bargeld ist anonym (Datenschutz), funktioniert ohne Technik und Strom, hilft beim Überblick über Ausgaben, schließt niemanden aus (Kinder, ältere Menschen, Menschen ohne Konto). Gutes Urteil trennt zwei Fragen: Dass bargeldloses Zahlen Vorteile hat, heißt nicht, dass Bargeld verschwinden sollte – Wahlfreiheit je nach Situation ist der Kern reflektierten Bezahlens.</div></div></div>
+        <div class="abfrage-q"><div class="abfrage-q-header"><div class="abfrage-q-num komm">3</div><div><div class="abfrage-q-label komm">🟡 Kommunikation · ca. 2 Min.</div><div class="abfrage-q-text">Deine Oma will zum ersten Mal im Internet bestellen. Der Shop bietet Vorkasse per Überweisung, einen Online-Bezahldienst und Kauf auf Rechnung. Berate sie verständlich.</div></div></div>
+          <div class="abfrage-q-body"><p>Bewertet: adressatengerecht, klare Empfehlung, Begründung mit Kriterien.</p><button class="erwartung-btn" onclick="toggleErw('ew3',this)">📋 Erwartungshorizont anzeigen</button>
+          <div class="erwartung-box" id="ew3">Z. B.: „Nimm am besten die Rechnung, Oma – dann zahlst du erst, wenn das Paket da ist und alles passt. Wenn es die nicht gibt, den Bezahldienst: Der gibt dir dein Geld zurück, falls nichts ankommt. Vorher überweisen würde ich nur bei Läden, die du kennst, denn das Geld bekommst du kaum zurück.“ (Kriterium Sicherheit, einfache Sprache, keine Fachwörter ohne Erklärung)</div></div></div>
+        <div class="abfrage-q"><div class="abfrage-q-header"><div class="abfrage-q-num kreativ">4</div><div><div class="abfrage-q-label kreativ">🔴 Kreativität · ca. 2 Min.</div><div class="abfrage-q-text">Erfinde eine Zahlungsart für das Jahr 2075. Beschreibe, wie sie funktioniert, und bewerte sie mit zwei unserer Kriterien.</div></div></div>
+          <div class="abfrage-q-body"><p>Eigene Idee. Bewertet: nachvollziehbare Funktionsweise + zwei Kriterien angewandt, davon mindestens ein Risiko.</p><button class="erwartung-btn" onclick="toggleErw('ew4',this)">📋 Erwartungshorizont anzeigen</button>
+          <div class="erwartung-box" id="ew4">Beispiele: Bezahlen per Handvenen-Scan oder Blick in die Kamera (sehr zweckmäßig, aber biometrische Daten lassen sich nach einem Diebstahl nicht ändern – Sicherheit und Datenschutz kritisch); automatisches Bezahlen beim Verlassen des Ladens (bequem, aber kaum Überblick über Ausgaben).</div></div></div>
+      </div>
+    </section>
+
+    <div class="stepnav">
+      <a class="nav-home" href="index.html">🏠 Übersicht</a>
+      <div class="nav-right">
+        <button class="nav-btn nav-prev" id="navPrev">← Zurück</button>
+        <button class="nav-btn nav-next" id="navNext">Weiter →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIN-Modal -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <h3>Lehrkraft-Bereich</h3>
+      <p>8-stellige PIN eingeben</p>
+      <div class="dots" id="dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="pin-err" id="pinErr"></div>
+      <div class="pad" id="pad"></div>
+      <button class="modal-close" onclick="closeModal()">Abbrechen</button>
+    </div>
+  </div>
+
+<script>
+const PIN_HASH="385319fce53854f96b636f28301b3d31be241dcaf6f1775da31a5e768b3a848e";
+const LOESUNGSCODE="CASH85";
+const NS="wr10_s11_";
+function lsGet(k){try{return localStorage.getItem(NS+k);}catch(e){return null;}}
+function lsSet(k,v){try{localStorage.setItem(NS+k,v);}catch(e){}}
+
+/* ---- Stepper ---- */
+const STEPS=[{id:"step1",label:"Einstieg"},{id:"step2",label:"Zahlungsarten"},{id:"step3",label:"Kriterien"},{id:"step4",label:"Mobile Payment"},{id:"step5",label:"Auswertung"},{id:"step6",label:"Abfrage",teacher:true}];
+const secEls=STEPS.map(s=>document.getElementById(s.id));
+const prevBtn=document.getElementById("navPrev");
+const nextBtn=document.getElementById("navNext");
+const prog=document.getElementById("prog");
+const pbtns=[];
+const stepHooks={};
+let cur=0, maxReached=0;
+function visibleCount(){ return document.body.classList.contains("version-b") ? STEPS.length : STEPS.length-1; }
+STEPS.forEach((s,i)=>{
+  const b=document.createElement("button");
+  b.className="pstep"+(s.teacher?" teacher-only":"");
+  b.innerHTML=`<span class="pnum">${i+1}</span>${s.label}`;
+  b.onclick=()=>{ if(i<=maxReached && i<visibleCount()) showStep(i,true); };
+  prog.appendChild(b); pbtns.push(b);
+});
+function showStep(i,scroll){
+  cur=i; if(i>maxReached)maxReached=i;
+  secEls.forEach((el,k)=>el.classList.toggle("step-visible",k===i));
+  pbtns.forEach((b,k)=>{ b.classList.toggle("active",k===i); b.classList.toggle("locked", k>maxReached || k>=visibleCount()); });
+  prevBtn.disabled=(i===0);
+  const last=(i>=visibleCount()-1);
+  nextBtn.textContent=last?"Geschafft ✓":"Weiter →";
+  nextBtn.classList.toggle("done",last);
+  nextBtn.disabled=last;
+  if(stepHooks[i])stepHooks[i]();
+  if(scroll){ const y=secEls[i].getBoundingClientRect().top+window.pageYOffset-100; window.scrollTo({top:Math.max(0,y),behavior:"smooth"}); }
+}
+prevBtn.onclick=()=>{ if(cur>0)showStep(cur-1,true); };
+nextBtn.onclick=()=>{ if(cur<visibleCount()-1)showStep(cur+1,true); };
+
+/* ---- Zwei-Modi / gehashte PIN ---- */
+let entered="";
+const overlay=document.getElementById("overlay"), dots=document.getElementById("dots"), pad=document.getElementById("pad"), pinErr=document.getElementById("pinErr");
+["1","2","3","4","5","6","7","8","9","C","0","⌫"].forEach(k=>{
+  const b=document.createElement("button");b.textContent=k;b.onclick=()=>press(k);pad.appendChild(b);
+});
+function toggleTeacher(){
+  const btn=document.getElementById("teacherToggle");
+  if(document.body.classList.contains("version-b")){
+    document.body.classList.remove("version-b");btn.classList.remove("on");btn.textContent="🔓 Lehrkraft";
+    if(cur>=visibleCount())showStep(visibleCount()-1,false);else showStep(cur,false);
+    refreshSolButtons();
+  }else{openModal();}
+}
+function openModal(){entered="";pinErr.textContent="";renderDots();overlay.classList.add("open");}
+function closeModal(){overlay.classList.remove("open");}
+function press(k){
+  if(k==="C"){entered="";}else if(k==="⌫"){entered=entered.slice(0,-1);pinErr.textContent="";}else if(entered.length<8){entered+=k;}
+  renderDots();if(entered.length===8)setTimeout(check,120);
+}
+function renderDots(){dots.classList.remove("err");[...dots.children].forEach((d,i)=>d.classList.toggle("filled",i<entered.length));}
+async function check(){
+  const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(entered));
+  const h=[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");
+  if(h===PIN_HASH){
+    document.body.classList.add("version-b");
+    const btn=document.getElementById("teacherToggle");btn.classList.add("on");btn.textContent="🔒 Schüler-Ansicht";
+    closeModal();maxReached=STEPS.length-1;showStep(cur,false);refreshSolButtons();
+  }else{ pinErr.textContent="Falscher PIN."; dots.classList.add("err"); entered=""; setTimeout(()=>renderDots(),450); }
+}
+document.addEventListener("keydown",e=>{
+  if(!overlay.classList.contains("open"))return;
+  if(/^[0-9]$/.test(e.key))press(e.key);
+  else if(e.key==="Backspace")press("⌫");
+  else if(e.key==="Escape")closeModal();
+});
+
+/* ---- Quiz mit Punktestand ---- */
+function checkQuiz(btn){
+  const block=btn.closest(".quiz-block");
+  if(block.classList.contains("answered"))return;
+  block.classList.add("answered");
+  const correct=btn.dataset.correct==="true";
+  block.querySelectorAll(".quiz-opt").forEach(o=>{o.classList.add("locked");if(o.dataset.correct==="true")o.classList.add("correct");});
+  if(!correct)btn.classList.add("wrong");
+  const fb=block.querySelector(".quiz-fb"); if(fb)fb.classList.add("show");
+  block.dataset.right=correct?"1":"0";
+  updateScore();
+}
+function updateScore(){
+  const blocks=[...document.querySelectorAll(".quiz-block")];
+  const answered=blocks.filter(b=>b.classList.contains("answered"));
+  if(answered.length<blocks.length)return;
+  const right=blocks.filter(b=>b.dataset.right==="1").length;
+  const el=document.getElementById("quizScore");
+  el.querySelector(".score-num").textContent=right+" / "+blocks.length;
+  el.querySelector(".score-msg").textContent = right===blocks.length?"Perfekt! 🎉" : (right>=blocks.length-1?"Fast alles richtig!" : (right>=blocks.length/2?"Solide – schau dir die Fehler an." : "Wiederhol das ruhig nochmal."));
+  el.style.display="flex";
+  document.getElementById("quizRetry").style.display="inline-flex";
+}
+function retryQuiz(){
+  document.querySelectorAll(".quiz-block").forEach(b=>{
+    b.classList.remove("answered"); delete b.dataset.right;
+    b.querySelectorAll(".quiz-opt").forEach(o=>o.classList.remove("locked","correct","wrong"));
+    const fb=b.querySelector(".quiz-fb"); if(fb)fb.classList.remove("show");
+  });
+  document.getElementById("quizScore").style.display="none";
+  document.getElementById("quizRetry").style.display="none";
+}
+
+/* ---- Musterlösungen mit Lösungscode ---- */
+let solUnlocked=lsGet("sol")==="1";
+function teacherMode(){return document.body.classList.contains("version-b");}
+function toggleSol(btn,target){
+  const vis=target.classList.toggle("visible");
+  btn.textContent=vis?"▲ Lösung ausblenden":"✓ Musterlösung anzeigen";
+}
+function refreshSolButtons(){
+  const open=solUnlocked||teacherMode();
+  document.querySelectorAll(".solution-btn").forEach(btn=>{
+    const t=document.getElementById(btn.dataset.target);
+    if(t.classList.contains("visible"))btn.textContent="▲ Lösung ausblenden";
+    else btn.textContent=open?"✓ Musterlösung anzeigen":"🔒 Musterlösung";
+  });
+}
+function solClick(btn){
+  const target=document.getElementById(btn.dataset.target);
+  if(solUnlocked||teacherMode()){ toggleSol(btn,target); return; }
+  let p=btn.nextElementSibling;
+  if(p&&p.classList.contains("sol-code")){ p.remove(); return; }
+  p=document.createElement("div");
+  p.className="sol-code";
+  p.innerHTML='<input type="text" maxlength="'+LOESUNGSCODE.length+'" placeholder="Lösungscode" aria-label="Lösungscode"><button type="button">freischalten</button><span class="sol-hint">Code von der Lehrkraft</span>';
+  btn.after(p);
+  const inp=p.querySelector("input"), go=p.querySelector("button");
+  const tryc=()=>{
+    if(inp.value.trim().toUpperCase()===LOESUNGSCODE){
+      solUnlocked=true; lsSet("sol","1");
+      document.querySelectorAll(".sol-code").forEach(c=>c.remove());
+      toggleSol(btn,target); refreshSolButtons();
+    }else{ inp.classList.add("shake"); setTimeout(()=>inp.classList.remove("shake"),450); }
+  };
+  go.onclick=tryc; inp.onkeydown=e=>{if(e.key==="Enter")tryc();}; inp.focus();
+}
+
+/* ---- Abfrage: Erwartungshorizont ---- */
+function toggleErw(id,btn){
+  const el=document.getElementById(id);
+  const v=el.classList.toggle("show");
+  btn.textContent=v?"▲ Erwartungshorizont ausblenden":"📋 Erwartungshorizont anzeigen";
+}
+
+/* ---- Antwortfelder autospeichern ---- */
+document.querySelectorAll(".answer-area").forEach(t=>{
+  const v=lsGet(t.id); if(v)t.value=v;
+  t.addEventListener("input",()=>lsSet(t.id,t.value));
+});
+
+/* ---- Zuordnungsübungen (Auswahl wird gespeichert) ---- */
+const GRIDS={};
+function buildGrid(k,g){
+  GRIDS[k]=g; const box=document.getElementById(k+"Box");
+  let saved=[];try{saved=JSON.parse(lsGet("g_"+k)||"[]");}catch(e){}
+  g.items.forEach((it,i)=>{const r=document.createElement("div");r.className="sort-row";
+    let o='<option value="">wählen …</option>';Object.entries(g.opts).forEach(([v,l])=>{if(!it[2]||it[2].includes(v))o+='<option value="'+v+'">'+l+'</option>';});
+    r.innerHTML='<span>'+it[0]+'</span><select aria-label="Auswahl">'+o+'</select>';
+    const s=r.querySelector("select"); if(saved[i])s.value=saved[i];
+    s.addEventListener("change",()=>{lsSet("g_"+k,JSON.stringify(gridVals(k)));if(g.onChange)g.onChange(gridVals(k));});
+    box.appendChild(r);});
+  if(g.onChange)g.onChange(gridVals(k));
+}
+function gridVals(k){return [...document.getElementById(k+"Box").querySelectorAll("select")].map(s=>s.value);}
+function checkGrid(k){const g=GRIDS[k],box=document.getElementById(k+"Box");let ok=0;
+  [...box.querySelectorAll(".sort-row")].forEach((r,i)=>{const good=r.querySelector("select").value===g.items[i][1];if(good)ok++;r.classList.toggle("ok",good);r.classList.toggle("no",!good);});
+  const fb=document.getElementById(k+"Fb");fb.innerHTML="<b>"+ok+" / "+g.items.length+" richtig.</b> "+(ok===g.items.length?(g.done||"Stark!"):"Rot markierte nochmal prüfen. "+(g.hint||""));fb.classList.add("show");}
+
+/* ---- Chips ---- */
+function chipGroup(id,items,max,key,cb){
+  const box=document.getElementById(id);let sel=[];
+  try{sel=JSON.parse(lsGet(key)||"[]");}catch(e){}
+  items.forEach(c=>{const b=document.createElement("button");b.type="button";b.className="chip"+(sel.includes(c)?" on":"");b.textContent=c;
+    b.onclick=()=>{if(sel.includes(c)){sel=sel.filter(x=>x!==c);}else{if(sel.length>=max)return;sel.push(c);}
+      [...box.children].forEach(x=>x.classList.toggle("on",sel.includes(x.textContent)));
+      lsSet(key,JSON.stringify(sel)); if(cb)cb(sel);};
+    box.appendChild(b);});
+  if(cb)cb(sel);
+}
+
+/* ---- Diagramme (eigenes SVG, keine Bibliothek) ---- */
+function de(v,d){return Number(v).toLocaleString("de-DE",{minimumFractionDigits:d==null?1:d,maximumFractionDigits:d==null?1:d});}
+function chart(id,c){
+  const el=document.getElementById(id); if(!el)return;
+  const W=640,H=c.h||290,m={l:40,r:c.padR==null?92:c.padR,t:14,b:28};
+  const pw=W-m.l-m.r,ph=H-m.t-m.b,n=c.x.length,band=pw/n;
+  const X=i=>m.l+(i+.5)*band, Y=v=>m.t+(c.yMax-v)/(c.yMax-c.yMin)*ph;
+  const unit=c.unit||" %";
+  let s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+c.aria+'">';
+  for(let v=c.yMin;v<=c.yMax+1e-9;v+=c.yStep){
+    s+='<line x1="'+m.l+'" x2="'+(W-m.r)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="'+(v===0&&c.yMin<0?"#9aa3ab":"#e6e8ea")+'" stroke-width="1"/>';
+    s+='<text x="'+(m.l-7)+'" y="'+(Y(v)+4)+'" text-anchor="end" font-size="11" fill="#666">'+de(v,0)+'</text>';
+  }
+  const every=c.xEvery||(n>12?2:1);
+  c.x.forEach((l,i)=>{ if(i%every===0) s+='<text x="'+X(i)+'" y="'+(H-8)+'" text-anchor="middle" font-size="11" fill="#666">'+l+'</text>'; });
+  c.series.forEach(se=>{
+    if(se.type==="col"){
+      const bw=Math.min(24,band-2);
+      se.vals.forEach((v,i)=>{const x0=X(i)-bw/2,y0=Y(0),y1=Y(v),r=Math.min(4,Math.abs(y1-y0));
+        if(Math.abs(y1-y0)<.5)return;
+        const d=v>=0? 'M'+x0+' '+y0+'V'+(y1+r)+'Q'+x0+' '+y1+' '+(x0+r)+' '+y1+'H'+(x0+bw-r)+'Q'+(x0+bw)+' '+y1+' '+(x0+bw)+' '+(y1+r)+'V'+y0+'Z'
+                    : 'M'+x0+' '+y0+'V'+(y1-r)+'Q'+x0+' '+y1+' '+(x0+r)+' '+y1+'H'+(x0+bw-r)+'Q'+(x0+bw)+' '+y1+' '+(x0+bw)+' '+(y1-r)+'V'+y0+'Z';
+        s+='<path d="'+d+'" fill="'+se.color+'"/>';});
+    }else{
+      s+='<path d="'+se.vals.map((v,i)=>(i?"L":"M")+X(i)+" "+Y(v)).join("")+'" fill="none" stroke="'+se.color+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+      const li=n-1;
+      s+='<circle cx="'+X(li)+'" cy="'+Y(se.vals[li])+'" r="4.5" fill="'+se.color+'" stroke="#fcfcfb" stroke-width="2"/>';
+      s+='<text x="'+(X(li)+9)+'" y="'+(Y(se.vals[li])-2)+'" font-size="11.5" font-weight="800" fill="#1A1A1A">'+se.short+'</text>';
+      s+='<text x="'+(X(li)+9)+'" y="'+(Y(se.vals[li])+11)+'" font-size="11.5" fill="#555">'+de(se.vals[li])+unit+'</text>';
+    }
+  });
+  (c.marks||[]).forEach(mk=>{const i=c.x.indexOf(mk.x),se=c.series[mk.s];
+    s+='<circle cx="'+X(i)+'" cy="'+Y(se.vals[i])+'" r="4.5" fill="'+se.color+'" stroke="#fcfcfb" stroke-width="2"/>';
+    s+='<text x="'+(X(i)+(mk.dx||0))+'" y="'+(Y(se.vals[i])+(mk.dy||-10))+'" text-anchor="'+(mk.anchor||"middle")+'" font-size="11.5" font-weight="700" fill="#1A1A1A">'+mk.text+'</text>';});
+  s+='<line class="ch-x" x1="0" x2="0" y1="'+m.t+'" y2="'+(m.t+ph)+'" stroke="#9aa3ab" stroke-width="1" style="display:none"/>';
+  s+='<rect class="ch-hit" x="'+m.l+'" y="'+m.t+'" width="'+pw+'" height="'+ph+'" fill="transparent"/></svg>';
+  let h='<div class="chart-title">'+c.title+'</div><div class="chart-sub">'+c.sub+'</div>';
+  if(c.series.length>1) h+='<div class="chart-legend">'+c.series.map(se=>'<span><i style="background:'+se.color+'"></i>'+se.name+'</span>').join("")+'</div>';
+  h+='<div class="chart-wrap">'+s+'<div class="chart-tip"></div></div>';
+  h+='<details class="chart-table"><summary>Werte als Tabelle</summary><div class="tscroll"><table class="dtable"><tr><th>Jahr</th>'+c.series.map(se=>'<th>'+se.name+'</th>').join("")+'</tr>'+
+     c.x.map((l,i)=>'<tr><td>'+l+'</td>'+c.series.map(se=>'<td>'+de(se.vals[i])+unit+'</td>').join("")+'</tr>').join("")+'</table></div></details>';
+  h+='<div class="chart-src">'+c.src+'</div>';
+  el.innerHTML=h;
+  const svg=el.querySelector("svg"),hit=el.querySelector(".ch-hit"),xl=el.querySelector(".ch-x"),tip=el.querySelector(".chart-tip"),wrap=el.querySelector(".chart-wrap");
+  const move=e=>{const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W;
+    const i=Math.max(0,Math.min(n-1,Math.floor((px-m.l)/band)));
+    xl.setAttribute("x1",X(i));xl.setAttribute("x2",X(i));xl.style.display="";
+    tip.innerHTML="<b>"+c.x[i]+"</b>"+c.series.map(se=>'<div><i style="background:'+se.color+'"></i>'+se.name+": "+de(se.vals[i])+unit+"</div>").join("");
+    tip.style.display="block";
+    const tx=X(i)/W*wrap.clientWidth; tip.style.left=(tx>wrap.clientWidth/2? tx-tip.offsetWidth-10 : tx+10)+"px";};
+  hit.addEventListener("pointermove",move);hit.addEventListener("pointerdown",move);
+  hit.addEventListener("pointerleave",()=>{xl.style.display="none";tip.style.display="none";});
+}
+function hbars(id,c){
+  const el=document.getElementById(id); if(!el)return; const max=Math.max(...c.items.map(i=>i[1]));
+  el.innerHTML='<div class="chart-title">'+c.title+'</div><div class="chart-sub">'+c.sub+'</div>'+
+    c.items.map(i=>'<div class="hbar"><div class="hbar-l">'+i[0]+'</div><div class="hbar-t"><div class="hbar-b" style="width:'+(i[1]/max*78)+'%;background:'+c.color+'"></div><span class="hbar-v">'+de(i[1])+' %</span></div></div>').join("")+
+    '<div class="chart-src">'+c.src+'</div>';
+}
+
+/* ---- Stunde 11: Einstieg ---- */
+const FAM_BAR="bar";
+function famText(vals){
+  const done=vals.filter(v=>v&&v!=="nw").length; if(!done)return "";
+  const bar=vals.filter(v=>v===FAM_BAR).length;
+  return "Dein Protokoll: in "+bar+" von "+done+" Situationen wurde bar bezahlt, in "+(done-bar)+" unbar.";
+}
+buildGrid("fam",{opts:{bar:"Bargeld",karte:"Karte (Girocard, Kreditkarte)",mobil:"Smartphone oder Smartwatch",online:"Online-Bezahldienst (z. B. PayPal)",konto:"Überweisung, Lastschrift, Dauerauftrag",nw:"weiß ich nicht"},items:[
+  ["Wocheneinkauf im Supermarkt",null],
+  ["Tanken oder Fahrkarte kaufen",null],
+  ["Bestellung in einem Online-Shop",null],
+  ["Essen im Restaurant oder vom Lieferdienst",null],
+  ["Brötchen beim Bäcker",null],
+  ["Miete, Strom oder Handyvertrag",null]],
+  onChange:v=>{const t=famText(v);document.getElementById("famSum").textContent=t;document.getElementById("famSum2").textContent=t;}});
+chipGroup("meChips",["Bargeld","eigene Bankkarte","Smartphone","Mensa- oder Schülerkarte","Gutscheinkarte","Online-Bezahldienst"],6,"me");
+
+/* ---- Wer bin ich? ---- */
+buildGrid("wer",{opts:{bar:"Bargeld",kk:"Kreditkarte",mobil:"Mobile Payment",online:"Online-Bezahldienst",ueb:"Überweisung",dauer:"Dauerauftrag",last:"Lastschrift"},items:[
+  ["① „Der Stromanbieter holt sich jeden Monat einen etwas anderen Betrag von deinem Konto – du musst nichts tun.“","last"],
+  ["② „Ich schicke am 1. jedes Monats automatisch 25 € an den Sportverein.“","dauer"],
+  ["③ „Du hältst dein Handy ans Terminal und bestätigst mit dem Fingerabdruck.“","mobil"],
+  ["④ „Bei mir bezahlst du erst am Monatsende alles auf einmal.“","kk"],
+  ["⑤ „Mich nimmt fast jeder, ich brauche weder Strom noch Internet. Aber verloren ist verloren.“","bar"],
+  ["⑥ „Der Shop erfährt deine Kontonummer nicht. Kommt die Ware nicht an, hilft oft mein Käuferschutz.“","online"],
+  ["⑦ „Du tippst IBAN und Betrag in die Banking-App und schickst das Geld einmalig los.“","ueb"]],
+  hint:"Frag dich: Wer stößt die Zahlung an – und wie oft?",done:"Stark! Du kennst die Funktionsweisen – jetzt geht es ans Bewerten."});
+
+/* ---- Sechs Situationen (Einschätzung statt richtig/falsch) ---- */
+const SIT_OPTS={bar:"Bargeld",karte:"Girocard / Debitkarte",kk:"Kreditkarte",mobil:"Smartphone (Mobile Payment)",online:"Online-Bezahldienst",ueb:"Überweisung",dauer:"Dauerauftrag",last:"Lastschrift"};
+const G="ok",M="mid",N="no";
+const SIT=[
+ {t:"① Pizza per Liefer-App bestellen · 18 €",d:[N,"Passt nicht zu dieser Situation."],r:{
+   online:[G,"Schnell, und der Lieferdienst sieht keine Kontodaten."],kk:[G,"Online üblich und schnell."],mobil:[G,"In vielen Apps mit einem Fingertipp erledigt."],
+   bar:[M,"Geht nur, wenn der Lieferdienst Barzahlung an der Tür anbietet."],karte:[M,"Die reine Girocard funktioniert online oft nicht – mit Debitkarte von Visa oder Mastercard klappt es."],
+   last:[M,"Manche Apps bieten es an – du gibst dann aber deine Kontodaten weiter."],ueb:[N,"Zu umständlich für eine Pizza: IBAN eintippen, auf den Eingang warten."]}},
+ {t:"② Wocheneinkauf im Supermarkt · 64 €",d:[N,"An der Supermarktkasse nicht vorgesehen."],r:{
+   bar:[G,"Wird überall genommen und hinterlässt keine Daten – du musst nur genug dabeihaben."],karte:[G,"Schnell, für dich kostenlos, der Betrag spielt keine Rolle."],mobil:[G,"Schnell und kontaktlos – solange der Akku hält."],
+   kk:[M,"Geht meistens, bringt hier aber keinen Vorteil gegenüber der Girocard."],online:[N,"An der Ladenkasse kaum verbreitet."]}},
+ {t:"③ Sneaker in einem Online-Shop, den du nicht kennst · 89 €",d:[N,"Passt nicht zu dieser Situation."],r:{
+   online:[G,"Käuferschutz: Kommt nichts an, bekommst du dein Geld in der Regel zurück."],kk:[G,"Bei Betrug lässt sich die Zahlung über die Bank oft zurückfordern."],
+   last:[M,"Lastschriften kannst du acht Wochen zurückgeben – du gibst aber deine IBAN an einen Unbekannten."],karte:[M,"Mit Debitkarte möglich. Ob du bei Betrug Geld zurückbekommst, hängt von Karte und Bank ab."],mobil:[M,"Dahinter steckt deine Karte – es gelten deren Schutzregeln."],
+   ueb:[N,"Vorkasse bei einem Unbekannten: Das Geld ist weg, bevor die Ware da ist."],bar:[N,"Online nicht möglich."]}},
+ {t:"④ Handyvertrag: jeden Monat ein etwas anderer Betrag",d:[N,"Für regelmäßige Rechnungen ungeeignet."],r:{
+   last:[G,"Der Anbieter zieht genau den Rechnungsbetrag ein, du vergisst keine Zahlung und kannst acht Wochen widersprechen."],
+   ueb:[M,"Geht, aber du musst jeden Monat selbst daran denken – sonst drohen Mahngebühren."],online:[M,"Manche Anbieter erlauben es, üblich ist die Lastschrift."],kk:[M,"Manche Anbieter erlauben es, üblich ist die Lastschrift."],
+   dauer:[N,"Ein Dauerauftrag überweist immer denselben Betrag – die Rechnung ändert sich aber."]}},
+ {t:"⑤ Gebrauchtes Fahrrad von einer Privatperson, Übergabe vor Ort · 150 €",d:[N,"Privatleute haben kein Kartenterminal."],r:{
+   bar:[G,"Ware gegen Geld, sofort und ohne Daten. Vorher das Rad prüfen."],
+   ueb:[M,"Als Echtzeitüberweisung vor Ort möglich – aber einmal gesendet, ist das Geld weg."],online:[M,"Nur mit Käuferschutz sinnvoll. „Geld an Freunde senden“ schützt dich nicht."],
+   dauer:[N,"Für eine einmalige Zahlung nicht gedacht."],last:[N,"Für eine einmalige Zahlung unter Privatleuten nicht gedacht."]}},
+ {t:"⑥ Deine Eltern kaufen beim Autohändler einen Gebrauchtwagen · 12.000 €",d:[N,"Für so hohe Beträge unüblich."],r:{
+   ueb:[G,"Sicher und nachvollziehbar – der Kontoauszug ist zugleich der Zahlungsnachweis."],
+   bar:[M,"Möglich, aber riskant: So viel Bargeld kann gestohlen werden oder verloren gehen."],karte:[M,"Scheitert oft am Tageslimit der Karte."],kk:[M,"Scheitert oft am Kartenlimit, und viele Händler lehnen wegen der Gebühren ab."]}}
+];
+(function(){const box=document.getElementById("sitBox");let saved=[];try{saved=JSON.parse(lsGet("sit")||"[]");}catch(e){}
+  SIT.forEach((s,i)=>{const r=document.createElement("div");r.className="sort-row";
+    let o='<option value="">wählen …</option>';Object.entries(SIT_OPTS).forEach(([v,l])=>o+='<option value="'+v+'">'+l+'</option>');
+    r.innerHTML='<span>'+s.t+'</span><select aria-label="Zahlungsart">'+o+'</select><div class="row-fb"></div>';
+    const sel=r.querySelector("select");if(saved[i])sel.value=saved[i];
+    sel.addEventListener("change",()=>{lsSet("sit",JSON.stringify([...box.querySelectorAll("select")].map(x=>x.value)));r.classList.remove("ok","mid","no");r.querySelector(".row-fb").textContent="";});
+    box.appendChild(r);});})();
+function checkSit(){const rows=[...document.querySelectorAll("#sitBox .sort-row")];let g=0,open=0;
+  rows.forEach((r,i)=>{const v=r.querySelector("select").value;r.classList.remove("ok","mid","no");const fb=r.querySelector(".row-fb");
+    if(!v){open++;fb.textContent="";return;}
+    const res=SIT[i].r[v]||SIT[i].d;r.classList.add(res[0]);fb.textContent=res[1];if(res[0]===G)g++;});
+  const fb=document.getElementById("sitFb");
+  fb.innerHTML=open?"Wähle zuerst für jede Situation eine Zahlungsart.":"<b>"+g+" von "+SIT.length+" im grünen Bereich.</b> Achtung: Oft passt mehr als eine Zahlungsart – und was in einer Situation klug ist, ist in der nächsten ungeeignet.";
+  fb.classList.add("show");}
+
+/* ---- Datenspur ---- */
+const SPUR={
+  bar:["💶","Bargeld",["<b>Verkäufer:</b> sieht dich und kennt den Betrag.","<b>Sonst niemand.</b> Es entsteht kein Datensatz."]],
+  karte:["💳","Girocard",["<b>Deine Bank:</b> Betrag, Händler, Ort, Datum, Uhrzeit.","<b>Zahlungsdienstleister des Händlers:</b> wickelt die Zahlung ab.","<b>Händler:</b> Betrag und Kartenart, nicht deinen Namen."]],
+  mobil:["📱","Smartphone",["<b>Deine Bank und die Kartenfirma:</b> Betrag, Händler, Ort, Datum, Uhrzeit.","<b>Wallet-Anbieter:</b> je nach App und Einstellungen Angaben zur Zahlung und zum Gerät.","<b>Händler:</b> Betrag, aber nicht deine echte Kartennummer."]],
+  online:["🛒","Bezahldienst",["<b>Bezahldienst:</b> Betrag, Händler, Zeitpunkt – und oft, was du gekauft hast.","<b>Deine Bank:</b> sieht die Abbuchung durch den Dienst.","<b>Händler:</b> Name und E-Mail-Adresse, keine Kontodaten."]]
+};
+(function(){const b=document.getElementById("spurBtns"),log=document.getElementById("spurLog");
+  Object.entries(SPUR).forEach(([k,s])=>{const x=document.createElement("button");x.type="button";x.className="tp";x.innerHTML='<span class="tp-e">'+s[0]+'</span>'+s[1];
+    x.onclick=()=>{[...b.children].forEach(c=>c.classList.remove("on"));x.classList.add("on");
+      log.innerHTML='<div class="track-log-head">📡 Datenspur: Döner für 4,20 € mit '+s[1]+'</div>'+s[2].map(l=>'<div class="tl">'+l+'</div>').join("");};
+    b.appendChild(x);});})();
+
+/* ---- Chance oder Risiko ---- */
+buildGrid("cr",{opts:{c:"Chance",r:"Risiko"},items:[
+  ["Bezahlen dauert nur Sekunden, auch ohne Geldbeutel.","c"],
+  ["Bei jeder Zahlung entstehen Daten: wo, wann und wie viel du ausgibst.","r"],
+  ["Geht das Handy verloren, kann ohne Fingerabdruck, Gesicht oder Code niemand damit zahlen.","c"],
+  ["Geld auszugeben „tut weniger weh“ als mit Scheinen – man verliert leichter den Überblick.","r"],
+  ["Akku leer oder Terminal gestört: Dann geht nichts mehr.","r"],
+  ["Jede Zahlung steht sofort in der Banking-App.","c"],
+  ["Betrüger versuchen per Fake-Nachricht, deine Karte in ihrer eigenen Wallet zu hinterlegen.","r"],
+  ["Der Händler bekommt nicht deine echte Kartennummer.","c"]],
+  hint:"Überlege: Nützt dir das – oder kann es dir schaden?",done:"Richtig sortiert. Jetzt bist du mit deinem Urteil dran."});
+
+/* ---- Diagramme (Daten: EHI Retail Institute, siehe Quelle) ---- */
+const EHI_SRC='Quelle: EHI Retail Institute, Studien „Zahlungssysteme im Einzelhandel“ 2019–2026 (Umsatzanteile im stationären Einzelhandel in Deutschland). Eigene Darstellung.';
+chart("chLine",{title:"Die Karte hängt das Bargeld ab",sub:"Anteil am Umsatz im stationären Einzelhandel in Deutschland, 2018–2025, in Prozent",
+  aria:"Liniendiagramm: Umsatzanteil Bargeld sinkt von 48,3 Prozent 2018 auf 32,3 Prozent 2025, Kartenanteil steigt von 48,6 auf 65,1 Prozent.",
+  x:["2018","2019","2020","2021","2022","2023","2024","2025"],yMin:20,yMax:70,yStep:10,
+  series:[{name:"Kartenzahlung (alle Karten)",short:"Karte",color:"#1565C0",vals:[48.6,50.5,56.3,58.8,59.7,61.8,63.5,65.1]},
+          {name:"Bargeld",short:"Bargeld",color:"#E65100",vals:[48.3,46.5,40.9,38.5,37.5,35.5,33.8,32.3]}],
+  src:EHI_SRC});
+hbars("chBars",{title:"Womit wurde 2025 bezahlt?",sub:"Umsatzanteile im stationären Einzelhandel in Deutschland, in Prozent",color:"#1565C0",
+  items:[["Girocard",40.5],["Bargeld",32.3],["Debitkarten von Visa / Mastercard",9.4],["Kreditkarte",8.2],["Lastschrift (Karte + Unterschrift)",6.4],["Sonstige (Rechnung, Gutschein, Kundenkarte)",3.2]],
+  src:EHI_SRC});
+
+
+/* ==== DRUCKMODUL Schülerversion ==== */
+(function(){
+  const bar=document.getElementById("teacherToggle");
+  if(bar){const b=document.createElement("button");b.type="button";b.className="tbtn teacher-only";b.id="printStudent";
+    b.textContent="🖨 Schülerversion";b.title="Druckversion für Schüler ohne Tablet (als PDF sichern möglich)";b.onclick=printStudent;
+    bar.parentNode.insertBefore(b,bar);}
+  const head=document.createElement("div");head.className="print-head";
+  head.innerHTML="<span>"+document.title+"</span><span>Name: ______________________ &nbsp; Datum: ____________</span>";
+  const first=document.querySelector(".hero");if(first)first.parentNode.insertBefore(head,first);
+})();
+function printStudent(){
+  /* Antwortmöglichkeiten der Auswahlfelder einmal pro Aufgabe auflisten */
+  document.querySelectorAll(".print-options").forEach(x=>x.remove());
+  const seen=new Set();
+  document.querySelectorAll(".sort-row select").forEach(sel=>{
+    const box=sel.closest(".sort-row").parentNode; if(seen.has(box))return; seen.add(box);
+    const opts=[...new Set([...box.querySelectorAll("select option")].filter(o=>o.value).map(o=>o.textContent))];
+    const d=document.createElement("div");d.className="print-options";d.innerHTML="<b>Mögliche Antworten:</b> "+opts.join(" · ");
+    box.parentNode.insertBefore(d,box);
+  });
+  document.querySelectorAll("details.zusatz").forEach(d=>d.open=true);
+  document.body.classList.add("print-student");
+  const done=()=>{document.body.classList.remove("print-student");window.removeEventListener("afterprint",done);};
+  window.addEventListener("afterprint",done);
+  window.print();
+}
+
+/* ---- Init ---- */
+showStep(0,false);
+refreshSolButtons();
+</script>
+</body>
+</html>
