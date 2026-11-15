@@ -778,7 +778,7 @@ function solClick(btn){
   if(p&&p.classList.contains("sol-code")){ p.remove(); return; }
   p=document.createElement("div");
   p.className="sol-code";
-  p.innerHTML='<input type="text" maxlength="6" placeholder="Lösungscode" aria-label="Lösungscode"><button type="button">freischalten</button><span class="sol-hint">Code von der Lehrkraft</span>';
+  p.innerHTML='<input type="text" maxlength="7" placeholder="Lösungscode" aria-label="Lösungscode"><button type="button">freischalten</button><span class="sol-hint">Code von der Lehrkraft</span>';
   btn.after(p);
   const inp=p.querySelector("input"), go=p.querySelector("button");
   const tryc=()=>{
