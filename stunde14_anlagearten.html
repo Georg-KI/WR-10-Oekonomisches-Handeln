@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stunde 14 · Wie lege ich Geld an? (II)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --font:'Nunito',system-ui,sans-serif;
+  --blue-900:#0D47A1;--blue-800:#1565C0;--blue-700:#1976D2;--blue-400:#29B6F6;--blue-50:#E3F2FD;
+  --green:#43A047;--green-light:#E8F5E9;--orange:#FF9800;--orange-light:#FFF3E0;
+  --purple:#AB47BC;--purple-light:#F3E5F5;--red:#E53935;--red-light:#FFEBEE;
+  --teal:#0d9488;--teal-light:#ccfbf1;
+  --text:#1A1A1A;--text-secondary:#555;--text-muted:#AAA;--border:#E0E0E0;--bg-page:#F0F4F8;--bg-card:#fff;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius:12px;
+  --shadow:0 2px 8px rgba(0,0,0,.08);--shadow-lg:0 4px 20px rgba(0,0,0,.12);
+  --accent:#059669;--accent-light:#d1fae5;--grad:linear-gradient(135deg,#047857,#10b981);
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:var(--font);background:var(--bg-page);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.55;}
+p{margin:.5rem 0;}
+
+.topbar{background:var(--blue-700);height:52px;position:sticky;top:env(safe-area-inset-top,0px);
+  padding:0 1.25rem;display:flex;align-items:center;gap:1rem;box-shadow:0 2px 12px rgba(25,118,210,.25);z-index:40;}
+.topbar-logo{font-weight:900;font-size:15px;color:#fff;text-decoration:none;}
+.topbar-logo span{color:var(--blue-400);}
+.topbar-back{color:rgba(255,255,255,.85);font-size:12.5px;font-weight:700;text-decoration:none;}
+.topbar-actions{margin-left:auto;display:flex;gap:8px;}
+.tbtn{background:rgba(255,255,255,.15);border:none;color:#fff;font-family:var(--font);font-weight:800;
+  font-size:12.5px;padding:7px 13px;border-radius:20px;cursor:pointer;}
+.tbtn:hover{background:rgba(255,255,255,.28);}
+.tbtn.on{background:#fff;color:var(--blue-800);}
+
+.progress{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:calc(52px + env(safe-area-inset-top,0px));
+  z-index:30;overflow-x:auto;}
+.progress-inner{display:flex;gap:4px;max-width:1080px;margin:0 auto;padding:.6rem 1rem;min-width:max-content;}
+.pstep{display:flex;align-items:center;gap:7px;border:none;background:transparent;font-family:var(--font);
+  cursor:pointer;padding:5px 10px;border-radius:20px;color:var(--text-secondary);font-weight:700;font-size:12.5px;white-space:nowrap;}
+.pstep .pnum{width:22px;height:22px;border-radius:50%;background:var(--bg-page);color:var(--text-secondary);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;}
+.pstep:hover{background:var(--bg-page);}
+.pstep.active{color:var(--accent);}
+.pstep.active .pnum{background:var(--accent);color:#fff;}
+.pstep.locked{opacity:.4;cursor:default;pointer-events:none;}
+.teacher-only{display:none;}
+body.version-b .teacher-only{display:flex;}
+body.version-b .section.teacher-only{display:block;}
+
+.wrap{max-width:1080px;margin:0 auto;padding:1.25rem 1rem 3rem;}
+
+.hero{background:var(--grad);border-radius:var(--radius-lg);padding:2.2rem 2rem;color:#fff;
+  position:relative;overflow:hidden;box-shadow:var(--shadow-lg);margin-bottom:1.4rem;}
+.hero::before{content:'€';position:absolute;right:1.2rem;top:-26px;font-size:150px;font-weight:900;color:rgba(255,255,255,.10);line-height:1;pointer-events:none;}
+.hero-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.9);position:relative;}
+.hero h1{font-size:27px;font-weight:900;margin:.4rem 0 .5rem;line-height:1.15;position:relative;max-width:85%;}
+.hero .lead{font-size:15px;font-weight:700;color:rgba(255,255,255,.96);position:relative;margin:0;}
+.hero-chips{display:flex;gap:6px;margin-top:.9rem;flex-wrap:wrap;position:relative;}
+.hero-chips span{background:rgba(255,255,255,.22);color:#fff;font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:20px;}
+
+.section{background:#fff;border-radius:var(--radius-lg);border:1px solid var(--border);box-shadow:var(--shadow);
+  padding:1.4rem 1.5rem;margin-bottom:1.2rem;animation:fadeUp .3s ease both;scroll-margin-top:120px;display:none;}
+.section.step-visible{display:block;}
+.step-label{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--accent);margin-bottom:.5rem;}
+.step-label .sn{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.section h2{font-size:20px;font-weight:900;margin:.1rem 0 .3rem;}
+.section h3{font-size:15px;font-weight:800;margin:1.1rem 0 .4rem;}
+.section-time{font-size:12.5px;color:#888;font-weight:700;margin:0 0 .9rem;}
+
+.info-box{border-radius:var(--radius-sm);padding:.8rem 1rem;margin:.8rem 0;font-size:14px;}
+.info-box.blue{background:var(--blue-50);border-left:3px solid var(--blue-700);color:var(--blue-800);}
+.info-box.green{background:var(--green-light);border-left:3px solid var(--green);color:#1b5e20;}
+.info-box.orange{background:var(--orange-light);border-left:3px solid var(--orange);color:#78350f;}
+.info-box.red{background:var(--red-light);border-left:3px solid var(--red);color:#7f1d1d;}
+.info-box.teal{background:var(--teal-light);border-left:3px solid var(--teal);color:#134e4a;}
+.info-box b{font-weight:800;}
+.info-box ul{margin:.3rem 0 .1rem 1.1rem;padding:0;}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.7rem;margin:.8rem 0;}
+.mini{background:var(--bg-page);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.8rem .9rem;}
+.mini>b{display:block;font-size:14px;color:var(--text);margin-bottom:2px;}
+.mini span{font-size:12.5px;color:var(--text-secondary);}
+.mini ul{margin:.3rem 0 0 1rem;padding:0;font-size:12.5px;color:var(--text-secondary);}
+
+.dtable{width:100%;border-collapse:collapse;margin:.7rem 0;font-size:13.5px;}
+.dtable th,.dtable td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top;}
+.dtable th{background:var(--bg-page);font-weight:800;}
+.dtable td.rowh{background:var(--bg-page);font-weight:700;}
+.tscroll{overflow-x:auto;}
+
+.book-ref{background:#faf5ff;border:1.5px solid #d8b4fe;border-radius:var(--radius-md);padding:.9rem 1.1rem;margin:.9rem 0;display:flex;gap:.7rem;align-items:flex-start;}
+.book-ref svg{flex-shrink:0;margin-top:2px;}
+.book-ref-title{color:#6b21a8;font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.3px;}
+.book-ref-text{color:#581c87;font-size:14px;}
+.book-ref-text a{color:#6b21a8;font-weight:800;}
+
+.task{border:1.5px solid var(--accent);border-radius:var(--radius-md);overflow:hidden;margin:1rem 0;}
+.task-header{background:var(--accent);padding:.7rem 1.1rem;display:flex;align-items:center;gap:11px;}
+.task-num{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.25);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.task-title{color:#fff;font-weight:800;font-size:14.5px;line-height:1.2;}
+.task-sub{color:rgba(255,255,255,.85);font-size:11px;font-weight:600;}
+.task-body{background:#F0F4F8;padding:1rem 1.1rem;display:flex;gap:1rem;}
+.icons{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
+.itile{background:#fff;border-radius:8px;padding:8px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;}
+.task-content{flex:1;font-size:14px;min-width:0;}
+.task-content ol,.task-content ul{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+.task-content li{margin:.25rem 0;}
+
+.answer-area{width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-family:var(--font);font-size:14px;resize:vertical;min-height:78px;background:#fff;margin-top:.6rem;}
+.answer-area:focus{outline:none;border-color:var(--accent);}
+
+.solution-btn{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:8px 15px;font-family:var(--font);font-weight:700;font-size:13px;color:var(--text-secondary);cursor:pointer;margin-top:.6rem;}
+.solution-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light);}
+.sol-code{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:.5rem;}
+.sol-code input{width:130px;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;font-family:var(--font);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.sol-code input:focus{outline:none;border-color:var(--accent);}
+.sol-code input.shake{animation:shake .4s;border-color:var(--red);}
+.sol-code button{border:none;background:var(--accent);color:#fff;border-radius:var(--radius-sm);padding:8px 14px;font-family:var(--font);font-weight:800;font-size:13px;cursor:pointer;}
+.sol-hint{font-size:11.5px;color:#888;}
+.solution-reveal{background:var(--green-light);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:.7rem 1rem;color:#1b5e20;font-size:13.5px;margin-top:.6rem;display:none;}
+.solution-reveal.visible{display:block;}
+.solution-reveal ul{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+.solution-reveal .dtable td,.solution-reveal .dtable th{border-color:#a5d6a7;}
+
+.teacher-note{background:#fffbeb;border:1.5px solid #fbbf24;border-radius:var(--radius-md);padding:1rem 1.1rem;margin:1rem 0;display:none;font-size:13.5px;color:#78350f;}
+body.version-b .teacher-note{display:block;}
+.teacher-note-header{font-weight:800;font-size:12px;color:#92400e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem;display:flex;align-items:center;gap:7px;}
+.teacher-note ul{margin:.3rem 0 .3rem 1.1rem;padding:0;}
+
+.quiz-block{margin:.4rem 0 1rem;}
+.quiz-q{font-weight:800;font-size:14.5px;margin:.6rem 0 .6rem;}
+.quiz-opt{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:11px 13px;background:#fff;font-family:var(--font);font-size:14px;font-weight:600;margin-bottom:8px;cursor:pointer;transition:.12s;color:var(--text);}
+.quiz-opt:hover{border-color:var(--accent);background:var(--accent-light);}
+.quiz-opt .ql{width:24px;height:24px;flex-shrink:0;border-radius:6px;background:var(--bg-page);color:var(--text-secondary);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.quiz-opt.locked{pointer-events:none;}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-light);color:#1b5e20;}
+.quiz-opt.correct .ql{background:var(--green);color:#fff;}
+.quiz-opt.wrong{border-color:var(--red);background:var(--red-light);color:#7f1d1d;}
+.quiz-opt.wrong .ql{background:var(--red);color:#fff;}
+.quiz-fb{display:none;font-size:13px;color:var(--text-secondary);background:var(--bg-page);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:.55rem .9rem;margin:.1rem 0 .3rem;}
+.quiz-fb.show{display:block;}
+.divider{border:none;border-top:1px solid var(--border);margin:1rem 0;}
+.quiz-score{display:none;align-items:center;gap:12px;background:var(--blue-50);border-radius:var(--radius-md);padding:.9rem 1.1rem;margin-top:.6rem;}
+.quiz-score .score-num{font-size:22px;font-weight:900;color:var(--blue-800);}
+.quiz-score .score-msg{font-size:13.5px;font-weight:700;color:var(--blue-700);}
+.quiz-retry{display:none;align-items:center;gap:6px;margin-top:.7rem;border:1.5px solid var(--red);background:#fff;color:var(--red);border-radius:var(--radius-sm);padding:8px 15px;font-family:var(--font);font-weight:800;font-size:13px;cursor:pointer;}
+
+.k-legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;}
+.k-legend span{font-size:11px;font-weight:800;padding:3px 10px;border-radius:100px;}
+.k-wissen{background:var(--blue-50);border:1px solid var(--blue-400);color:var(--blue-700);}
+.k-denken{background:#ccfbf1;border:1px solid #99f6e4;color:#0f766e;}
+.k-komm{background:var(--orange-light);border:1px solid #fde68a;color:#92400e;}
+.k-kreativ{background:var(--red-light);border:1px solid #fecdd3;color:#9f1239;}
+.abfrage-wrap{display:flex;flex-direction:column;gap:1rem;}
+.abfrage-q{border:1.5px solid var(--border);border-radius:var(--radius-md);overflow:hidden;}
+.abfrage-q-header{padding:.9rem 1.1rem;display:flex;align-items:flex-start;gap:11px;background:#f8fafc;}
+.abfrage-q-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
+.abfrage-q-num.wissen{background:var(--blue-700);}
+.abfrage-q-num.denken{background:var(--teal);}
+.abfrage-q-num.komm{background:var(--orange);}
+.abfrage-q-num.kreativ{background:var(--red);}
+.abfrage-q-label{font-size:11px;font-weight:800;margin-bottom:2px;}
+.abfrage-q-label.wissen{color:var(--blue-700);}
+.abfrage-q-label.denken{color:#0f766e;}
+.abfrage-q-label.komm{color:#92400e;}
+.abfrage-q-label.kreativ{color:#9f1239;}
+.abfrage-q-text{font-size:14px;font-weight:700;color:var(--text);line-height:1.5;}
+.abfrage-q-body{padding:.9rem 1.1rem;}
+.abfrage-q-body p{font-size:12.5px;color:var(--text-secondary);line-height:1.6;margin:0 0 .5rem;}
+.erwartung-btn{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:7px 13px;font-family:var(--font);font-weight:700;font-size:12.5px;color:var(--text-secondary);cursor:pointer;}
+.erwartung-btn:hover{border-color:var(--green);color:#1b5e20;}
+.erwartung-box{display:none;margin-top:.6rem;background:var(--green-light);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:.7rem 1rem;font-size:13px;color:#1b5e20;line-height:1.6;}
+.erwartung-box.show{display:block;}
+.print-btn{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:7px 13px;font-family:var(--font);font-weight:700;font-size:12.5px;color:var(--text-secondary);cursor:pointer;}
+.print-btn:hover{border-color:var(--blue-700);color:var(--blue-700);}
+
+.stepnav{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin:.2rem 0 .5rem;flex-wrap:wrap;}
+.nav-home{text-decoration:none;font-family:var(--font);font-weight:800;font-size:13.5px;color:var(--text-secondary);background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-md);padding:11px 18px;}
+.nav-home:hover{border-color:var(--blue-700);color:var(--blue-700);}
+.nav-right{display:flex;gap:10px;}
+.nav-btn{border:none;border-radius:var(--radius-md);padding:12px 24px;font-family:var(--font);font-weight:800;font-size:14.5px;cursor:pointer;}
+.nav-next{background:var(--accent);color:#fff;}
+.nav-next:hover{filter:brightness(.95);}
+.nav-next.done{background:var(--green);}
+.nav-next[disabled]{cursor:default;}
+.nav-prev{background:#fff;color:var(--text-secondary);border:1.5px solid var(--border);}
+.nav-prev:hover{border-color:var(--accent);color:var(--accent);}
+.nav-prev[disabled]{opacity:.4;cursor:default;pointer-events:none;}
+
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:100;padding:1rem;}
+.overlay.open{display:flex;}
+.modal{background:#fff;border-radius:var(--radius-lg);padding:1.6rem;width:100%;max-width:330px;box-shadow:var(--shadow-lg);text-align:center;}
+.modal h3{margin:.2rem 0 .3rem;font-size:18px;font-weight:900;}
+.modal p{font-size:13px;color:var(--text-secondary);margin:0 0 1rem;}
+.dots{display:flex;justify-content:center;gap:9px;margin-bottom:.5rem;}
+.dots span{width:12px;height:12px;border-radius:50%;background:var(--border);transition:.15s;}
+.dots span.filled{background:var(--blue-700);}
+.dots.err span{background:var(--red);animation:shake .4s;}
+.pin-err{height:18px;font-size:12.5px;color:var(--red);font-weight:700;margin-bottom:.5rem;}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.pad button{border:1.5px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:14px 0;font-family:var(--font);font-size:18px;font-weight:800;cursor:pointer;color:var(--text);}
+.pad button:hover{border-color:var(--blue-700);background:var(--blue-50);}
+.modal-close{margin-top:1rem;background:none;border:none;color:#888;font-family:var(--font);font-weight:700;font-size:13px;cursor:pointer;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-7px);}40%,80%{transform:translateX(7px);}}
+
+/* Lehrkraft-Druck (Abfrage mit Lösungen) */
+@media print{
+  .topbar,.progress,.stepnav,.overlay,.tbtn,.topbar-actions{display:none!important;}
+  .section{display:block!important;box-shadow:none;border:1px solid #ccc;margin-bottom:1rem;break-inside:avoid;}
+  .teacher-note,.erwartung-box,.solution-reveal{display:block!important;}
+  .hero{color:#000;background:none;border:1px solid #ccc;}
+  .hero::before{display:none;}
+}
+
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:.6rem 0 .2rem;}
+.chip{border:1.5px solid var(--border);background:#fff;border-radius:20px;padding:7px 13px;font-family:var(--font);font-weight:700;font-size:13px;cursor:pointer;color:var(--text);}
+.chip:hover{border-color:var(--accent);}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+.chip-count{font-size:12px;color:#888;font-weight:700;margin:.2rem 0;}
+.sort-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 11px;margin-bottom:6px;font-size:13.5px;flex-wrap:wrap;}
+.sort-row select{font-family:var(--font);font-size:13px;font-weight:700;border:1.5px solid var(--border);border-radius:6px;padding:5px 8px;background:#fff;max-width:100%;}
+.sort-row.ok{border-color:var(--green);background:var(--green-light);}
+.sort-row.no{border-color:var(--red);background:var(--red-light);}
+.sort-row.mid{border-color:var(--orange);background:var(--orange-light);}
+.row-fb{flex-basis:100%;font-size:12.5px;color:var(--text-secondary);font-weight:600;}
+a.para-link{color:var(--blue-700);text-decoration:none;border-bottom:1px dotted var(--blue-700);font-weight:700;}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--blue-700);outline-offset:2px;}
+.small-muted{font-size:12.5px;color:#777;}
+details.zusatz{border:1.5px dashed var(--border);border-radius:var(--radius-sm);padding:.6rem .9rem;margin:.5rem 0;background:#fff;font-size:13.5px;}
+details.zusatz summary{cursor:pointer;font-weight:800;}
+details.zusatz ul{margin:.4rem 0 .2rem 1.1rem;padding:0;}
+select.gap{font-family:var(--font);font-size:13.5px;font-weight:800;border:1.5px solid var(--border);border-radius:6px;padding:3px 6px;background:#fff;}
+select.gap.ok{border-color:var(--green);background:var(--green-light);}
+select.gap.no{border-color:var(--red);background:var(--red-light);}
+select.gap.mid{border-color:var(--orange);background:var(--orange-light);}
+input.num{font-family:var(--font);font-size:14px;font-weight:800;border:1.5px solid var(--border);border-radius:6px;padding:6px 8px;width:110px;background:#fff;}
+code{background:#fde68a;border-radius:4px;padding:0 4px;font-size:12.5px;}
+.print-only{display:none;}
+
+/* Diagramme */
+.chart-card{border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem 1.1rem;background:#fcfcfb;margin:.9rem 0;}
+.chart-title{font-weight:800;font-size:14.5px;}
+.chart-sub{font-size:12.5px;color:var(--text-secondary);margin-bottom:.4rem;}
+.chart-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;font-weight:700;color:var(--text-secondary);margin:.3rem 0;}
+.chart-legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px;}
+.chart-wrap{position:relative;}
+.chart-wrap svg{width:100%;height:auto;display:block;font-family:var(--font);}
+.chart-tip{position:absolute;top:6px;pointer-events:none;background:#fff;border:1px solid var(--border);box-shadow:var(--shadow);border-radius:8px;padding:6px 10px;font-size:12.5px;display:none;white-space:nowrap;z-index:2;}
+.chart-tip b{display:block;margin-bottom:2px;}
+.chart-tip i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;}
+.chart-src{font-size:11.5px;color:#777;margin-top:.4rem;line-height:1.45;}
+.chart-table{margin-top:.4rem;font-size:12.5px;}
+.chart-table summary{cursor:pointer;font-weight:700;color:var(--text-secondary);}
+@media (max-width:600px){.task-body{flex-direction:column;}.icons{flex-direction:row;}.hero h1{max-width:100%;font-size:23px;}}
+@media (prefers-reduced-motion:reduce){.section{animation:none;}}
+
+/* ---- Stunde 14 ---- */
+.strat-a{border-top:4px solid #E65100;}.strat-b{border-top:4px solid #1565C0;}
+.sim{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.8rem .9rem;margin:.5rem 0;}
+.sim-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.sim-btn{border:none;border-radius:var(--radius-sm);padding:9px 15px;font-family:var(--font);font-weight:800;font-size:13.5px;cursor:pointer;background:var(--accent);color:#fff;}
+.sim-btn.sec{background:#047857;}
+.sim-btn.ghost{background:#fff;color:var(--text-secondary);border:1.5px solid var(--border);}
+.sim-btn:hover{filter:brightness(.95);}
+.sim-res{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.7rem;margin-top:.7rem;}
+.sim-card{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.6rem .8rem;font-size:13px;}
+.sim-card h5{margin:0 0 .3rem;font-size:13.5px;font-weight:900;}
+.sim-card .big{font-size:22px;font-weight:900;}
+.sim-card.a{border-color:#E65100;}.sim-card.a h5{color:#E65100;}
+.sim-card.b{border-color:#1565C0;}.sim-card.b h5{color:#1565C0;}
+.sim-mini{display:flex;flex-wrap:wrap;gap:3px;margin-top:.3rem;}
+.sim-mini span{font-size:10.5px;font-weight:700;padding:1px 5px;border-radius:4px;background:var(--bg-page);}
+.sim-mini span.neg{background:var(--red-light);color:#b71c1c;}
+.sim-stats{width:100%;border-collapse:collapse;font-size:13px;margin-top:.6rem;}
+.sim-stats th,.sim-stats td{border-bottom:1px solid var(--border);padding:5px 8px;text-align:right;}
+.sim-stats th:first-child,.sim-stats td:first-child{text-align:left;}
+.rate select{font-family:var(--font);font-size:13px;font-weight:700;border:1.5px solid var(--border);border-radius:6px;padding:4px 6px;background:#fff;width:100%;min-width:92px;}
+.rate td{vertical-align:middle;}
+.rate select.ok{border-color:var(--green);background:var(--green-light);}
+.rate select.mid{border-color:var(--orange);background:var(--orange-light);}
+.rate select.no{border-color:var(--red);background:var(--red-light);}
+ul.links{margin:.3rem 0 .6rem 1.1rem;padding:0;}
+ul.links a{color:var(--blue-700);font-weight:700;}
+.research td{min-width:120px;}
+.mini-ta{min-height:46px!important;margin-top:0!important;font-size:12.5px!important;padding:6px 8px!important;}
+.pf{display:grid;grid-template-columns:1.1fr 1fr;gap:1rem;margin:.5rem 0;}
+.pf-rows{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.6rem .9rem;}
+.pfrow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 0;font-size:13.5px;font-weight:700;}
+.pfrow small{display:block;font-weight:600;color:#888;font-size:11px;}
+.pfstep{display:flex;align-items:center;gap:6px;}
+.pfstep button{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-family:var(--font);font-weight:900;font-size:16px;cursor:pointer;color:var(--text);}
+.pfstep button:hover{border-color:var(--accent);}
+.pfstep b{min-width:64px;text-align:right;}
+.pf-sum{font-size:12.5px;font-weight:800;margin-top:.4rem;color:#888;}
+.pf-sum.full{color:var(--green);}
+.pf-side{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.6rem .9rem;}
+.pfbar{display:grid;grid-template-columns:96px 1fr 58px;gap:8px;align-items:center;font-size:13px;font-weight:700;margin:6px 0;}
+.pfbar-t{height:14px;background:var(--bg-page);border-radius:7px;overflow:hidden;}
+.pfbar-b{height:100%;border-radius:7px;transition:width .2s;}
+.pfhint{font-size:12.5px;border-radius:6px;padding:6px 9px;margin:5px 0;}
+.pfhint.warn{background:var(--orange-light);color:#78350f;border-left:3px solid var(--orange);}
+.pfhint.good{background:var(--green-light);color:#1b5e20;border-left:3px solid var(--green);}
+@media (max-width:700px){.pf{grid-template-columns:1fr;}}
+@media print{
+  body.print-student .rate select{appearance:none;-webkit-appearance:none;border:none;border-bottom:1px solid #000;border-radius:0;background:none!important;color:transparent;}
+  body.print-student .research td{height:3.4em;}
+  body.print-student ul.links a::after{content:" (" attr(href) ")";font-weight:400;font-size:8.5pt;}
+}
+
+/* ==== DRUCKMODUL Schülerversion v2 (body.print-student) – Acrobat-sicher ==== */
+.print-head,.print-options,.print-lines{display:none;}
+@media print{
+  body.print-student{background:#fff;}
+  /* Systemschrift statt Webfont, keine Schatten/Filter: hält die PDF frei von Type-3-Schriften und Transparenzen */
+  body.print-student,body.print-student *{font-family:Arial,Helvetica,sans-serif!important;box-shadow:none!important;text-shadow:none!important;filter:none!important;backdrop-filter:none!important;animation:none!important;}
+  body.print-student .wrap,body.print-student main{max-width:none;padding:0;}
+  body.print-student .print-head{display:flex;justify-content:space-between;gap:1.5rem;font-size:11pt;font-weight:700;border-bottom:1.5px solid #000;padding-bottom:6px;margin-bottom:12px;}
+  body.print-student .print-head span:last-child{white-space:nowrap;}
+  body.print-student .section{display:block!important;border:none;padding:0 0 .6rem;margin:0 0 1rem;break-inside:auto;}
+  body.print-student .section.teacher-only,
+  body.print-student .teacher-note,body.print-student .solution-reveal,body.print-student .erwartung-box,
+  body.print-student .solution-btn,body.print-student .erwartung-btn,body.print-student .sol-code,
+  body.print-student .quiz-fb,body.print-student .quiz-score,body.print-student .quiz-retry,body.print-student .print-btn,
+  body.print-student .chip-count,body.print-student .section-time,body.print-student .no-print,
+  body.print-student .row-fb,body.print-student .chart-tip,body.print-student .chart-table{display:none!important;}
+  body.print-student .hero{background:none!important;color:#000;border:none;padding:0;margin-bottom:.6rem;}
+  body.print-student .hero::before{display:none!important;}
+  body.print-student .hero *{color:#000!important;}
+  body.print-student .hero-chips{display:none;}
+  body.print-student .task{break-inside:avoid;border:1px solid #999;}
+  body.print-student .task-header{background:#eee!important;color:#000!important;}
+  body.print-student .task-header *{color:#000!important;}
+  body.print-student .task-num{background:#fff!important;border:1px solid #000;}
+  body.print-student .icons{display:none;}
+  /* Schreibfelder: Textarea weg, echte Linien (per JS eingefügt) – KEIN Farbverlauf */
+  body.print-student textarea{display:none!important;}
+  body.print-student .print-lines{display:block;margin-top:.4rem;break-inside:avoid;}
+  body.print-student .print-lines i{display:block;height:1.9em;border-bottom:1px solid #999;}
+  /* Auswahlfelder: Schreibstrich als Rahmenlinie, Kästchen als Rahmen – KEINE Sonderzeichen */
+  body.print-student .sort-row{background:#fff!important;border:1px solid #999!important;break-inside:avoid;}
+  body.print-student .sort-row select{display:none;}
+  body.print-student .sort-row::after{content:"";display:inline-block;width:11em;height:1.3em;border-bottom:1px solid #000;flex-shrink:0;}
+  body.print-student .print-options{display:block;font-size:10.5pt;margin:.3rem 0 .6rem;padding:.4rem .6rem;border:1px dashed #999;}
+  body.print-student .chip,body.print-student .chip.on{background:#fff!important;color:#000!important;border:1px solid #999!important;}
+  body.print-student .quiz-opt{background:#fff!important;border:1px solid #bbb!important;color:#000!important;break-inside:avoid;}
+  body.print-student .chip::before,body.print-student .quiz-opt::before{content:"";display:inline-block;width:.85em;height:.85em;border:1.2px solid #000;margin-right:7px;vertical-align:-.1em;flex-shrink:0;}
+  body.print-student .quiz-block{break-inside:avoid;}
+  body.print-student .book-ref{break-inside:avoid;background:none!important;}
+  body.print-student a.para-link::after{content:" (" attr(href) ")";font-weight:400;font-size:9pt;}
+  body.print-student .step-label,body.print-student .section h2{break-after:avoid;page-break-after:avoid;}
+  body.print-student .section h2{margin-top:.2rem;}
+  body.print-student .chart-card{break-inside:avoid;background:#fff;}
+  body.print-student .scale input,body.print-student .scale-val{display:none;}
+  body.print-student select.gap{appearance:none;-webkit-appearance:none;border:none;border-bottom:1px solid #000;border-radius:0;background:none;color:transparent;width:9em;}
+  body.print-student input.num{border:none;border-bottom:1px solid #000;border-radius:0;color:transparent;}
+  body.print-student *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  /* Ergänzungen ab Stunde 13 */
+  body.print-student .print-only{display:block!important;}
+  body.print-student .step-label .sn{background:#fff!important;color:#000!important;border:1px solid #000;}
+  body.print-student .step-label{color:#000!important;}
+  body.print-student .info-box,body.print-student .mini{background:#fff!important;border:1px solid #999!important;color:#000!important;break-inside:avoid;}
+  body.print-student .info-box *,body.print-student .mini *{color:#000!important;}
+  body.print-student details.zusatz{background:#fff;}
+  body.print-student .dtable th,body.print-student .dtable td.rowh{background:#fff!important;}
+}
+
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="topbar-logo" href="index.html">WR<span>&amp;</span>10</a>
+    <a class="topbar-back" href="index.html">← Übersicht</a>
+    <div class="topbar-actions">
+      <button class="tbtn" id="teacherToggle" onclick="toggleTeacher()">🔓 Lehrkraft</button>
+    </div>
+  </div>
+
+  <nav class="progress"><div class="progress-inner" id="prog"></div></nav>
+
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-eyebrow">Ökonomisches Handeln auf dem Markt · Stunde 14</div>
+      <h1>Wie lege ich Geld an? (II)</h1>
+      <p class="lead">Sparbuch, Anleihe, Aktie, Gold – und warum man nicht alles auf eine Karte setzt.</p>
+      <div class="hero-chips"><span>Kapitel 1.8</span><span>Buch S. 27–29</span><span>Anlagearten · Diversifikation</span></div>
+    </div>
+
+    <!-- STEP 1 -->
+    <section class="section" id="step1">
+      <span class="step-label"><span class="sn">1</span> Einstieg · Experiment</span>
+      <h2>Alle Eier in einen Korb?</h2>
+      <div class="section-time">⏱ ca. 6 Min · Partnerarbeit, dann Plenum</div>
+      <p>Du legst <b>1.000 €</b> für zehn Jahre in Aktien an und hast zwei Möglichkeiten:</p>
+      <div class="cards">
+        <div class="mini strat-a"><b>Strategie A: ein Korb</b><span>Die ganzen 1.000 € kommen in die Aktie <b>eines</b> Unternehmens.</span></div>
+        <div class="mini strat-b"><b>Strategie B: zehn Körbe</b><span>Je 100 € kommen in Aktien von <b>zehn</b> verschiedenen Unternehmen.</span></div>
+      </div>
+
+      <div class="task">
+        <div class="task-header"><div class="task-num">A</div><div><div class="task-title">Erst tippen, dann simulieren</div><div class="task-sub">Experiment · Partnerarbeit · Sofortfeedback</div></div></div>
+        <div class="task-body">
+          <div class="icons"><div class="itile" style="border:1.5px solid #0d9488;"><svg width="22" height="22" viewBox="0 0 44 36" fill="none"><circle cx="12" cy="10" r="6.5" fill="#0d9488"/><circle cx="32" cy="10" r="6.5" fill="#0d9488"/><path d="M1 34c0-6.075 4.925-11 11-11s11 4.925 11 11" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round" fill="none"/><path d="M21 34c0-6.075 4.925-11 11-11s11 4.925 11 11" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg></div></div>
+          <div class="task-content">
+            <p><b>1. Euer Tipp:</b></p>
+            <div id="predBox"></div>
+            <p style="margin-top:.8rem"><b>2. Simuliert zehn Börsenjahre.</b> Startet erst einen Durchlauf, dann 30 auf einmal.</p>
+            <div class="sim no-print">
+              <div class="sim-btns">
+                <button type="button" class="sim-btn" onclick="simOnce()">▶ 10 Jahre simulieren</button>
+                <button type="button" class="sim-btn sec" onclick="simMany(30)">⏩ 30 Durchläufe</button>
+                <button type="button" class="sim-btn ghost" onclick="simReset()">↺ zurücksetzen</button>
+              </div>
+              <div id="simOut"></div>
+              <div class="chart-card" id="simPlot" style="display:none"></div>
+            </div>
+            <div class="print-only">
+              <table class="dtable"><tr><th>Ergebnis nach zehn Jahren (30 Durchläufe)</th><th>Strategie A</th><th>Strategie B</th></tr>
+                <tr><td class="rowh">Durchschnitt</td><td></td><td></td></tr>
+                <tr><td class="rowh">schlechtester Durchlauf</td><td></td><td></td></tr>
+                <tr><td class="rowh">bester Durchlauf</td><td></td><td></td></tr>
+                <tr><td class="rowh">Durchläufe mit Verlust</td><td></td><td></td></tr></table>
+            </div>
+            <button class="erwartung-btn" style="margin-top:.5rem" onclick="checkGrid('pred')">✓ Tipp prüfen</button>
+            <div class="quiz-fb" id="predFb"></div>
+            <p style="margin-top:.8rem"><b>3. Was fällt euch auf?</b> Vergleicht die Ergebnisse von A und B.</p>
+            <textarea class="answer-area" id="s14a1" placeholder="Im Durchschnitt …&#10;Bei Strategie A schwanken die Ergebnisse …&#10;Bei Strategie B …"></textarea>
+            <button class="solution-btn" data-target="solA" onclick="solClick(this)">🔒 Musterlösung</button>
+            <div class="solution-reveal" id="solA">
+              <b>Im Durchschnitt</b> landen beide Strategien ungefähr gleich hoch. <b>Die Streuung</b> ist aber sehr verschieden: Bei A reicht das Ergebnis von fast allem verloren bis zu einem Vielfachen, weil alles vom Schicksal eines einzigen Unternehmens abhängt. Bei B gleichen sich gute und schlechte Unternehmen gegenseitig aus – die Ergebnisse liegen eng beieinander, Totalverluste kommen nicht vor.<br>
+              <b>Folgerung:</b> Wer streut, senkt das Risiko, ohne im Durchschnitt auf Ertrag zu verzichten. Das nennt man <b>Diversifikation</b>. Gegen eine allgemeine Börsenkrise schützt sie allerdings nicht: Fällt der ganze Markt, fallen auch zehn Aktien gemeinsam.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        <ul>
+          <li><b>Modell:</b> Jede Aktie entwickelt sich jährlich aus einem gemeinsamen Marktanteil (im Mittel +7 %, Schwankung 16 %) und einem unternehmensspezifischen Anteil (Schwankung 25 %); mit 2 % Wahrscheinlichkeit pro Jahr bricht ein Unternehmen um 80 % ein. Beide Strategien haben damit denselben Erwartungswert – nur die Streuung unterscheidet sich. Die Werte stehen im Quelltext (<code>SIM</code>) und sind keine Prognose.</li>
+          <li><b>Feine Beobachtung:</b> Bei A liegen die meisten Durchläufe <i>unter</i> dem Durchschnitt – wenige Ausreißer nach oben ziehen ihn hoch. Ein einzelner Durchlauf ist Glückssache; erst 30 Durchläufe zeigen das Muster.</li>
+          <li>Ergebnisse von zwei, drei Paaren an der Tafel sammeln. Ohne Tablet: Die Druckversion enthält eine Tabelle, die Werte kommen vom Beamer.</li>
+          <li>Der Gedanke geht auf Harry M. Markowitz zurück (Wirtschaftsnobelpreis 1990, Buch M4; das Buch nennt ihn „Harry S.“ – richtig ist Harry Max Markowitz, gestorben 2023). Aufgabe 3b folgt in Step 5.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="section" id="step2">
+      <span class="step-label"><span class="sn">2</span> Erarbeitung · Anlagearten</span>
+      <h2>Was gibt es – und wie schneidet es ab?</h2>
+      <div class="section-time">⏱ ca. 10 Min · Partnerarbeit</div>
+      <div class="book-ref"><svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg><div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 28–29 · M5 Sachwerte, M6 Sparbuch, M7 DAX-ETF, M8 Anleihe · Randspalte S. 29 (Sparbuch, Anleihe, Aktie) · Fachwissen S. 46–47</div></div></div>
+
+      <div class="cards steck">
+        <div class="mini"><b>🏦 Sparbuch</b><span>Verzinstes Guthaben bei einer Bank, unbefristet. Ohne Kündigung meist nur bis 2.000 € pro Monat abhebbar. Zinsen oft sehr niedrig.</span></div>
+        <div class="mini"><b>💳 Tagesgeld</b><span>Verzinstes Konto, über das man jeden Tag verfügen kann. Der Zins kann sich jederzeit ändern; hohe Lockzinsen gelten oft nur für Neukunden und wenige Monate.</span></div>
+        <div class="mini"><b>🔒 Festgeld</b><span>Geld wird für eine feste Laufzeit (z. B. 2 Jahre) zu einem festen Zins angelegt. Vorher kommt man nicht heran.</span></div>
+        <div class="mini"><b>📜 Anleihe</b><span>Man leiht einem Staat oder Unternehmen Geld und bekommt Zinsen, am Ende der Laufzeit das Geld zurück. Bundesanleihen gelten als sehr sicher. Vor Laufzeitende kann man sie an der Börse verkaufen – zum aktuellen Kurs.</span></div>
+        <div class="mini"><b>📈 Aktie</b><span>Ein Anteil an einem Unternehmen. Ertrag über Dividenden und Kursgewinne – aber der Kurs kann stark fallen, im Extremfall bis zum Totalverlust.</span></div>
+        <div class="mini"><b>🧺 Fonds / ETF</b><span>Ein Topf, der das Geld vieler Anleger auf viele Wertpapiere verteilt. Ein ETF bildet einen Index wie den DAX nach, wird an der Börse gehandelt und ist meist günstig.</span></div>
+        <div class="mini"><b>🪙 Gold (Sachwert)</b><span>Ein greifbarer Wert, der nicht pleitegehen kann. Bringt keine Zinsen, Ertrag nur über steigende Preise – und die schwanken stark.</span></div>
+        <div class="mini"><b>🏠 Immobilie</b><span>Haus oder Wohnung zum Selbstnutzen oder Vermieten. Langfristig oft wertbeständig, aber teuer, nicht teilbar und nur langsam verkäuflich.</span></div>
+      </div>
+      <div class="info-box blue"><b>Einlagensicherung:</b> Guthaben auf Spar-, Tages- und Festgeldkonten sind in der EU gesetzlich bis 100.000 € pro Kunde und Bank geschützt. Aktien, Fonds und ETFs liegen im Depot und gehören dem Anleger – auch wenn die Bank pleitegeht. Vor Kursverlusten schützt das aber nicht.</div>
+
+      <div class="task">
+        <div class="task-header"><div class="task-num">B</div><div><div class="task-title">Anlagearten bewerten</div><div class="task-sub">Bewertungstabelle · Partnerarbeit · Sofortfeedback</div></div></div>
+        <div class="task-body">
+          <div class="icons"><div class="itile" style="border:1.5px solid #0d9488;"><svg width="22" height="22" viewBox="0 0 44 36" fill="none"><circle cx="12" cy="10" r="6.5" fill="#0d9488"/><circle cx="32" cy="10" r="6.5" fill="#0d9488"/><path d="M1 34c0-6.075 4.925-11 11-11s11 4.925 11 11" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round" fill="none"/><path d="M21 34c0-6.075 4.925-11 11-11s11 4.925 11 11" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg></div></div>
+          <div class="task-content">
+            <p>Bewertet jede Anlageart nach den drei Kriterien mit <b>hoch</b>, <b>mittel</b> oder <b>niedrig</b>.</p>
+            <div class="tscroll"><table class="dtable rate" id="rateTable"></table></div>
+            <button class="erwartung-btn" onclick="checkRate()">✓ Bewertung prüfen</button>
+            <div class="quiz-fb" id="rateFb"></div>
+            <p class="small-muted">Grün = passt · Orange = vertretbar, mit guter Begründung · Rot = nochmal überlegen</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        Tafelbild, zweiter und dritter Ast: „Möglichkeiten der Geldanlage kennen“ und „Anlagearten anhand Kriterien bewerten“. Mehrere Einstufungen sind vertretbar und werden orange markiert, z. B. Liquidität der Bundesanleihe (täglich verkaufbar, aber mit Kursrisiko vor Fälligkeit) oder Rentabilität von Gold (kein laufender Ertrag, aber teils starke Preissteigerungen). Wichtig ist der Unterschied <b>Einzelaktie – ETF</b>: gleiche Anlageklasse, aber durch Streuung deutlich sicherer. Immobilien sind bewusst nicht in der Tabelle; für Zehntklässler sind sie keine realistische Option.
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="section" id="step3">
+      <span class="step-label"><span class="sn">3</span> Erarbeitung · Faktencheck</span>
+      <h2>Vier Anlagen im Check</h2>
+      <div class="section-time">⏱ ca. 7 Min · Partnerarbeit</div>
+      <div class="book-ref"><svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg><div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 28–29 · M5–M8 · Aufgabe 4 · aktuelle Fassungen der Buchgrafiken: <a href="https://www.ccbuchner.de/clip_code/73000-382" target="_blank" rel="noopener">Mediencode 73000-382</a> (Goldpreis) und <a href="https://www.ccbuchner.de/clip_code/73000-383" target="_blank" rel="noopener">Mediencode 73000-383</a> (Bundesanleihe)</div></div></div>
+
+      <div class="chart-card" id="chGold"></div>
+      <div class="task">
+        <div class="task-header"><div class="task-num">C</div><div><div class="task-title">Goldpreis lesen</div><div class="task-sub">Diagramm · Einzelarbeit · Sofortfeedback</div></div></div>
+        <div class="task-body">
+          <div class="icons"><div class="itile" style="border:1.5px solid #1976D2;"><svg width="22" height="22" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="12" r="7" fill="#1976D2"/><path d="M4 34c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="#1976D2" stroke-width="3" stroke-linecap="round" fill="none"/></svg></div></div>
+          <div class="task-content">
+            <div id="goldBox"></div>
+            <button class="erwartung-btn" style="margin-top:.4rem" onclick="checkGrid('gold')">✓ Antworten prüfen</button>
+            <div class="quiz-fb" id="goldFb"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box orange"><b>Aktuelle Zahlen (Stand: November 2026)</b>
+        <ul>
+          <li><b>Gold:</b> rund 3.500 € je Feinunze (31,1 g), also gut 110 € je Gramm. Seit dem Rekord zu Jahresbeginn ist der Preis um fast ein Drittel gefallen.</li>
+          <li><b>Tagesgeld:</b> Sparkassen zahlen im Schnitt nur rund 0,4 %. Einzelne Banken locken Neukunden mit bis zu 4 % – meist nur für drei oder vier Monate, danach deutlich weniger.</li>
+          <li><b>Festgeld (2 Jahre):</b> im Schnitt bundesweiter Banken etwa 2,5 %.</li>
+          <li><b>15-jährige Bundesanleihe:</b> Rendite rund 3 % (Mediencode, Stand April 2026).</li>
+          <li><b>DAX-ETF:</b> laufende Kosten meist nur 0,1–0,2 % pro Jahr (M7).</li>
+          <li><b>Inflation:</b> 2,8 % (Oktober 2026, Stunde 12).</li>
+        </ul>
+      </div>
+
+      <div class="task">
+        <div class="task-header"><div class="task-num">D</div><div><div class="task-title">Bedingungen recherchieren</div><div class="task-sub">Recherche (Aufgabe 4) · Partnerarbeit</div></div></div>
+        <div class="task-body">
+          <div class="icons"><div class="itile" style="border:1.5px solid #0d9488;"><svg width="22" height="22" viewBox="0 0 36 36" fill="none"><circle cx="15" cy="15" r="10" stroke="#0d9488" stroke-width="3"/><line x1="22.5" y1="22.5" x2="33" y2="33" stroke="#0d9488" stroke-width="3.5" stroke-linecap="round"/><path d="M15 10v10M10 15h10" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round"/></svg></div></div>
+          <div class="task-content">
+            <p>Teilt euch auf: Jede Person recherchiert zwei Anlagen. Nutzt die Zahlen oben und diese Seiten:</p>
+            <ul class="links">
+              <li><a href="https://live.deutsche-boerse.com/rohstoff/goldpreis?mic=ARIVA" target="_blank" rel="noopener">Goldpreis – Deutsche Börse</a></li>
+              <li><a href="https://www.tagesgeldvergleich.net/tagesgeldvergleich/sparbuch.html" target="_blank" rel="noopener">Sparbuch-Vergleich – tagesgeldvergleich.net</a></li>
+              <li><a href="https://www.deutsche-finanzagentur.de/" target="_blank" rel="noopener">Bundeswertpapiere – Deutsche Finanzagentur</a></li>
+              <li><a href="https://live.deutsche-boerse.com/etfs" target="_blank" rel="noopener">ETFs – Deutsche Börse</a></li>
+            </ul>
+            <div class="tscroll"><table class="dtable research">
+              <tr><th></th><th>Ab welchem Betrag?</th><th>Ertrag / Preis aktuell</th><th>Wer gibt aus / bietet an?</th><th>Depot nötig?</th></tr>
+              <tr><td class="rowh">Goldbarren</td><td><textarea class="answer-area mini-ta" id="r1a" data-print-lines="2"></textarea></td><td><textarea class="answer-area mini-ta" id="r1b" data-print-lines="2"></textarea></td><td><textarea class="answer-area mini-ta" id="r1c" data-print-lines="2"></textarea></td><td><textarea class="answer-area mini-ta" id="r1d" data-print-lines="2"></textarea></td></tr>
+              <tr><td class="rowh">Sparbuch</td><td><textarea class="answer-area mini-ta" id="r2a" data-print-lines="2"></textarea></td><td><textarea class="answer-area mini-ta" id="r2b" data-print-lines="2"></textarea></td><td><textarea class="answer-area mini-ta" id="r2c" data-print-lines="2"></textarea></td><td><textarea class="answer-area mini-ta" id="r2d" data-print-lines="2"></textarea></td></tr>
+              <tr><td class="rowh">Bundesanleihe</td><td><textarea class="answer-area mini-ta" id="r3a" data-print-lines="2"></textarea></td><td><textarea class="answer-area mini-ta" id="r3b" data-print-lines="2"></textarea></td><td><textarea class="answer-area mini-ta" id="r3c" data-print-lines="2"></textarea></td><td><textarea class="answer-area mini-ta" id="r3d" data-print-lines="2"></textarea></td></tr>
+              <tr><td class="rowh">DAX-ETF</td><td><textarea class="answer-area mini-ta" id="r4a" data-print-lines="2"></textarea></td><td><textarea class="answer-area mini-ta" id="r4b" data-print-lines="2"></textarea></td><td><textarea class="answer-area mini-ta" id="r4c" data-print-lines="2"></textarea></td><td><textarea class="answer-area mini-ta" id="r4d" data-print-lines="2"></textarea></td></tr>
+            </table></div>
+            <button class="solution-btn" data-target="solD" onclick="solClick(this)">🔒 Musterlösung</button>
+            <div class="solution-reveal" id="solD">
+              <div class="tscroll"><table class="dtable">
+                <tr><th></th><th>Ab welchem Betrag?</th><th>Ertrag / Preis</th><th>Anbieter</th><th>Depot?</th></tr>
+                <tr><td class="rowh">Goldbarren</td><td>schon ab 1 g; kleine Barren sind je Gramm deutlich teurer</td><td>keine Zinsen; Ertrag nur über den Preis (ca. 110 €/g, schwankt stark)</td><td>Edelmetallhändler, Banken</td><td>nein – Aufbewahrung zu Hause oder im Schließfach</td></tr>
+                <tr><td class="rowh">Sparbuch</td><td>ab 1 €</td><td>oft unter 1 %, meist unter der Inflation</td><td>Banken, Sparkassen</td><td>nein</td></tr>
+                <tr><td class="rowh">Bundesanleihe</td><td>kleinste handelbare Einheit 0,01 € (M8)</td><td>Rendite je nach Laufzeit rund 2–3 %; Kurs schwankt bis zur Fälligkeit</td><td>Bundesrepublik Deutschland (über die Finanzagentur)</td><td>ja</td></tr>
+                <tr><td class="rowh">DAX-ETF</td><td>Sparpläne oft schon ab wenigen Euro im Monat</td><td>folgt dem DAX, schwankt; Kosten ca. 0,1–0,2 % im Jahr</td><td>Fondsgesellschaften, Kauf über Bank oder Broker</td><td>ja</td></tr>
+              </table></div>
+              <b>Gut zu wissen:</b> Unter 18 Jahren braucht man für ein Depot die Zustimmung der Eltern (Junior- oder Minderjährigendepot).
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        <ul>
+          <li><b>Diagramm:</b> selbst erstellt aus gerundeten Jahresendkursen (LBMA-Goldpreis, in Euro umgerechnet), 2026 Stand Mitte November; Werte im Quelltext (<code>GOLD</code>) anpassbar. Die Buchgrafik M5 zeigt den <i>realen</i>, also inflationsbereinigten Goldpreis bis 2022 – hier nominal, deshalb höhere Werte.</li>
+          <li><b>Aktuelle Zahlen</b> vor der Stunde kurz prüfen (verlinkte Seiten, Mediencodes). Lockzinsen beim Tagesgeld sind ein guter Anlass, an Verknappung und Ankereffekt aus Stunde 6 zu erinnern.</li>
+          <li>Zeit knapp? Aufgabe D als Hausaufgabe geben oder auf zwei Anlagen pro Paar beschränken.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="section" id="step4">
+      <span class="step-label"><span class="sn">4</span> Anwendung</span>
+      <h2>Ein Anlagekonzept für Tina</h2>
+      <div class="section-time">⏱ ca. 8 Min · Einzelarbeit</div>
+      <div class="book-ref"><svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg><div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 29 · Aufgabe 5 (mit M1–M8)</div></div></div>
+      <p>Tina (17) hat 2.000 € gespart. Sie möchte <b>bald ein Auto</b> kaufen und sich <b>in ein paar Jahren eine eigene Wohnung</b> leisten (M1).</p>
+
+      <div class="task">
+        <div class="task-header"><div class="task-num">E</div><div><div class="task-title">2.000 € sinnvoll verteilen</div><div class="task-sub">Buchaufgabe (Aufgabe 5) · Einzelarbeit</div></div></div>
+        <div class="task-body">
+          <div class="icons"><div class="itile" style="border:1.5px solid #F59E0B;"><svg width="22" height="22" viewBox="0 0 36 36" fill="none"><path d="M18 4a10 10 0 0 0-6 18v4h12v-4a10 10 0 0 0-6-18z" fill="#FDE68A" stroke="#F59E0B" stroke-width="2.2"/><path d="M13 30h10M14.5 33.5h7" stroke="#F59E0B" stroke-width="2.2" stroke-linecap="round"/></svg></div></div>
+          <div class="task-content">
+            <p>Verteile Tinas 2.000 € in 100-€-Schritten. Rechts siehst du, wie dein Konzept bei den Kriterien abschneidet.</p>
+            <div class="pf no-print">
+              <div class="pf-rows" id="pfRows"></div>
+              <div class="pf-side"><div id="pfProfile"></div><div id="pfHints"></div></div>
+            </div>
+            <div class="print-only">
+              <table class="dtable"><tr><th>Anlage</th><th>Betrag</th><th>Anlage</th><th>Betrag</th></tr>
+                <tr><td class="rowh">Tagesgeld</td><td></td><td class="rowh">ETF (breit gestreut)</td><td></td></tr>
+                <tr><td class="rowh">Festgeld (2 Jahre)</td><td></td><td class="rowh">Einzelaktie</td><td></td></tr>
+                <tr><td class="rowh">Bundesanleihe</td><td></td><td class="rowh">Gold</td><td></td></tr>
+                <tr><td class="rowh" colspan="3">Summe</td><td>2.000 €</td></tr></table>
+            </div>
+            <p style="margin-top:.8rem"><b>Begründe dein Anlagekonzept.</b> Gehe auf alle Kriterien der Geldanlage ein – auch auf ethische Aspekte.</p>
+            <textarea class="answer-area" id="s14e1" style="min-height:140px" placeholder="Für das Auto lege ich … in …, weil …&#10;Für die Wohnung …&#10;Sicherheit / Rentabilität / Liquidität: …&#10;Nachhaltigkeit: …"></textarea>
+            <button class="solution-btn" data-target="solE" onclick="solClick(this)">🔒 Musterlösung</button>
+            <div class="solution-reveal" id="solE">
+              <b>Ein mögliches Konzept</b> (andere sind vertretbar, wenn sie begründet sind):
+              <ul>
+                <li><b>1.000 € Tagesgeld</b> – für das Auto und als Notgroschen: sicher und jederzeit verfügbar. Ein Vergleich lohnt sich, aber nicht nur wegen kurzer Lockzinsen wechseln.</li>
+                <li><b>500 € Festgeld oder Bundesanleihe</b> mit kurzer Laufzeit (1–3 Jahre) – sicher, etwas mehr Zinsen, wird erst später gebraucht.</li>
+                <li><b>500 € breit gestreuter ETF</b>, gern nachhaltig ausgerichtet – für die Wohnung in einigen Jahren. Höhere Ertragschance, Schwankungen sind über mehrere Jahre verkraftbar. Ergänzend ein kleiner monatlicher Sparplan aus der Ausbildungsvergütung.</li>
+              </ul>
+              <b>Bewusst nicht:</b> Einzelaktien (Klumpenrisiko bei kleinem Betrag) und Gold (keine Zinsen, starke Preisschwankungen). <b>Ergebnis:</b> hohe Sicherheit, ausreichende Liquidität, Rentabilität etwa auf Höhe der Inflation oder darüber. <b>Achtung:</b> Für ein Depot braucht Tina mit 17 noch die Zustimmung ihrer Eltern.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        Der Baukasten bewertet die Verteilung mit den Einstufungen aus Step 2 (hoch = 3, mittel = 2, niedrig = 1, gewichtet nach Betrag) und gibt Hinweise bei Klumpenrisiko, zu wenig verfügbarem Geld oder zu hohem Aktienanteil für kurzfristige Ziele. Das ersetzt keine Begründung – bewertet wird der Text. Laut Lösungshinweis geht es um zwei Entscheidungen: welche Anlagetypen sich eignen und wie der Betrag aufgeteilt wird. Gute Diskussionsfrage: Lohnt sich bei 2.000 € überhaupt eine Aufteilung auf viele Anlagen?
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="section" id="step5">
+      <span class="step-label"><span class="sn">5</span> Urteil &amp; Sicherung</span>
+      <h2>„Nicht alle Eier in einen Korb legen“ – stimmt das immer?</h2>
+      <div class="section-time">⏱ ca. 6 Min · Einzelarbeit, dann Plenum</div>
+      <div class="book-ref"><svg width="22" height="22" viewBox="0 0 40 34" fill="none"><path d="M20 6C20 6 14 4 6 5C4 5 3 6 3 8L3 30C3 31.5 4.5 32.5 6 32C14 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M20 6C20 6 26 4 34 5C36 5 37 6 37 8L37 30C37 31.5 35.5 32.5 34 32C26 31 20 32 20 32" stroke="#7B1FA2" stroke-width="2.2" stroke-linecap="round" fill="none"/><line x1="20" y1="6" x2="20" y2="32" stroke="#7B1FA2" stroke-width="2"/></svg><div><div class="book-ref-title">Im Buch</div><div class="book-ref-text">S. 27 · M4 „Die Mischung macht’s?“ · Aufgabe 3b</div></div></div>
+
+      <div class="task">
+        <div class="task-header"><div class="task-num">F</div><div><div class="task-title">Die Aussage von Markowitz diskutieren</div><div class="task-sub">Buchaufgabe (Aufgabe 3b) · Einzelarbeit · Sofortfeedback</div></div></div>
+        <div class="task-body">
+          <div class="icons"><div class="itile" style="border:1.5px solid #0d9488;"><svg width="22" height="22" viewBox="0 0 40 36" fill="none"><path d="M3 5h20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H11l-5 4v-4H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" fill="#0d9488"/><path d="M17 15h20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3v4l-5-4H17a2 2 0 0 1-2-2V17a2 2 0 0 1 2-2z" fill="#fff" stroke="#0d9488" stroke-width="2"/></svg></div></div>
+          <div class="task-content">
+            <p>Spricht das Argument <b>für</b> die Streuung, oder zeigt es eine <b>Grenze</b> auf?</p>
+            <div id="markBox"></div>
+            <button class="erwartung-btn" style="margin-top:.4rem" onclick="checkGrid('mark')">✓ Zuordnung prüfen</button>
+            <div class="quiz-fb" id="markFb"></div>
+            <p style="margin-top:.8rem"><b>Dein Urteil:</b> Gilt die Aussage auch für Tina?</p>
+            <textarea class="answer-area" id="s14f1" placeholder="Für die Aussage spricht …&#10;Allerdings …&#10;Für Tina bedeutet das …"></textarea>
+            <button class="solution-btn" data-target="solF" onclick="solClick(this)">🔒 Musterlösung</button>
+            <div class="solution-reveal" id="solF">
+              <b>Dafür:</b> Streuung erhöht die Sicherheit, weil Verluste einer Anlage durch Gewinne anderer ausgeglichen werden können, und sie erlaubt, mehrere Ziele zugleich zu verfolgen (Notgroschen und Vermögensaufbau). <b>Grenzen:</b> Bei kleinen Beträgen können viele Einzelanlagen hohe Kosten verursachen, man verliert schnell den Überblick, und gegen eine allgemeine Krise hilft Streuung nur begrenzt.<br>
+              <b>Urteil:</b> Die Aussage stimmt grundsätzlich. Auch Tina sollte nicht alles in eine Anlage stecken – sie kann aber einfach streuen: Ein Teil bleibt auf dem Tagesgeld, ein breit gestreuter ETF übernimmt die Streuung innerhalb der Aktien schon mit kleinen Beträgen.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box green"><b>Antwort auf die Leitfrage:</b> Es gibt Spar- und Termineinlagen (Sparbuch, Tagesgeld, Festgeld), Wertpapiere (Anleihen, Aktien, Fonds/ETFs) und Sachwerte (Gold, Immobilien). Jede Anlageart erfüllt die Kriterien unterschiedlich gut. Wer reflektiert anlegt, klärt zuerst seine Ziele, bewertet die Anlagen an Sicherheit, Rentabilität, Liquidität und ethischen Aspekten – und <b>streut</b> sein Geld auf mehrere passende Anlagen.</div>
+
+      <h3>Zusatz für Schnelle</h3>
+      <details class="zusatz"><summary>Und was ist mit Kryptowährungen?</summary>
+        <ul>
+          <li>Bitcoin und Co. schwanken extrem – Verluste von mehr als der Hälfte innerhalb weniger Monate gab es mehrfach.</li>
+          <li>Sie bringen keine Zinsen oder Dividenden, es gibt keine Einlagensicherung, und Betrüger nutzen den Hype gezielt aus.</li>
+          <li>Finanzaufsicht und Verbraucherschützer stufen sie als hochspekulativ ein: höchstens Geld einsetzen, dessen Totalverlust man verkraften kann.</li>
+        </ul></details>
+      <details class="zusatz"><summary>Warum ein ETF schon „gestreut“ ist</summary>
+        <ul>
+          <li>Ein DAX-ETF enthält Aktien der 40 größten deutschen Unternehmen, ein weltweiter ETF oft über tausend.</li>
+          <li>Mit einem einzigen Kauf hat man also Strategie B aus dem Experiment – nur noch breiter.</li>
+          <li>Ein DAX-ETF ist aber nur auf Deutschland gestreut. Wer weltweit streut, verteilt das Risiko noch stärker.</li>
+        </ul></details>
+
+      <div class="quiz-block">
+        <div class="quiz-q">1. Was kauft man mit einer Bundesanleihe?</div>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">A</span><span>einen Anteil am Staat mit Stimmrecht</span></button>
+        <button class="quiz-opt" data-correct="true" onclick="checkQuiz(this)"><span class="ql">B</span><span>eine Forderung: Man leiht dem Bund Geld gegen Zinsen.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">C</span><span>ein Sparbuch bei der Bundesbank</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">D</span><span>einen Fonds aus Aktien deutscher Unternehmen</span></button>
+        <div class="quiz-fb">Wer eine Anleihe kauft, wird Gläubiger: Er bekommt Zinsen und am Ende der Laufzeit sein Geld zurück.</div>
+      </div>
+      <hr class="divider">
+      <div class="quiz-block">
+        <div class="quiz-q">2. Was bedeutet Diversifikation?</div>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">A</span><span>alles in die Anlage mit der höchsten Rendite stecken</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">B</span><span>Geld nur für kurze Zeit anlegen</span></button>
+        <button class="quiz-opt" data-correct="true" onclick="checkQuiz(this)"><span class="ql">C</span><span>das Geld auf verschiedene Anlagen verteilen, um das Risiko zu streuen</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">D</span><span>nur in nachhaltige Unternehmen investieren</span></button>
+        <div class="quiz-fb">Verluste einzelner Anlagen werden durch andere ausgeglichen – das Gesamtrisiko sinkt.</div>
+      </div>
+      <hr class="divider">
+      <div class="quiz-block">
+        <div class="quiz-q">3. Welche Anlage ist sicher, bringt aber vor Laufzeitende keinen Zugriff aufs Geld?</div>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">A</span><span>Tagesgeld</span></button>
+        <button class="quiz-opt" data-correct="true" onclick="checkQuiz(this)"><span class="ql">B</span><span>Festgeld</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">C</span><span>ETF</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">D</span><span>Gold</span></button>
+        <div class="quiz-fb">Festgeld ist sicher und fest verzinst, dafür ist die Liquidität während der Laufzeit niedrig.</div>
+      </div>
+      <hr class="divider">
+      <div class="quiz-block">
+        <div class="quiz-q">4. Warum ist ein breit gestreuter ETF meist sicherer als eine einzelne Aktie?</div>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">A</span><span>Weil der Staat ETFs garantiert.</span></button>
+        <button class="quiz-opt" data-correct="true" onclick="checkQuiz(this)"><span class="ql">B</span><span>Weil der Absturz eines Unternehmens nur einen kleinen Teil des Geldes betrifft.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">C</span><span>Weil ETFs feste Zinsen zahlen.</span></button>
+        <button class="quiz-opt" data-correct="false" onclick="checkQuiz(this)"><span class="ql">D</span><span>Weil ETF-Kurse nicht fallen können.</span></button>
+        <div class="quiz-fb">Ein ETF enthält viele Unternehmen. Kursverluste gibt es trotzdem – vor allem, wenn der ganze Markt fällt.</div>
+      </div>
+
+      <div class="quiz-score" id="quizScore"><span class="score-num"></span><span class="score-msg"></span></div>
+      <button class="quiz-retry" id="quizRetry" onclick="retryQuiz()">🔄 Nochmal versuchen</button>
+
+      <div class="teacher-note">
+        <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
+        Tafelbild vervollständigen: Die drei Äste „Wichtigkeit der Kriterien hinterfragen“ (Stunde 13), „Möglichkeiten der Geldanlage kennen“ und „Anlagearten anhand Kriterien bewerten“ (Stunde 14) führen zu „reflektiert anlegen“. Pro- und Contra-Argumente zu M4 folgen dem Lösungshinweis (Sicherheit durch Streuung, unterschiedliche Anlageziele gegen Überblicksverlust und kleine Beträge). Mit dieser Stunde ist Block C abgeschlossen; Stunde 15 beginnt mit dem Marktmodell.
+      </div>
+    </section>
+
+    <!-- STEP 6 – Lehrkraft -->
+    <section class="section teacher-only" id="step6">
+      <span class="step-label"><span class="sn">6</span> Mündliche Abfrage</span>
+      <h2>Abfrage Stunde 14 – Anlagearten und Diversifikation</h2>
+      <div class="section-time">⏱ ca. 10 Min · 1 Schüler:in</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.4rem;">
+        <div class="k-legend"><span class="k-wissen">🔵 Wissen</span><span class="k-denken">🟢 Kritisches Denken</span><span class="k-komm">🟡 Kommunikation</span><span class="k-kreativ">🔴 Kreativität</span></div>
+        <button class="print-btn" onclick="window.print()">🖨 Drucken</button>
+      </div>
+      <div class="abfrage-wrap">
+        <div class="abfrage-q"><div class="abfrage-q-header"><div class="abfrage-q-num wissen">1</div><div><div class="abfrage-q-label wissen">🔵 Wissen · ca. 2 Min.</div><div class="abfrage-q-text">Erkläre den Unterschied zwischen einer Aktie und einer Anleihe.</div></div></div>
+          <div class="abfrage-q-body"><p>Bewertet: Eigentum vs. Gläubiger, Ertragsart, Risiko.</p><button class="erwartung-btn" onclick="toggleErw('ew1',this)">📋 Erwartungshorizont anzeigen</button>
+          <div class="erwartung-box" id="ew1">Aktie: Anteil am Unternehmen, der Aktionär ist Miteigentümer (Stimmrecht), Ertrag über Dividenden und Kursgewinne, Risiko bis zum Totalverlust. Anleihe: Der Käufer leiht dem Staat oder Unternehmen Geld, ist Gläubiger, erhält feste Zinsen und am Ende der Laufzeit das Geld zurück; Risiko vor allem Rückzahl- und Kursrisiko, meist geringer als bei Aktien.</div></div></div>
+        <div class="abfrage-q"><div class="abfrage-q-header"><div class="abfrage-q-num denken">2</div><div><div class="abfrage-q-label denken">🟢 Kritisches Denken · ca. 3 Min.</div><div class="abfrage-q-text">Ein Mitschüler sagt: „Gold ist die sicherste Geldanlage, weil es nie wertlos wird.“ Nimm Stellung.</div></div></div>
+          <div class="abfrage-q-body"><p>Bewertet: Differenzierung (kein Ausfallrisiko vs. Preisrisiko), Daten, Urteil.</p><button class="erwartung-btn" onclick="toggleErw('ew2',this)">📋 Erwartungshorizont anzeigen</button>
+          <div class="erwartung-box" id="ew2">Richtig: Gold kann nicht pleitegehen, ein Totalverlust ist praktisch ausgeschlossen, es gilt als Krisen- und Inflationsschutz. Aber: Der Preis schwankt stark (2013 rund −30 %, 2026 seit dem Rekord fast ein Drittel weniger), Gold bringt keine Zinsen, Aufbewahrung kostet, kleine Barren sind teuer. „Sicher“ im Sinne von wertstabil ist Gold also nicht. Urteil: als Beimischung zur Streuung denkbar, nicht als „sicherste“ Anlage.</div></div></div>
+        <div class="abfrage-q"><div class="abfrage-q-header"><div class="abfrage-q-num komm">3</div><div><div class="abfrage-q-label komm">🟡 Kommunikation · ca. 2 Min.</div><div class="abfrage-q-text">Erkläre einem Fünftklässler mit einem Bild aus dem Alltag, warum man sein Geld streuen sollte.</div></div></div>
+          <div class="abfrage-q-body"><p>Bewertet: treffende Analogie, sachlich korrekt, verständlich.</p><button class="erwartung-btn" onclick="toggleErw('ew3',this)">📋 Erwartungshorizont anzeigen</button>
+          <div class="erwartung-box" id="ew3">Z. B. Eier-Korb: Trägst du alle Eier in einem Korb und stolperst, sind alle kaputt; mit mehreren Körben bleiben die meisten heil. Oder Fußballmannschaft: Ein Team nur aus Stürmern gewinnt manchmal hoch, verliert aber auch hoch – eine gemischte Mannschaft ist verlässlicher.</div></div></div>
+        <div class="abfrage-q"><div class="abfrage-q-header"><div class="abfrage-q-num kreativ">4</div><div><div class="abfrage-q-label kreativ">🔴 Kreativität · ca. 2 Min.</div><div class="abfrage-q-text">Du erbst 5.000 € und willst in drei Jahren ein Auslandsjahr machen. Entwirf ein Anlagekonzept und begründe es kurz.</div></div></div>
+          <div class="abfrage-q-body"><p>Eigene Lösung. Bewertet: Anlagedauer berücksichtigt, Kriterien angewandt, Streuung.</p><button class="erwartung-btn" onclick="toggleErw('ew4',this)">📋 Erwartungshorizont anzeigen</button>
+          <div class="erwartung-box" id="ew4">Z. B. 1.000 € Tagesgeld als Notreserve, 3.000 € Festgeld oder Bundesanleihe mit Laufzeit bis zum Auslandsjahr (sicher, planbar, etwas mehr Zinsen), höchstens 1.000 € in einen breit gestreuten ETF. Begründung: Das Geld wird in drei Jahren sicher gebraucht – Sicherheit hat Vorrang, ein hoher Aktienanteil wäre bei so kurzer Anlagedauer riskant.</div></div></div>
+      </div>
+    </section>
+
+    <div class="stepnav">
+      <a class="nav-home" href="index.html">🏠 Übersicht</a>
+      <div class="nav-right">
+        <button class="nav-btn nav-prev" id="navPrev">← Zurück</button>
+        <button class="nav-btn nav-next" id="navNext">Weiter →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIN-Modal -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <h3>Lehrkraft-Bereich</h3>
+      <p>8-stellige PIN eingeben</p>
+      <div class="dots" id="dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="pin-err" id="pinErr"></div>
+      <div class="pad" id="pad"></div>
+      <button class="modal-close" onclick="closeModal()">Abbrechen</button>
+    </div>
+  </div>
+
+<script>
+const LOESUNGSCODE="KORB48";
+const NS="wr10_s14_";
+const STEPS=[{id:"step1",label:"Einstieg"},{id:"step2",label:"Anlagearten"},{id:"step3",label:"Faktencheck"},{id:"step4",label:"Tinas Konzept"},{id:"step5",label:"Streuung"},{id:"step6",label:"Abfrage",teacher:true}];
+
+const PIN_HASH="385319fce53854f96b636f28301b3d31be241dcaf6f1775da31a5e768b3a848e";
+function lsGet(k){try{return localStorage.getItem(NS+k);}catch(e){return null;}}
+function lsSet(k,v){try{localStorage.setItem(NS+k,v);}catch(e){}}
+
+/* ---- Stepper ---- */
+const secEls=STEPS.map(s=>document.getElementById(s.id));
+const prevBtn=document.getElementById("navPrev");
+const nextBtn=document.getElementById("navNext");
+const prog=document.getElementById("prog");
+const pbtns=[];
+const stepHooks={};
+let cur=0, maxReached=0;
+function visibleCount(){ return document.body.classList.contains("version-b") ? STEPS.length : STEPS.length-1; }
+STEPS.forEach((s,i)=>{
+  const b=document.createElement("button");
+  b.className="pstep"+(s.teacher?" teacher-only":"");
+  b.innerHTML=`<span class="pnum">${i+1}</span>${s.label}`;
+  b.onclick=()=>{ if(i<=maxReached && i<visibleCount()) showStep(i,true); };
+  prog.appendChild(b); pbtns.push(b);
+});
+function showStep(i,scroll){
+  cur=i; if(i>maxReached)maxReached=i;
+  secEls.forEach((el,k)=>el.classList.toggle("step-visible",k===i));
+  pbtns.forEach((b,k)=>{ b.classList.toggle("active",k===i); b.classList.toggle("locked", k>maxReached || k>=visibleCount()); });
+  prevBtn.disabled=(i===0);
+  const last=(i>=visibleCount()-1);
+  nextBtn.textContent=last?"Geschafft ✓":"Weiter →";
+  nextBtn.classList.toggle("done",last);
+  nextBtn.disabled=last;
+  if(stepHooks[i])stepHooks[i]();
+  if(scroll){ const y=secEls[i].getBoundingClientRect().top+window.pageYOffset-100; window.scrollTo({top:Math.max(0,y),behavior:"smooth"}); }
+}
+prevBtn.onclick=()=>{ if(cur>0)showStep(cur-1,true); };
+nextBtn.onclick=()=>{ if(cur<visibleCount()-1)showStep(cur+1,true); };
+
+/* ---- Zwei-Modi / gehashte PIN ---- */
+let entered="";
+const overlay=document.getElementById("overlay"), dots=document.getElementById("dots"), pad=document.getElementById("pad"), pinErr=document.getElementById("pinErr");
+["1","2","3","4","5","6","7","8","9","C","0","⌫"].forEach(k=>{
+  const b=document.createElement("button");b.textContent=k;b.onclick=()=>press(k);pad.appendChild(b);
+});
+function toggleTeacher(){
+  const btn=document.getElementById("teacherToggle");
+  if(document.body.classList.contains("version-b")){
+    document.body.classList.remove("version-b");btn.classList.remove("on");btn.textContent="🔓 Lehrkraft";
+    if(cur>=visibleCount())showStep(visibleCount()-1,false);else showStep(cur,false);
+    refreshSolButtons();
+  }else{openModal();}
+}
+function openModal(){entered="";pinErr.textContent="";renderDots();overlay.classList.add("open");}
+function closeModal(){overlay.classList.remove("open");}
+function press(k){
+  if(k==="C"){entered="";}else if(k==="⌫"){entered=entered.slice(0,-1);pinErr.textContent="";}else if(entered.length<8){entered+=k;}
+  renderDots();if(entered.length===8)setTimeout(check,120);
+}
+function renderDots(){dots.classList.remove("err");[...dots.children].forEach((d,i)=>d.classList.toggle("filled",i<entered.length));}
+async function check(){
+  const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(entered));
+  const h=[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");
+  if(h===PIN_HASH){
+    document.body.classList.add("version-b");
+    const btn=document.getElementById("teacherToggle");btn.classList.add("on");btn.textContent="🔒 Schüler-Ansicht";
+    closeModal();maxReached=STEPS.length-1;showStep(cur,false);refreshSolButtons();
+  }else{ pinErr.textContent="Falscher PIN."; dots.classList.add("err"); entered=""; setTimeout(()=>renderDots(),450); }
+}
+document.addEventListener("keydown",e=>{
+  if(!overlay.classList.contains("open"))return;
+  if(/^[0-9]$/.test(e.key))press(e.key);
+  else if(e.key==="Backspace")press("⌫");
+  else if(e.key==="Escape")closeModal();
+});
+
+/* ---- Quiz mit Punktestand ---- */
+function checkQuiz(btn){
+  const block=btn.closest(".quiz-block");
+  if(block.classList.contains("answered"))return;
+  block.classList.add("answered");
+  const correct=btn.dataset.correct==="true";
+  block.querySelectorAll(".quiz-opt").forEach(o=>{o.classList.add("locked");if(o.dataset.correct==="true")o.classList.add("correct");});
+  if(!correct)btn.classList.add("wrong");
+  const fb=block.querySelector(".quiz-fb"); if(fb)fb.classList.add("show");
+  block.dataset.right=correct?"1":"0";
+  updateScore();
+}
+function updateScore(){
+  const blocks=[...document.querySelectorAll(".quiz-block")];
+  const answered=blocks.filter(b=>b.classList.contains("answered"));
+  if(answered.length<blocks.length)return;
+  const right=blocks.filter(b=>b.dataset.right==="1").length;
+  const el=document.getElementById("quizScore");
+  el.querySelector(".score-num").textContent=right+" / "+blocks.length;
+  el.querySelector(".score-msg").textContent = right===blocks.length?"Perfekt! 🎉" : (right>=blocks.length-1?"Fast alles richtig!" : (right>=blocks.length/2?"Solide – schau dir die Fehler an." : "Wiederhol das ruhig nochmal."));
+  el.style.display="flex";
+  document.getElementById("quizRetry").style.display="inline-flex";
+}
+function retryQuiz(){
+  document.querySelectorAll(".quiz-block").forEach(b=>{
+    b.classList.remove("answered"); delete b.dataset.right;
+    b.querySelectorAll(".quiz-opt").forEach(o=>o.classList.remove("locked","correct","wrong"));
+    const fb=b.querySelector(".quiz-fb"); if(fb)fb.classList.remove("show");
+  });
+  document.getElementById("quizScore").style.display="none";
+  document.getElementById("quizRetry").style.display="none";
+}
+
+/* ---- Musterlösungen mit Lösungscode ---- */
+let solUnlocked=lsGet("sol")==="1";
+function teacherMode(){return document.body.classList.contains("version-b");}
+function toggleSol(btn,target){
+  const vis=target.classList.toggle("visible");
+  btn.textContent=vis?"▲ Lösung ausblenden":"✓ Musterlösung anzeigen";
+}
+function refreshSolButtons(){
+  const open=solUnlocked||teacherMode();
+  document.querySelectorAll(".solution-btn").forEach(btn=>{
+    const t=document.getElementById(btn.dataset.target);
+    if(t.classList.contains("visible"))btn.textContent="▲ Lösung ausblenden";
+    else btn.textContent=open?"✓ Musterlösung anzeigen":"🔒 Musterlösung";
+  });
+}
+function solClick(btn){
+  const target=document.getElementById(btn.dataset.target);
+  if(solUnlocked||teacherMode()){ toggleSol(btn,target); return; }
+  let p=btn.nextElementSibling;
+  if(p&&p.classList.contains("sol-code")){ p.remove(); return; }
+  p=document.createElement("div");
+  p.className="sol-code";
+  p.innerHTML='<input type="text" maxlength="'+LOESUNGSCODE.length+'" placeholder="Lösungscode" aria-label="Lösungscode"><button type="button">freischalten</button><span class="sol-hint">Code von der Lehrkraft</span>';
+  btn.after(p);
+  const inp=p.querySelector("input"), go=p.querySelector("button");
+  const tryc=()=>{
+    if(inp.value.trim().toUpperCase()===LOESUNGSCODE){
+      solUnlocked=true; lsSet("sol","1");
+      document.querySelectorAll(".sol-code").forEach(c=>c.remove());
+      toggleSol(btn,target); refreshSolButtons();
+    }else{ inp.classList.add("shake"); setTimeout(()=>inp.classList.remove("shake"),450); }
+  };
+  go.onclick=tryc; inp.onkeydown=e=>{if(e.key==="Enter")tryc();}; inp.focus();
+}
+
+/* ---- Abfrage: Erwartungshorizont ---- */
+function toggleErw(id,btn){
+  const el=document.getElementById(id);
+  const v=el.classList.toggle("show");
+  btn.textContent=v?"▲ Erwartungshorizont ausblenden":"📋 Erwartungshorizont anzeigen";
+}
+
+/* ---- Antwortfelder autospeichern ---- */
+document.querySelectorAll(".answer-area").forEach(t=>{
+  const v=lsGet(t.id); if(v)t.value=v;
+  t.addEventListener("input",()=>lsSet(t.id,t.value));
+});
+
+/* ---- Zuordnungsübungen (Auswahl wird gespeichert) ---- */
+const GRIDS={};
+function buildGrid(k,g){
+  GRIDS[k]=g; const box=document.getElementById(k+"Box");
+  let saved=[];try{saved=JSON.parse(lsGet("g_"+k)||"[]");}catch(e){}
+  g.items.forEach((it,i)=>{const r=document.createElement("div");r.className="sort-row";
+    let o='<option value="">wählen …</option>';Object.entries(g.opts).forEach(([v,l])=>{if(!it[2]||it[2].includes(v))o+='<option value="'+v+'">'+l+'</option>';});
+    r.innerHTML='<span>'+it[0]+'</span><select aria-label="Auswahl">'+o+'</select>';
+    const s=r.querySelector("select"); if(saved[i])s.value=saved[i];
+    s.addEventListener("change",()=>{r.classList.remove("ok","no");lsSet("g_"+k,JSON.stringify(gridVals(k)));if(g.onChange)g.onChange(gridVals(k));});
+    box.appendChild(r);});
+  if(g.onChange)g.onChange(gridVals(k));
+}
+function gridVals(k){return [...document.getElementById(k+"Box").querySelectorAll("select")].map(s=>s.value);}
+function checkGrid(k){const g=GRIDS[k],box=document.getElementById(k+"Box");let ok=0;
+  [...box.querySelectorAll(".sort-row")].forEach((r,i)=>{const good=r.querySelector("select").value===g.items[i][1];if(good)ok++;r.classList.toggle("ok",good);r.classList.toggle("no",!good);});
+  const fb=document.getElementById(k+"Fb");fb.innerHTML="<b>"+ok+" / "+g.items.length+" richtig.</b> "+(ok===g.items.length?(g.done||"Stark!"):"Rot markierte nochmal prüfen. "+(g.hint||""));fb.classList.add("show");}
+
+/* ---- Chips ---- */
+function chipGroup(id,items,max,key,cb){
+  const box=document.getElementById(id);let sel=[];
+  try{sel=JSON.parse(lsGet(key)||"[]");}catch(e){}
+  items.forEach(c=>{const b=document.createElement("button");b.type="button";b.className="chip"+(sel.includes(c)?" on":"");b.textContent=c;
+    b.onclick=()=>{if(sel.includes(c)){sel=sel.filter(x=>x!==c);}else{if(sel.length>=max)return;sel.push(c);}
+      [...box.children].forEach(x=>x.classList.toggle("on",sel.includes(x.textContent)));
+      lsSet(key,JSON.stringify(sel)); if(cb)cb(sel);};
+    box.appendChild(b);});
+  if(cb)cb(sel);
+}
+
+/* ---- Diagramme (eigenes SVG, keine Bibliothek) ---- */
+function de(v,d){return Number(v).toLocaleString("de-DE",{minimumFractionDigits:d==null?1:d,maximumFractionDigits:d==null?1:d});}
+function chart(id,c){
+  const el=document.getElementById(id); if(!el)return;
+  const W=640,H=c.h||290,m={l:c.padL||40,r:c.padR==null?92:c.padR,t:14,b:28};
+  const pw=W-m.l-m.r,ph=H-m.t-m.b,n=c.x.length,band=pw/n;
+  const X=i=>m.l+(i+.5)*band, Y=v=>m.t+(c.yMax-v)/(c.yMax-c.yMin)*ph;
+  const unit=c.unit||" %", dd=c.dec==null?1:c.dec;
+  let s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+c.aria+'">';
+  for(let v=c.yMin;v<=c.yMax+1e-9;v+=c.yStep){
+    s+='<line x1="'+m.l+'" x2="'+(W-m.r)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="'+(v===0&&c.yMin<0?"#9aa3ab":"#e6e8ea")+'" stroke-width="1"/>';
+    s+='<text x="'+(m.l-7)+'" y="'+(Y(v)+4)+'" text-anchor="end" font-size="11" fill="#666">'+de(v,0)+'</text>';
+  }
+  const every=c.xEvery||(n>12?2:1);
+  c.x.forEach((l,i)=>{ if(i%every===0) s+='<text x="'+X(i)+'" y="'+(H-8)+'" text-anchor="middle" font-size="11" fill="#666">'+l+'</text>'; });
+  c.series.forEach(se=>{
+    if(se.type==="col"){
+      const bw=Math.min(24,band-2);
+      se.vals.forEach((v,i)=>{const x0=X(i)-bw/2,y0=Y(0),y1=Y(v),r=Math.min(4,Math.abs(y1-y0));
+        if(Math.abs(y1-y0)<.5)return;
+        const d=v>=0? 'M'+x0+' '+y0+'V'+(y1+r)+'Q'+x0+' '+y1+' '+(x0+r)+' '+y1+'H'+(x0+bw-r)+'Q'+(x0+bw)+' '+y1+' '+(x0+bw)+' '+(y1+r)+'V'+y0+'Z'
+                    : 'M'+x0+' '+y0+'V'+(y1-r)+'Q'+x0+' '+y1+' '+(x0+r)+' '+y1+'H'+(x0+bw-r)+'Q'+(x0+bw)+' '+y1+' '+(x0+bw)+' '+(y1-r)+'V'+y0+'Z';
+        s+='<path d="'+d+'" fill="'+(se.colors?se.colors[i]:se.color)+'"/>';});
+    }else{
+      s+='<path d="'+se.vals.map((v,i)=>(i?"L":"M")+X(i)+" "+Y(v)).join("")+'" fill="none" stroke="'+se.color+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+      const li=n-1;
+      s+='<circle cx="'+X(li)+'" cy="'+Y(se.vals[li])+'" r="4.5" fill="'+se.color+'" stroke="#fcfcfb" stroke-width="2"/>';
+      s+='<text x="'+(X(li)+9)+'" y="'+(Y(se.vals[li])-2)+'" font-size="11.5" font-weight="800" fill="#1A1A1A">'+se.short+'</text>';
+      s+='<text x="'+(X(li)+9)+'" y="'+(Y(se.vals[li])+11)+'" font-size="11.5" fill="#555">'+de(se.vals[li],dd)+unit+'</text>';
+    }
+  });
+  (c.marks||[]).forEach(mk=>{const i=c.x.indexOf(mk.x),se=c.series[mk.s];
+    s+='<circle cx="'+X(i)+'" cy="'+Y(se.vals[i])+'" r="4.5" fill="'+se.color+'" stroke="#fcfcfb" stroke-width="2"/>';
+    s+='<text x="'+(X(i)+(mk.dx||0))+'" y="'+(Y(se.vals[i])+(mk.dy||-10))+'" text-anchor="'+(mk.anchor||"middle")+'" font-size="11.5" font-weight="700" fill="#1A1A1A">'+mk.text+'</text>';});
+  s+='<line class="ch-x" x1="0" x2="0" y1="'+m.t+'" y2="'+(m.t+ph)+'" stroke="#9aa3ab" stroke-width="1" style="display:none"/>';
+  s+='<rect class="ch-hit" x="'+m.l+'" y="'+m.t+'" width="'+pw+'" height="'+ph+'" fill="transparent"/></svg>';
+  let h='<div class="chart-title">'+c.title+'</div><div class="chart-sub">'+c.sub+'</div>';
+  if(c.series.length>1) h+='<div class="chart-legend">'+c.series.map(se=>'<span><i style="background:'+se.color+'"></i>'+se.name+'</span>').join("")+'</div>';
+  h+='<div class="chart-wrap">'+s+'<div class="chart-tip"></div></div>';
+  h+='<details class="chart-table"><summary>Werte als Tabelle</summary><div class="tscroll"><table class="dtable"><tr><th>'+(c.xName||"Jahr")+'</th>'+c.series.map(se=>'<th>'+se.name+'</th>').join("")+'</tr>'+
+     c.x.map((l,i)=>'<tr><td>'+l+'</td>'+c.series.map(se=>'<td>'+de(se.vals[i],dd)+unit+'</td>').join("")+'</tr>').join("")+'</table></div></details>';
+  h+='<div class="chart-src">'+c.src+'</div>';
+  el.innerHTML=h;
+  const svg=el.querySelector("svg"),hit=el.querySelector(".ch-hit"),xl=el.querySelector(".ch-x"),tip=el.querySelector(".chart-tip"),wrap=el.querySelector(".chart-wrap");
+  const move=e=>{const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W;
+    const i=Math.max(0,Math.min(n-1,Math.floor((px-m.l)/band)));
+    xl.setAttribute("x1",X(i));xl.setAttribute("x2",X(i));xl.style.display="";
+    tip.innerHTML="<b>"+c.x[i]+"</b>"+c.series.map(se=>'<div><i style="background:'+se.color+'"></i>'+se.name+": "+de(se.vals[i],dd)+unit+"</div>").join("");
+    tip.style.display="block";
+    const tx=X(i)/W*wrap.clientWidth; tip.style.left=(tx>wrap.clientWidth/2? tx-tip.offsetWidth-10 : tx+10)+"px";};
+  hit.addEventListener("pointermove",move);hit.addEventListener("pointerdown",move);
+  hit.addEventListener("pointerleave",()=>{xl.style.display="none";tip.style.display="none";});
+}
+
+/* ---- Stunde 14: Tipp vor dem Experiment ---- */
+buildGrid("pred",{opts:{a:"Strategie A",b:"Strategie B",g:"etwa gleich",both:"bei beiden"},items:[
+  ["Welche Strategie bringt im Durchschnitt mehr Geld?","g",["a","b","g"]],
+  ["Bei welcher Strategie liegen die Ergebnisse weiter auseinander?","a",["a","b","g"]],
+  ["Bei welcher Strategie kann fast das ganze Geld verloren gehen?","a",["a","b","both"]]],
+  hint:"Lasst erst 30 Durchläufe laufen und vergleicht dann Durchschnitt, schlechtesten und besten Wert.",done:"Genau das zeigt die Simulation: gleicher Durchschnitt, aber sehr unterschiedliches Risiko."});
+
+/* ---- Simulation „Alle Eier in einen Korb“ (Modellwerte, keine Prognose) ---- */
+const SIM={jahre:10,start:1000,markt:0.07,sdMarkt:0.16,sdFirma:0.25,crashP:0.02,crash:-0.8};
+let RUNS=[];
+function randn(){let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function simRun(){
+  let a=SIM.start; const b=Array(10).fill(SIM.start/10);
+  for(let y=0;y<SIM.jahre;y++){
+    const m=SIM.markt+SIM.sdMarkt*randn();
+    for(let i=0;i<10;i++){
+      let r=m+SIM.sdFirma*randn(); if(Math.random()<SIM.crashP)r=SIM.crash; r=Math.max(r,-0.95);
+      b[i]*=1+r; if(i===0)a*=1+r;
+    }
+  }
+  return {a:a,b:b.reduce((s,x)=>s+x,0)};
+}
+const eur=v=>de(Math.round(v),0)+" €";
+function pct(v){const p=(v/SIM.start-1)*100;return (p>=0?"+":"−")+de(Math.abs(p),0)+" %";}
+function simOnce(){const r=simRun();RUNS.push(r);renderSim(r);}
+function simMany(n){for(let i=0;i<n;i++)RUNS.push(simRun());renderSim(null);}
+function simReset(){RUNS=[];document.getElementById("simOut").innerHTML="";document.getElementById("simPlot").style.display="none";}
+function stats(k){const v=RUNS.map(r=>r[k]);return {avg:v.reduce((s,x)=>s+x,0)/v.length,min:Math.min(...v),max:Math.max(...v),loss:v.filter(x=>x<SIM.start).length};}
+function renderSim(last){
+  const out=document.getElementById("simOut");let h="";
+  if(last){h+='<div class="sim-res"><div class="sim-card a"><h5>Strategie A · ein Korb</h5><div class="big">'+eur(last.a)+'</div>'+pct(last.a)+' in 10 Jahren</div>'+
+    '<div class="sim-card b"><h5>Strategie B · zehn Körbe</h5><div class="big">'+eur(last.b)+'</div>'+pct(last.b)+' in 10 Jahren</div></div>';}
+  if(RUNS.length>1){const A=stats("a"),B=stats("b");
+    h+='<table class="sim-stats"><tr><th>'+RUNS.length+' Durchläufe</th><th style="color:#E65100">Strategie A</th><th style="color:#1565C0">Strategie B</th></tr>'+
+      '<tr><td>Durchschnitt</td><td>'+eur(A.avg)+'</td><td>'+eur(B.avg)+'</td></tr>'+
+      '<tr><td>schlechtester Durchlauf</td><td>'+eur(A.min)+'</td><td>'+eur(B.min)+'</td></tr>'+
+      '<tr><td>bester Durchlauf</td><td>'+eur(A.max)+'</td><td>'+eur(B.max)+'</td></tr>'+
+      '<tr><td>Durchläufe mit Verlust</td><td>'+A.loss+'</td><td>'+B.loss+'</td></tr></table>';
+    plotSim(A,B);}
+  out.innerHTML=h;
+}
+function plotSim(A,B){
+  const el=document.getElementById("simPlot");el.style.display="";
+  const W=640,H=190,l=86,r=20,top=24,mx=Math.min(10000,Math.max(4000,Math.ceil(Math.max(A.max,B.max)/1000)*1000));
+  const X=v=>l+Math.min(v,mx)/mx*(W-l-r);
+  const rows=[["a","Strategie A","#E65100",62,A],["b","Strategie B","#1565C0",128,B]];
+  let s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Punktdiagramm der Endwerte: Strategie A streut weit, Strategie B liegt eng beieinander">';
+  for(let v=0;v<=mx;v+=1000){s+='<line x1="'+X(v)+'" x2="'+X(v)+'" y1="'+top+'" y2="'+(H-30)+'" stroke="#e6e8ea"/><text x="'+X(v)+'" y="'+(H-12)+'" text-anchor="middle" font-size="11" fill="#666">'+de(v,0)+'</text>';}
+  s+='<line x1="'+X(SIM.start)+'" x2="'+X(SIM.start)+'" y1="'+(top-8)+'" y2="'+(H-30)+'" stroke="#1A1A1A" stroke-dasharray="4 3"/><text x="'+(X(SIM.start)+4)+'" y="'+(top-10)+'" font-size="11" fill="#1A1A1A">Einsatz 1.000 €</text>';
+  rows.forEach(([k,name,col,y,st])=>{
+    s+='<text x="8" y="'+(y+4)+'" font-size="12" font-weight="800" fill="'+col+'">'+name+'</text>';
+    RUNS.forEach((ru,i)=>{const jit=((i*37)%11-5)*2.2;s+='<circle cx="'+X(ru[k])+'" cy="'+(y+jit)+'" r="4.5" fill="'+col+'" fill-opacity=".55"/>';});
+    s+='<line x1="'+X(st.avg)+'" x2="'+X(st.avg)+'" y1="'+(y-18)+'" y2="'+(y+18)+'" stroke="'+col+'" stroke-width="3"/>';
+  });
+  s+='</svg>';
+  el.innerHTML='<div class="chart-title">So weit streuen die Ergebnisse</div><div class="chart-sub">Endwert nach 10 Jahren je Durchlauf in Euro · senkrechter Strich = Durchschnitt'+(Math.max(A.max,B.max)>mx?' · Werte über '+de(mx,0)+' € am rechten Rand':'')+'</div><div class="chart-wrap">'+s+'</div><div class="chart-src">Modellrechnung mit Zufallszahlen (Marktrendite im Mittel 7 % pro Jahr), keine Prognose. Eigene Darstellung.</div>';
+}
+
+/* ---- Anlagearten bewerten ---- */
+const ARTEN=[["sb","Sparbuch"],["tg","Tagesgeld"],["fg","Festgeld (2 Jahre)"],["an","Bundesanleihe"],["ak","Einzelaktie"],["etf","ETF (breit gestreut)"],["au","Gold"]];
+const KRIT=["Sicherheit","Rentabilität","Liquidität"];
+/* je Kriterium: [passend, vertretbar …] – h hoch, m mittel, n niedrig */
+const RATE={sb:[["h"],["n"],["h","m"]],tg:[["h"],["n","m"],["h"]],fg:[["h"],["m","n"],["n"]],an:[["h"],["m"],["m","h"]],
+  ak:[["n"],["h"],["h","m"]],etf:[["m"],["h","m"],["h","m"]],au:[["m","n"],["m","n"],["m","h"]]};
+const SC={h:3,m:2,n:1};
+(function(){let saved={};try{saved=JSON.parse(lsGet("rate")||"{}");}catch(e){}
+  const t=document.getElementById("rateTable");
+  let h='<tr><th>Anlageart</th>'+KRIT.map(k=>'<th>'+k+'</th>').join("")+'</tr>';
+  ARTEN.forEach(([id,name])=>{h+='<tr><td class="rowh">'+name+'</td>'+KRIT.map((k,j)=>'<td><select data-a="'+id+'" data-k="'+j+'" aria-label="'+name+' '+k+'"><option value="">…</option><option value="h">hoch</option><option value="m">mittel</option><option value="n">niedrig</option></select></td>').join("")+'</tr>';});
+  t.innerHTML=h;
+  t.querySelectorAll("select").forEach(s=>{const key=s.dataset.a+s.dataset.k;if(saved[key])s.value=saved[key];
+    s.addEventListener("change",()=>{s.classList.remove("ok","mid","no");saved[key]=s.value;lsSet("rate",JSON.stringify(saved));});});
+})();
+function checkRate(){let ok=0,mid=0,all=0;
+  document.querySelectorAll("#rateTable select").forEach(s=>{all++;const exp=RATE[s.dataset.a][+s.dataset.k];
+    s.classList.remove("ok","mid","no");
+    if(s.value===exp[0]){s.classList.add("ok");ok++;}else if(s.value&&exp.includes(s.value)){s.classList.add("mid");mid++;}else s.classList.add("no");});
+  const fb=document.getElementById("rateFb");
+  fb.innerHTML="<b>"+ok+" passend, "+mid+" vertretbar, "+(all-ok-mid)+" nochmal überlegen.</b> "+(ok+mid===all?"Achte auf den Unterschied zwischen Einzelaktie und ETF: gleiche Anlageklasse, aber durch Streuung viel sicherer.":"Tipp: Sicherheit = Verlustgefahr, Rentabilität = Ertrag, Liquidität = wie schnell ohne Verlust verfügbar.");
+  fb.classList.add("show");}
+
+/* ---- Goldpreis: gerundete Jahresendkurse in Euro je Feinunze (LBMA, umgerechnet) – hier anpassbar; 2026 = Stand Mitte November ---- */
+const GOLD_J=["2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025","2026*"];
+const GOLD=[437,482,569,620,767,1055,1216,1250,870,985,980,1100,1080,1125,1355,1550,1600,1700,1870,2520,3710,3500];
+chart("chGold",{title:"Gold: lange Aufwärtstrends – aber auch tiefe Einbrüche",sub:"Goldpreis in Euro je Feinunze (31,1 g), Jahresendkurse 2005–2025, 2026 Stand Mitte November",
+  aria:"Liniendiagramm: Der Goldpreis steigt von rund 440 Euro 2005 auf rund 1.250 Euro 2012, fällt 2013 auf 870 Euro, steigt bis 2025 auf rund 3.700 Euro und liegt Mitte November 2026 bei rund 3.500 Euro.",
+  x:GOLD_J,xName:"Jahr",yMin:0,yMax:4000,yStep:1000,unit:" €",dec:0,padL:48,xEvery:3,
+  series:[{name:"Goldpreis",short:"Gold",color:"#1565C0",vals:GOLD}],
+  marks:[{x:"2013",s:0,text:"2013: −30 %",dy:20},{x:"2025",s:0,text:"3.710 €",dx:-8,dy:4,anchor:"end"}],
+  src:"Quelle: LBMA-Goldpreis, umgerechnet in Euro; gerundete Näherungswerte (Jahresende). 2026: Stand Mitte November. Eigene Darstellung."});
+buildGrid("gold",{opts:{m10:"etwa −10 %",m30:"etwa −30 %",m60:"etwa −60 %",x2:"etwa das Doppelte",x8:"etwa das Achtfache",x20:"etwa das Zwanzigfache",zins:"Zinsen",div:"Dividenden",none:"keinen",sich:"Gold ist wertstabil.",sw:"Der Preis schwankt stark – Verluste sind möglich."},items:[
+  ["Um wie viel fiel der Goldpreis im Jahr 2013 ungefähr?","m30",["m10","m30","m60"]],
+  ["Auf etwa das Wievielfache stieg der Preis von Ende 2005 bis Ende 2025?","x8",["x2","x8","x20"]],
+  ["Welchen laufenden Ertrag bringt Gold?","none",["zins","div","none"]],
+  ["Was folgt daraus für die Sicherheit?","sw",["sich","sw"]]],
+  hint:"Fahre über das Diagramm, um die Werte abzulesen.",done:"Richtig: Gold kann nicht pleitegehen, sein Preis ist aber alles andere als stabil."});
+
+/* ---- Anlagekonzept für Tina ---- */
+const PF=[["tg","Tagesgeld","jederzeit verfügbar",[3,1,3]],["fg","Festgeld (2 Jahre)","fest gebunden",[3,2,1]],["an","Bundesanleihe","Kursrisiko vor Fälligkeit",[3,2,2]],
+  ["etf","ETF (breit gestreut)","viele Unternehmen",[2,3,3]],["ak","Einzelaktie","ein Unternehmen",[1,3,3]],["au","Gold","keine Zinsen",[2,2,2]]];
+let pfv={};try{pfv=JSON.parse(lsGet("pf")||"{}");}catch(e){}
+PF.forEach(p=>{if(typeof pfv[p[0]]!=="number")pfv[p[0]]=0;});
+(function(){const box=document.getElementById("pfRows");
+  box.innerHTML=PF.map(p=>'<div class="pfrow"><span>'+p[1]+'<small>'+p[2]+'</small></span><span class="pfstep"><button type="button" data-k="'+p[0]+'" data-d="-100" aria-label="'+p[1]+' weniger">−</button><b id="pf_'+p[0]+'"></b><button type="button" data-k="'+p[0]+'" data-d="100" aria-label="'+p[1]+' mehr">+</button></span></div>').join("")+'<div class="pf-sum" id="pfSum"></div>';
+  box.querySelectorAll("button").forEach(b=>b.onclick=()=>{const k=b.dataset.k,d=+b.dataset.d,sum=PF.reduce((s,p)=>s+pfv[p[0]],0);
+    if(d>0&&sum>=2000)return; pfv[k]=Math.max(0,pfv[k]+d); lsSet("pf",JSON.stringify(pfv)); renderPF();});
+  renderPF();})();
+function renderPF(){
+  const sum=PF.reduce((s,p)=>s+pfv[p[0]],0);
+  PF.forEach(p=>document.getElementById("pf_"+p[0]).textContent=de(pfv[p[0]],0)+" €");
+  const se=document.getElementById("pfSum");
+  se.textContent=sum===2000?"2.000 € verteilt ✓":"Noch "+de(2000-sum,0)+" € zu verteilen";se.classList.toggle("full",sum===2000);
+  const cols=["#1565C0","#2E7D32","#E65100"];
+  let prof='<div class="chart-title" style="font-size:13.5px">Profil deines Konzepts</div>';
+  if(!sum){prof+='<p class="small-muted">Verteile Geld, dann erscheint das Profil.</p>';}
+  else KRIT.forEach((k,j)=>{const v=PF.reduce((s,p)=>s+pfv[p[0]]*p[3][j],0)/sum,w=(v-1)/2*100,l=v>=2.5?"hoch":(v>=1.75?"mittel":"niedrig");
+    prof+='<div class="pfbar"><span>'+k+'</span><div class="pfbar-t"><div class="pfbar-b" style="width:'+Math.max(4,w)+'%;background:'+cols[j]+'"></div></div><span>'+l+'</span></div>';});
+  document.getElementById("pfProfile").innerHTML=prof;
+  const H=[],v=k=>pfv[k];
+  if(sum===2000){
+    if(v("tg")<500)H.push(["warn","Für das Auto „bald“ und als Notgroschen ist wenig sofort verfügbares Geld da."]);
+    if(v("fg")+v("an")>1500)H.push(["warn","Viel Geld ist fest gebunden – reicht das für das Auto?"]);
+    if(v("ak")>300)H.push(["warn","Klumpenrisiko: Ein großer Teil hängt an einem einzigen Unternehmen."]);
+    if(v("etf")+v("ak")>1000)H.push(["warn","Hoher Aktienanteil für Ziele in wenigen Jahren – ein Kurseinbruch kurz vor dem Kauf könnte die Pläne durchkreuzen."]);
+    if(v("au")>400)H.push(["warn","Gold bringt keine Zinsen und schwankt stark – für Tinas Ziele eher ungeeignet."]);
+    if(PF.some(p=>v(p[0])===2000))H.push(["warn","Alle Eier in einem Korb: Das ganze Geld steckt in einer einzigen Anlage."]);
+    if(!H.length)H.push(["good","Ausgewogen: sicher, ausreichend verfügbar und auf mehrere Anlagen verteilt. Jetzt die Begründung schreiben!"]);
+  }
+  document.getElementById("pfHints").innerHTML=H.map(x=>'<div class="pfhint '+x[0]+'">'+x[1]+'</div>').join("");
+}
+
+/* ---- Markowitz: dafür oder Grenze ---- */
+buildGrid("mark",{opts:{p:"spricht für Streuung",g:"zeigt eine Grenze"},items:[
+  ["① Verluste einer Anlage können durch Gewinne anderer ausgeglichen werden.","p"],
+  ["② Man kann mehrere Ziele zugleich verfolgen, z. B. Notgroschen und Vermögensaufbau.","p"],
+  ["③ Bei sehr kleinen Beträgen verursachen viele Einzelanlagen hohe Gebühren.","g"],
+  ["④ Bei zu vielen verschiedenen Anlagen verliert man leicht den Überblick.","g"],
+  ["⑤ In einer weltweiten Börsenkrise fallen fast alle Aktien gleichzeitig.","g"],
+  ["⑥ Mit einem ETF kann man schon mit wenigen Euro breit streuen.","p"]],
+  hint:"Erhöht das Argument die Sicherheit – oder zeigt es, wo Streuung an ihre Grenzen kommt?",done:"Gut abgewogen. Jetzt formuliere dein Urteil."});
+
+
+/* ==== DRUCKMODUL Schülerversion v2 – Acrobat-sicher ==== */
+(function(){
+  const bar=document.getElementById("teacherToggle");
+  if(bar){const b=document.createElement("button");b.type="button";b.className="tbtn teacher-only";b.id="printStudent";
+    b.textContent="🖨 Schülerversion";b.title="Druckversion für Schüler ohne Tablet (als PDF sichern möglich)";b.onclick=printStudent;
+    bar.parentNode.insertBefore(b,bar);}
+  const head=document.createElement("div");head.className="print-head";
+  head.innerHTML="<span>"+document.title+"</span><span>Name: ______________________ &nbsp; Datum: ____________</span>";
+  const first=document.querySelector(".hero");if(first)first.parentNode.insertBefore(head,first);
+})();
+/* Emojis und Emoji-Bausteine: werden nur für den Druck aus dem Text genommen (Farb-Emojis machen PDFs in Acrobat undruckbar) */
+const PRINT_EMOJI=/(?![©®™↔↕✓])\p{Extended_Pictographic}|[\u{1F1E6}-\u{1F1FF}\u{1F3FB}-\u{1F3FF}\u{FE0F}\u{200D}\u{20E3}]/gu;
+let printUndo=[];
+function printPrep(){
+  printCleanup();
+  /* 1. Antwortmöglichkeiten der Auswahlfelder einmal pro Aufgabe auflisten */
+  const seen=new Set();
+  document.querySelectorAll(".sort-row select").forEach(sel=>{
+    const box=sel.closest(".sort-row").parentNode; if(seen.has(box))return; seen.add(box);
+    const opts=[...new Set([...box.querySelectorAll("select option")].filter(o=>o.value).map(o=>o.textContent))];
+    const d=document.createElement("div");d.className="print-options";d.innerHTML="<b>Mögliche Antworten:</b> "+opts.join(" · ");
+    box.parentNode.insertBefore(d,box);
+    printUndo.push(()=>d.remove());
+  });
+  /* 2. Textareas durch echte Schreiblinien ersetzen (Zeilenzahl: data-print-lines oder aus min-height, mindestens 5) */
+  document.querySelectorAll("textarea").forEach(t=>{
+    const n=+t.dataset.printLines||Math.max(5,Math.round((parseInt(t.style.minHeight)||0)/20));
+    const l=document.createElement("div");l.className="print-lines";l.innerHTML="<i></i>".repeat(n);
+    t.after(l);
+    printUndo.push(()=>l.remove());
+  });
+  /* 3. Ausklapp-Kästen öffnen */
+  document.querySelectorAll("details").forEach(d=>{if(!d.open){d.open=true;printUndo.push(()=>{d.open=false;});}});
+  /* 4. Emojis aus allen Textknoten entfernen, ①–⑳ als (1)–(20) schreiben (wird nach dem Druck zurückgesetzt) */
+  const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+  const hits=[];
+  while(w.nextNode()){const nd=w.currentNode,p=nd.parentNode&&nd.parentNode.nodeName;
+    if(p==="SCRIPT"||p==="STYLE")continue;
+    const clean=nd.nodeValue.replace(PRINT_EMOJI,"").replace(/[①-⑳]/g,c=>"("+(c.charCodeAt(0)-0x245F)+")");
+    if(clean!==nd.nodeValue)hits.push([nd,nd.nodeValue,clean]);}
+  hits.forEach(([nd,orig,clean])=>{nd.nodeValue=clean.replace(/^\s+/," ");printUndo.push(()=>{nd.nodeValue=orig;});});
+  document.body.classList.add("print-student");
+}
+function printCleanup(){
+  document.body.classList.remove("print-student");
+  printUndo.reverse().forEach(f=>{try{f();}catch(e){}});
+  printUndo=[];
+}
+function printStudent(){
+  printPrep();
+  const done=()=>{window.removeEventListener("afterprint",done);printCleanup();};
+  window.addEventListener("afterprint",done);
+  window.print();
+}
+
+/* ---- Init ---- */
+showStep(0,false);
+refreshSolButtons();
+
+</script>
+</body>
+</html>
