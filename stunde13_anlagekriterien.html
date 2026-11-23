@@ -267,7 +267,10 @@ code{background:#fde68a;border-radius:4px;padding:0 4px;font-size:12.5px;}
 .post-name{font-weight:800;font-size:14px;display:flex;align-items:center;gap:5px;}
 .post-check{display:inline-block;width:13px;height:13px;border-radius:50%;background:#1d9bf0;border:3px solid #bfe3fd;}
 .post-meta{font-size:11.5px;color:#888;}
-.post-visual{background:#111827;color:#fde047;text-align:center;padding:2rem 1rem;}
+.post-media{position:relative;background:#111827;}
+.post-photo{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;}
+.post-overlay{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.62);color:#fde047;text-align:center;padding:.8rem 1rem .9rem;}
+.post-media.noimg .post-overlay{position:static;background:#111827;padding:2rem 1rem;}
 .post-big{font-size:30px;font-weight:900;line-height:1.1;}
 .post-small{font-size:15px;font-weight:800;color:#fff;margin-top:.3rem;}
 .post-text{padding:.8rem .9rem .4rem;font-size:13.5px;line-height:1.5;}
@@ -293,7 +296,10 @@ code{background:#fde68a;border-radius:4px;padding:0 4px;font-size:12.5px;}
 @media (max-width:640px){.tri-layout{grid-template-columns:1fr;}}
 @media print{
   body.print-student .post{border:1px solid #999;max-width:none;}
-  body.print-student .post-visual{background:#fff!important;color:#000!important;border-top:1px solid #999;border-bottom:1px solid #999;}
+  body.print-student .post-media{background:#fff!important;}
+  body.print-student .post-photo{max-height:9cm;width:auto;margin:0 auto;}
+  body.print-student .post-overlay{position:static;background:#fff!important;color:#000!important;border-top:1px solid #999;border-bottom:1px solid #999;padding:.4rem;}
+  body.print-student .post-big{color:#000!important;}
   body.print-student .post-small{color:#000!important;}
   body.print-student .post-avatar{background:#fff!important;color:#000!important;border:1px solid #000;}
   body.print-student .post-check{background:#fff!important;border:1px solid #000!important;}
@@ -391,7 +397,7 @@ code{background:#fde68a;border-radius:4px;padding:0 4px;font-size:12.5px;}
           <div class="post-avatar">M</div>
           <div><div class="post-name">max.moneyboost <span class="post-check" aria-label="verifiziert"></span></div><div class="post-meta">248.000 Follower · Gesponsert</div></div>
         </div>
-        <div class="post-visual"><div class="post-big">1.000 € → 2.000 €</div><div class="post-small">in nur 6 Monaten</div></div>
+        <div class="post-media"><img class="post-photo" src="stunde13_finfluencer.jpg" alt="Junger Mann mit Sonnenbrille und Cocktail am Pool einer Villa, im Hintergrund ein weißer Sportwagen" onerror="this.parentNode.classList.add('noimg');this.remove()"><div class="post-overlay"><div class="post-big">1.000 € → 2.000 €</div><div class="post-small">in nur 6 Monaten</div></div></div>
         <div class="post-text">Deine Bank zahlt dir 0,5 % Zinsen? 😂 Mit meinem System <b>verdoppelst</b> du dein Geld in einem halben Jahr. <b>100 % sicher, null Risiko</b> – und du kannst <b>jederzeit auszahlen</b>. Nur noch heute 50 % Rabatt auf meinen Kurs! 🚀💸 Link in Bio.<br><span class="post-tags">#passiveseinkommen #finanzfreiheit #reichmit17</span></div>
         <div class="post-foot"><span>♥ 12.430</span><span>💬 1.208</span></div>
       </div>
@@ -418,7 +424,7 @@ code{background:#fde68a;border-radius:4px;padding:0 4px;font-size:12.5px;}
 
       <div class="teacher-note">
         <div class="teacher-note-header">👩‍🏫 Hinweis für die Lehrkraft</div>
-        Zwei, drei Schüler ihre Markierungen nennen lassen. Ziel ist der Satz „Hoher Ertrag, kein Risiko und jederzeit verfügbar – das gibt es nicht gleichzeitig.“ Die drei Versprechen an die Tafel schreiben und schon jetzt als Dreieck anordnen; die Fachbegriffe (Rentabilität, Sicherheit, Liquidität) kommen in Step 2. Zur Einordnung: Eine Verdopplung in sechs Monaten entspräche rund 300 % Rendite pro Jahr. BaFin und Verbraucherzentralen warnen ausdrücklich vor Finanztipps von Influencern, die oft an Provisionen oder Kursverkäufen verdienen. Leitfrage der Stunde festhalten: <i>Wie lege ich Geld sinnvoll an?</i>
+        Zwei, drei Schüler ihre Markierungen nennen lassen. Ziel ist der Satz „Hoher Ertrag, kein Risiko und jederzeit verfügbar – das gibt es nicht gleichzeitig.“ Die drei Versprechen an die Tafel schreiben und schon jetzt als Dreieck anordnen; die Fachbegriffe (Rentabilität, Sicherheit, Liquidität) kommen in Step 2. Zur Einordnung: Eine Verdopplung in sechs Monaten entspräche rund 300 % Rendite pro Jahr. BaFin und Verbraucherzentralen warnen ausdrücklich vor Finanztipps von Influencern, die oft an Provisionen oder Kursverkäufen verdienen. Das Bild ist KI-generiert, die Person existiert nicht – darauf ruhig hinweisen: Auch das Luxus-Bild ist Teil der Inszenierung (Pool, Sportwagen, Champagner als Statussymbole, vgl. Stunde 6). Leitfrage der Stunde festhalten: <i>Wie lege ich Geld sinnvoll an?</i>
       </div>
     </section>
 
